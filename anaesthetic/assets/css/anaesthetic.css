@@ -1,5 +1,10 @@
 body {
-  background-color: #EEE; }
+  background-color: #EEE;
+  color: #2F312E;
+  font-family: "PT Sans", "Lucida Grande", "Lucida Sans", Arial, Verdana, sans-serif; }
+
+.container-fluid {
+  padding: 0; }
 
 .bg-primary {
   background-color: #0054B5; }
@@ -18,10 +23,57 @@ body {
   background-color: #0054B5;
   color: white; }
 
-h5 {
+/*
+*
+* Page header styles
+*
+*/
+.page-header {
+  border-bottom: 1px solid #FFF;
+  background-color: #E4EDF6;
+  margin: 0;
+  min-height: 60px;
+  overflow: hidden;
+  padding: 0; }
+
+ul#patient-meta-data {
+  list-style-type: none;
+  margin: 0;
+  padding: 0; }
+
+#patient-meta-data li, .page-header .logo {
+  border-right: 2px solid #fff;
+  display: block;
+  float: left;
+  line-height: 1;
+  margin: 0;
+  min-height: 39px;
+  overflow: hidden;
+  padding: 16px 24px 15px; }
+
+.page-header .logo, .page-header .more-button {
+  background: #0054B5;
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1;
+  margin: 0;
+  padding: 24px;
+  text-transform: uppercase; }
+
+#patient-meta-data h5 {
+  font-size: 12px;
   font-weight: 600;
-  text-transform: capitalize;
-  font-size: 14px; }
+  margin: 0;
+  text-transform: uppercase; }
+
+#patient-meta-data p {
+  font-size: 16px;
+  margin: 0; }
+
+.page-header .more-button {
+  display: block;
+  float: right; }
 
 .btn-primary {
   background-color: #0054B5;
@@ -61,43 +113,12 @@ body {
 .navbar {
   display: none !important; }
 
-.title-banner {
-  border: 1px solid #FFF;
-  background-color: #E4EDF6;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-flex-direction: row;
-  flex-direction: row;
-  -webkit-justify-content: flex-start;
-  justify-content: space-between; }
-
-.left-menu-items {
-  display: -webkit-flex;
-  display: flex;
-  -webkit-flex-direction: row;
-  flex-direction: row;
-  -webkit-justify-content: flex-start;
-  justify-content: flex-start; }
-
-.title-banner-link {
-  border: 1px solid #FFF;
-  padding: 10px;
-  height: 77px;
-  display: flex;
-  justify-content: space-between; }
-  .title-banner-link.highlighted {
-    align-items: center;
-    color: #FFF;
-    background-color: #0054B5;
-    text-align: center;
-    justify-content: center; }
-
 /* ngProgress overrides */
 .ngProgressLiteBar {
   background-color: #C9046F;
   box-shadow: 0 0 10px 0;
   /* Inherits the font color */
-  top: 77px; }
+  top: 63px; }
 
 .ngProgressLite .ngProgressLiteBarShadow {
   display: none; }
