@@ -26,6 +26,13 @@
 // Neuromuscular blocking drug antagonist: Pantone 805, white diagonal stripes
 .neuromuscular_blocking_drug_antagonist {
     color: #ff7477
+    background: repeating-linear-gradient(
+        45deg,
+        #ff7477,
+        #ff7477 5px,
+        #ffffff 5px,
+        #ffffff 10px
+    );
 }
 
 // Opioid drug: Pantone 297 (blue)
@@ -34,6 +41,16 @@
 }
 
 // placeholder for opioid_antagonist_drug
+.opiod_antagonist {
+    color: #ff7477
+    background: repeating-linear-gradient(
+        45deg,
+        #71C5E87,
+        #71C5E8 5px,
+        #ffffff 5px,
+        #ffffff 10px
+    );
+}
 
 // Vasopressor: Pantone 256 (violet)
 .vasopressor_drug {
