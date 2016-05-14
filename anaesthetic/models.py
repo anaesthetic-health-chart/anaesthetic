@@ -2,6 +2,7 @@
 anaesthetic models.
 """
 from django.db import models as db_models
+from opal.core.lookuplists import LookupList
 
 from opal import models
 
@@ -21,6 +22,7 @@ class GivenDrug(models.PatientSubrecord):
     ]
 
     route = db_models.CharField(max_length=255)
+    drug_name = db_models.CharField(max_length=255)
     drug_type = db_models.CharField(max_length=255)
     rates = db_models.CharField(max_length=255)
     rates = db_models.CharField(max_length=255)
