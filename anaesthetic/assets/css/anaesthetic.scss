@@ -1,0 +1,137 @@
+
+$primary: #0054B5;
+$primary-background: #E4EDF6;
+
+$secondary: #C9046F;
+$secondary-background: #F9CAE4;
+$white: #FFF;
+$events: #111;
+$bg: #EEE;
+
+$red  : #f76c51;
+$blue : #5fa2dd;
+$bluelight: #a0c7ea;
+$green: #9cc96b;
+$obsidian: #343637;
+$obsidianlight: #cbc9c8;
+$navbar-height: 77px;
+
+body{
+    background-color: $bg;
+}
+
+
+.bg-primary { background-color: $primary;}
+.bg-secondary{ background-color: $secondary; }
+
+.panel-primary .panel-default .panel-heading.bg-active,
+.bg-active{ background-color: $primary; }
+
+.panel.panel-primary { border-color: $primary; }
+.panel.panel-primary .panel-heading {
+    background-color: $primary;
+    color: white;
+}
+
+h5{
+  font-weight: 600;
+}
+
+.btn-primary {
+    background-color: $primary;
+    border-color: $primary;
+}
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: $primary-background;
+    border-color: $primary-background;
+}
+
+.btn-secondary{
+    background-color: $secondary;
+    border-color: $secondary;
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus {
+    background-color: $secondary-background;
+    border-color: $secondary-background;
+}
+//
+// .navbar-default .navbar-nav > .active > a,
+// .navbar-default .navbar-nav > .active > a:focus,
+// .navbar-default .navbar-nav > li > a:hover{
+//     background-color: $obsidian;
+// }
+//
+// .navbar-nav li:hover,
+// .navbar-nav li:hover a,
+// .navbar-nav li.active a,
+// .navbar-nav li.active{
+// 	background: $obsidianlight;
+// }
+
+// .panel-primary .panel-default .panel-heading,
+// .panel-default .panel-heading {
+//     border-bottom: 3px solid $active;
+// }
+
+
+.panel-primary .panel-active .panel-heading,
+.panel-active .panel-heading {
+    border-bottom: 3px solid $primary-background;
+}
+
+.modal-header{
+    background: $primary;
+}
+
+.loading {
+    background-color: $bg;
+    color: white;
+}
+
+body{
+  height: 100%;
+}
+
+.navbar-collapse{
+    display: none !important;
+}
+
+.navbar{
+    display: none !important;
+}
+
+.title-banner{
+    border: 1px solid $white;
+    background-color: $primary-background;
+}
+
+.title-banner-link{
+    border: 1px solid $white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    height: $navbar-height;
+    display: flex;
+
+  &.highlighted{
+      align-items: center;
+      color: $white;
+      background-color: $primary;
+      text-align: center;
+      justify-content: center;
+  }
+}
+
+
+/* ngProgress overrides */
+.ngProgressLiteBar {
+  background-color: $secondary;
+  box-shadow: 0 0 10px 0; /* Inherits the font color */
+  top: $navbar-height;
+}
+
+.ngProgressLite .ngProgressLiteBarShadow {
+  display: none;
+}

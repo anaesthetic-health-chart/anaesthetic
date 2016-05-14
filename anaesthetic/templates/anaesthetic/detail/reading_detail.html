@@ -1,21 +1,19 @@
 {% load panels %}
-<div class="bg-white">
-  <div class="patient-timeline-container">
-    <div class="row">
-      <div class="col-md-6">
-        {% record_panel models.GivenDrug %}
-      </div>
-      <div class="col-md-6">
-        {% record_panel models.Observation %}
-      </div>
+<div class="patient-timeline-container">
+  <div class="row">
+    <div class="col-md-6">
+      {% record_panel models.GivenDrug %}
     </div>
-    <div class="row">
-      <div class="col-md-6">
-        {% record_panel models.Ventilators %}
-      </div>
-      <div class="col-md-6">
-        {% record_panel models.Gases %}
-      </div>
+    <div class="col-md-6">
+      {% record_panel models.Observation %}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      {% record_panel models.Ventilators %}
+    </div>
+    <div class="col-md-6">
+      {% record_panel models.Gases %}
     </div>
   </div>
 </div>
