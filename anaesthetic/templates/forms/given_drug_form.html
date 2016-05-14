@@ -2,3 +2,32 @@
 {% input  field="GivenDrug.route"  %}
 {% input  field="GivenDrug.drug_type"  %}
 {% input  field="GivenDrug.rates"  %}
+
+<div class="form-group">
+  <label class="control-label col-sm-3">Started Date</label>
+  <div class="col-sm-3">
+  <input class="form-control" data-date-type="date" data-autoclose="1" type="text" placeholder="Date" ng-model="editing.given_drug.started" bs-datepicker>
+  </div>
+</div>
+<div class="form-group">
+  <label class="control-label col-sm-3">Started Time</label>
+  <div class="col-sm-3">
+  <input type="text" size="8" class="form-control" ng-model="editing.given_drug.started"
+         data-autoclose="1" placeholder="Time" bs-timepicker>
+  </div>
+</div>
+
+
+<div class="form-group">
+  <label class="control-label col-sm-3">Stopped Date</label>
+  <div class="col-sm-9">
+  <input class="form-control" data-date-type="date" data-autoclose="1" type="text" placeholder="Date" ng-model="editing.given_drug.stopped" bs-datepicker>
+  </div>
+</div>
+<div class="form-group">
+  <label class="control-label col-sm-3">Stopped Time</label>
+  <div class="col-sm-9">
+  <input type="text" size="8" class="form-control" ng-model="editing.given_drug.stopped"
+         data-autoclose="1" placeholder="Time" bs-timepicker>
+  </div>
+</div>

@@ -1,1 +1,37 @@
 {% load forms %}
+
+<div class="form-group">
+  <div class="row">
+    <label class="control-label col-sm-3">Carbon Dioxide</label>
+    <div class="col-sm-4">
+      <input class="form-control" type="text"
+             placeholder="Inspired"
+             ng-pattern="/^[0-9\.]+$/"
+             ng-model="editing.gases.inspired_carbon_dioxide" />
+    </div>
+    <div class="col-sm-4">
+      <input class="form-control" type="text"
+             placeholder="Expired"
+             ng-pattern="/^[0-9\.]+$/"
+             ng-model="editing.gases.expired_carbon_dioxide"
+             />
+    </div>
+  </div>
+
+  <div class="row content-offset-25">
+    <label class="control-label col-sm-3">Oxygen</label>
+    <div class="col-sm-4">
+      <input class="form-control" type="text"
+             placeholder="Inspired"
+             ng-pattern="/^[0-9\.]+$/"
+             ng-model="editing.gases.inspired_oxygen" />
+    </div>
+    <div class="col-sm-4">
+      <input class="form-control" type="text"
+             placeholder="Expired"
+             ng-pattern="/^[0-9\.]+$/"
+             ng-model="editing.gases.expired_oxygen"
+             />
+    </div>
+  </div>
+</div>
