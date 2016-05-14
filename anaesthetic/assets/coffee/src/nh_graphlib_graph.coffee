@@ -117,6 +117,7 @@ class NHGraph extends NHGraphLib
     # two values
     @options = {
       keys: new Array(),
+      graphic: null,
       plot_partial: true,
       label: null,
       measurement: '',
@@ -319,6 +320,12 @@ class NHGraph extends NHGraphLib
         @.axes.y.obj = @.axes.obj.append('g').attr('class', 'y axis')
         .call(@.axes.y.axis)
         @.style.axis.y.size = @.axes.y.obj[0][0].getBBox()
+        
+    if @.axes.y.type == 'graphic'
+      @.axes.y.scale = d3.scale.ordinal()
+      .domain([0,2])
+      .range([top_offset + @style.dimensions.height, top_offset])
+      @.axes.y.axis = d3.svg.axis().scale(@.axes.y.scale).orient('left')
 
     # Label positioning uses non-ranged scale
     if @.options.label?
@@ -481,7 +488,7 @@ class NHGraph extends NHGraphLib
           else
             self.draw_linear(self, index)
       )
-
+      when 'graphic' then self.draw_graphic(self)
       # Throw an error if graph style isn't defined
       else throw new Error('no graph style defined')
     
@@ -763,6 +770,24 @@ class NHGraph extends NHGraphLib
     .on('mouseout', (d) ->
       obj.hide_popup()
     )
+
+  draw_graphic: (obj) ->
+    obj.drawables.data.selectAll(".graphic")
+    .data(obj.parent_obj.parent_obj.data.raw)
+    .enter().append("svg:image").attr("x", (d) ->
+      return obj.axes.x.scale(obj.date_from_string(d.date_terminated))
+    ).attr("y", obj.axes.y.scale.range()[0]/4)
+    .attr("xlink:href", obj.options.graphic)
+    .attr("class", "graphic")
+    .attr('width',  obj.axes.y.scale.range()[0]/2)
+    .attr('height',  obj.axes.y.scale.range()[0]/2)
+    .attr("clip-path", "url(#"+ obj.options.keys.join('-')+'-clip' +")")
+#    .on('mouseover', (d) ->
+#      obj.show_popup(d[obj.options.keys[key_index]],event.pageX,event.pageY)
+#    )
+#    .on('mouseout', (d) ->
+#      obj.hide_popup()
+#    )
 
   # Redraw graph data on changes from NHFocus or NHContext, which involves:
   # 1. Redrawing Axis

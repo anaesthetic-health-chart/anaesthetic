@@ -844,6 +844,7 @@ NHGraph = (function(superClass) {
     };
     this.options = {
       keys: new Array(),
+      graphic: null,
       plot_partial: true,
       label: null,
       measurement: '',
@@ -1013,6 +1014,10 @@ NHGraph = (function(superClass) {
         this.style.axis.y.size = this.axes.y.obj[0][0].getBBox();
       }
     }
+    if (this.axes.y.type === 'graphic') {
+      this.axes.y.scale = d3.scale.ordinal().domain([0, 2]).range([top_offset + this.style.dimensions.height, top_offset]);
+      this.axes.y.axis = d3.svg.axis().scale(this.axes.y.scale).orient('left');
+    }
     if (this.options.label != null) {
       y_label = scaleNot(this.axes.y.min) - (this.style.label_text_height * (this.options.keys.length + 1));
       this.drawables.background.obj.append('text').text(this.options.label).attr({
@@ -1156,6 +1161,8 @@ NHGraph = (function(superClass) {
           }
         }
         return results;
+      case 'graphic':
+        return self.draw_graphic(self);
       default:
         throw new Error('no graph style defined');
     }
@@ -1395,6 +1402,12 @@ NHGraph = (function(superClass) {
     }).on('mouseout', function(d) {
       return obj.hide_popup();
     });
+  };
+
+  NHGraph.prototype.draw_graphic = function(obj) {
+    return obj.drawables.data.selectAll(".graphic").data(obj.parent_obj.parent_obj.data.raw).enter().append("svg:image").attr("x", function(d) {
+      return obj.axes.x.scale(obj.date_from_string(d.date_terminated));
+    }).attr("y", obj.axes.y.scale.range()[0] / 4).attr("xlink:href", obj.options.graphic).attr("class", "graphic").attr('width', obj.axes.y.scale.range()[0] / 2).attr('height', obj.axes.y.scale.range()[0] / 2).attr("clip-path", "url(#" + obj.options.keys.join('-') + '-clip' + ")");
   };
 
   NHGraph.prototype.redraw = function(parent_obj) {
