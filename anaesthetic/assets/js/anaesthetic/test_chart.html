@@ -150,12 +150,11 @@
         
         var events_graph = new window.NH.NHGraph();
         events_graph.options.keys = ['event'];
-        events_graph.options.label = '';
-        events_graph.options.measurement = '';
         events_graph.axes.y.min = 0;
         events_graph.axes.y.max = 2;
         events_graph.style.axis.x.hide = true;
         events_graph.style.axis.y.hide = true;
+        events_graph.style.label_width = 0;
         events_graph.axes.y.type = 'graphic';
         events_graph.axes.y.options = ['this', 'is'];
         events_graph.style.dimensions.height = 50;

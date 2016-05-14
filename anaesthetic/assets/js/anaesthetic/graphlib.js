@@ -1406,7 +1406,7 @@ NHGraph = (function(superClass) {
 
   NHGraph.prototype.draw_graphic = function(obj) {
     return obj.drawables.data.selectAll(".graphic").data(obj.parent_obj.parent_obj.data.raw).enter().append("svg:image").attr("x", function(d) {
-      return obj.axes.x.scale(obj.date_from_string(d.date_terminated));
+      return obj.axes.x.scale(obj.date_from_string(d.date_terminated)) - obj.axes.y.scale.range()[0] / 4;
     }).attr("y", obj.axes.y.scale.range()[0] / 4).attr("xlink:href", obj.options.graphic).attr("class", "graphic").attr('width', obj.axes.y.scale.range()[0] / 2).attr('height', obj.axes.y.scale.range()[0] / 2).attr("clip-path", "url(#" + obj.options.keys.join('-') + '-clip' + ")");
   };
 
