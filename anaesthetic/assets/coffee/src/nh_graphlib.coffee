@@ -208,7 +208,7 @@ class NHGraphLib
   redraw_resize: (event) ->
     if @is_alive() and !event.handled
       @style.dimensions.width = \
-        nh_graphs.select(@el)?[0]?[0]?.clientWidth -
+        d3.select(@el)?[0]?[0]?.clientWidth -
         (@style.margin.left + @style.margin.right)
       @obj?.attr('width', @style.dimensions.width)
       @.context.handle_resize(@.context, @.obj, event)
@@ -274,7 +274,7 @@ class NHGraphLib
   # 10. Set up event listeners for controls if present
   init: () ->
     if @.el?
-      container_el = nh_graphs.select(@.el)
+      container_el = d3.select(@.el)
       @.style.dimensions.width = container_el?[0]?[0].clientWidth -
         (@.style.margin.left + @.style.margin.right)
       @.obj = container_el.append('svg')
@@ -344,8 +344,8 @@ class NHGraphLib
   # 5. If key is a collection of keys then need to render them inside a cell
   # used for nested info like inspired_oxygen
   draw_table: (self) ->
-    table_el = nh_graphs.select(self.table.element)
-    container = nh_graphs.select('#table-content').append('table')
+    table_el = d3.select(self.table.element)
+    container = d3.select('#table-content').append('table')
     thead = container.append('thead').attr('class', 'thead')
     tbody = container.append('tbody').attr('class', 'tbody')
     header_row = [{'date_terminated': 'Date'}]

@@ -119,15 +119,15 @@ class NHContext extends NHGraphLib
   # the extent to the normal extent
   # 3. Update the controls with the next values for the extent
   handle_brush: (self, context) ->
-    new_extent_start = nh_graphs.event.target.extent()[0]
-    new_extent_end = nh_graphs.event.target.extent()[1]
+    new_extent_start = d3.event.target.extent()[0]
+    new_extent_end = d3.event.target.extent()[1]
     if new_extent_start.getTime() is new_extent_end.getTime()
       new_extent_start = context.axes.x.min
       new_extent_end = context.axes.x.max
       context.parent_obj.focus.redraw([context.axes.x.min,
         context.axes.x.max])
     else
-      context.parent_obj.focus.redraw(nh_graphs.event.target.extent())
+      context.parent_obj.focus.redraw(d3.event.target.extent())
 
     self.parent_obj.options.controls.date.start?.value = \
       new_extent_start.getFullYear() + '-' +
@@ -180,7 +180,7 @@ class NHContext extends NHGraphLib
       @.obj.attr('width', @.style.dimensions.width)
       @.axes.x.min = parent_svg.data.extent.start
       @.axes.x.max = parent_svg.data.extent.end
-      @.axes.x.scale = nh_graphs.time.scale()
+      @.axes.x.scale = d3.time.scale()
       .domain([@.axes.x.min, @.axes.x.max])
       .range([left_offset, @.style.dimensions.width])
 
@@ -197,7 +197,7 @@ class NHContext extends NHGraphLib
       @.graph.drawables.brush = @.graph.obj.append('g').attr('class',
         'brush-container')
       self = @
-      @.brush = nh_graphs.svg.brush().x(@.graph.axes.x.scale)
+      @.brush = d3.svg.brush().x(@.graph.axes.x.scale)
       .on("brush", (context=self) ->
         self.handle_brush(self, context)
       )

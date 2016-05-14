@@ -221,11 +221,11 @@ class NHGraph extends NHGraphLib
 
     @.axes.x.min = parent_obj.axes.x.min
     @.axes.x.max = parent_obj.axes.x.max
-    @.axes.x.scale = nh_graphs.time.scale()
+    @.axes.x.scale = d3.time.scale()
     .domain([@.axes.x.min, @.axes.x.max]).range([left_offset,
       @.style.dimensions.width])
 
-    @.axes.x.axis = nh_graphs.svg.axis().scale(@.axes.x.scale).orient("top")
+    @.axes.x.axis = d3.svg.axis().scale(@.axes.x.scale).orient("top")
     .ticks((@.style.dimensions.width/100))
     if not @.style.axis.x.hide
       @.axes.x.obj = @.axes.obj.append("g").attr("class", "x axis")
@@ -237,7 +237,7 @@ class NHGraph extends NHGraphLib
       adjusted_line = \
         Math.round(((tick_font_size * tick_line_height) * 10) / 10)
       @.axes.obj.selectAll(".x.axis g text").each( (d) ->
-        el = nh_graphs.select(@)
+        el = d3.select(@)
         words = line_self.date_to_string(d).split(" ")
         el.text("")
         for word, i in words
@@ -268,10 +268,10 @@ class NHGraph extends NHGraphLib
           if typeof ob[key] == 'number'
             values.push(ob[key])
           else values.push(null)
-      @.axes.y.ranged_extent = nh_graphs.extent(values.concat.apply([], values))
+      @.axes.y.ranged_extent = d3.extent(values.concat.apply([], values))
     else
       @.axes.y.ranged_extent = \
-      nh_graphs.extent(self.parent_obj.parent_obj.data.raw, (d) ->
+      d3.extent(self.parent_obj.parent_obj.data.raw, (d) ->
         if (typeof d[self.options.keys[0]] == 'number')
           return d[self.options.keys[0]]
         else return null
@@ -281,10 +281,10 @@ class NHGraph extends NHGraphLib
     d0 = self.axes.y.ranged_extent[0] - self.style.range_padding
     d1 = self.axes.y.ranged_extent[1] + self.style.range_padding
     dom = [(if d0 > 0 then d0 else 0), d1]
-    scaleRanged = nh_graphs.scale.linear()
+    scaleRanged = d3.scale.linear()
     .domain(dom)
     .range([top_offset + @style.dimensions.height, top_offset])
-    scaleNot = nh_graphs.scale.linear()
+    scaleNot = d3.scale.linear()
     .domain([self.axes.y.min, self.axes.y.max])
     .range([top_offset + @style.dimensions.height, top_offset])
 
@@ -294,10 +294,10 @@ class NHGraph extends NHGraphLib
     else
       @.axes.y.scale = scaleNot
 
-    @.axes.y.axis = nh_graphs.svg.axis().scale(@.axes.y.scale).orient('left')
+    @.axes.y.axis = d3.svg.axis().scale(@.axes.y.scale).orient('left')
     .tickFormat(if @.style.axis.step > 0 then \
-      nh_graphs.format(",." + @.style.axis.step + "f") else \
-      nh_graphs.format("d")).tickSubdivide(@.style.axis.step)
+      d3.format(",." + @.style.axis.step + "f") else \
+      d3.format("d")).tickSubdivide(@.style.axis.step)
     if not @.style.axis.y.hide
       @.axes.y.obj = @.axes.obj.append('g').attr('class', 'y axis')
       .call(@.axes.y.axis)
@@ -441,7 +441,7 @@ class NHGraph extends NHGraphLib
       # 4. For each empty point (normally used for partial observations) append
       # a circle with class 'empty_point'
       when 'stepped', 'linear' then (
-        self.drawables.area = nh_graphs.svg.line()
+        self.drawables.area = d3.svg.line()
         .interpolate(if self.style.data_style is \
           'stepped' then "step-after" else "linear")
         .defined((d) ->
@@ -733,6 +733,8 @@ class NHGraph extends NHGraphLib
       when 'star' then console.log('star')
       when 'pie' then console.log('pie')
       when 'sparkline' then console.log('sparkline')
+      when 'multi'
+        
       # Throw an error if graph style isn't defined
       else throw new Error('no graph style defined')
 
@@ -753,7 +755,7 @@ class NHGraph extends NHGraphLib
     tick_line_height = self.style.axis_label_line_height
     adjusted_line = tick_font_size * tick_line_height
     @.axes.obj.selectAll(".x.axis g text").each( (d) ->
-      el = nh_graphs.select(@)
+      el = d3.select(@)
       words = self.date_to_string(d).split(" ")
       el.text("")
       for word, i in words

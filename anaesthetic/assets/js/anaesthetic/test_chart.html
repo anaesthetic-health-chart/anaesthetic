@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Example Anaesthesia Chart</title>
+</head>
+<body>
+    <div id="chart"></div>
+    <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="graphlib.js" type="text/javascript"></script>
+    <script>
+        var chart = new window.NH.NHGraphLib('#chart');
+        var data = [
+            {
+                'date_terminated': '2016-05-14 09:00:00',
+                'blood_pressure_systolic': 120,
+                'blood_pressure_diastolic': 80,
+                'pulse': 80
+            },
+            {
+                'date_terminated': '2016-05-14 09:05:00',
+                'blood_pressure_systolic': 110,
+                'blood_pressure_diastolic': 70,
+                'pulse': 70
+            },
+            {
+                'date_terminated': '2016-05-14 09:10:00',
+                'blood_pressure_systolic': 100,
+                'blood_pressure_diastolic': 60,
+                'pulse': 80
+            }
+        ]
+        var graph = new window.NH.NHGraph()
+        graph.options.keys = ['pulse', ['blood_pressure_systolic', 'blood_pressure_diastolic']];
+        graph.options.label = '';
+        graph.options.measurement = '';
+        graph.axes.y.min = 30;
+        graph.axes.y.max = 220;
+        graph.style.dimensions.height = 300;
+        graph.style.data_style = 'multi';
+
+        var focus = new window.NH.NHFocus();
+        focus.graphs.push(graph);
+        focus.title = 'Pulse/BP';
+        chart.focus = focus;
+        chart.data.raw = data;
+        chart.init();
+        chart.draw();
+    </script>
+</body>
+</html>

@@ -163,7 +163,7 @@ NHGraphLib = (function() {
   NHGraphLib.prototype.redraw_resize = function(event) {
     var ref, ref1, ref2, ref3;
     if (this.is_alive() && !event.handled) {
-      this.style.dimensions.width = ((ref = nh_graphs.select(this.el)) != null ? (ref1 = ref[0]) != null ? (ref2 = ref1[0]) != null ? ref2.clientWidth : void 0 : void 0 : void 0) - (this.style.margin.left + this.style.margin.right);
+      this.style.dimensions.width = ((ref = d3.select(this.el)) != null ? (ref1 = ref[0]) != null ? (ref2 = ref1[0]) != null ? ref2.clientWidth : void 0 : void 0 : void 0) - (this.style.margin.left + this.style.margin.right);
       if ((ref3 = this.obj) != null) {
         ref3.attr('width', this.style.dimensions.width);
       }
@@ -222,7 +222,7 @@ NHGraphLib = (function() {
   NHGraphLib.prototype.init = function() {
     var container_el, end, ref, ref1, ref2, ref3, ref4, ref5, ref6, self, start;
     if (this.el != null) {
-      container_el = nh_graphs.select(this.el);
+      container_el = d3.select(this.el);
       this.style.dimensions.width = (container_el != null ? (ref = container_el[0]) != null ? ref[0].clientWidth : void 0 : void 0) - (this.style.margin.left + this.style.margin.right);
       this.obj = container_el.append('svg');
       if (this.data.raw.length < 2 && !this.style.time_padding) {
@@ -297,8 +297,8 @@ NHGraphLib = (function() {
 
   NHGraphLib.prototype.draw_table = function(self) {
     var cells, container, header_row, raw_data, rows, table_el, tbody, thead;
-    table_el = nh_graphs.select(self.table.element);
-    container = nh_graphs.select('#table-content').append('table');
+    table_el = d3.select(self.table.element);
+    container = d3.select('#table-content').append('table');
     thead = container.append('thead').attr('class', 'thead');
     tbody = container.append('tbody').attr('class', 'tbody');
     header_row = [
@@ -499,14 +499,14 @@ NHContext = (function(superClass) {
 
   NHContext.prototype.handle_brush = function(self, context) {
     var new_extent_end, new_extent_start, ref, ref1, ref2, ref3;
-    new_extent_start = nh_graphs.event.target.extent()[0];
-    new_extent_end = nh_graphs.event.target.extent()[1];
+    new_extent_start = d3.event.target.extent()[0];
+    new_extent_end = d3.event.target.extent()[1];
     if (new_extent_start.getTime() === new_extent_end.getTime()) {
       new_extent_start = context.axes.x.min;
       new_extent_end = context.axes.x.max;
       context.parent_obj.focus.redraw([context.axes.x.min, context.axes.x.max]);
     } else {
-      context.parent_obj.focus.redraw(nh_graphs.event.target.extent());
+      context.parent_obj.focus.redraw(d3.event.target.extent());
     }
     if ((ref = self.parent_obj.options.controls.date.start) != null) {
       ref.value = new_extent_start.getFullYear() + '-' + self.leading_zero(new_extent_start.getMonth() + 1) + '-' + self.leading_zero(new_extent_start.getDate());
@@ -539,7 +539,7 @@ NHContext = (function(superClass) {
       this.obj.attr('width', this.style.dimensions.width);
       this.axes.x.min = parent_svg.data.extent.start;
       this.axes.x.max = parent_svg.data.extent.end;
-      this.axes.x.scale = nh_graphs.time.scale().domain([this.axes.x.min, this.axes.x.max]).range([left_offset, this.style.dimensions.width]);
+      this.axes.x.scale = d3.time.scale().domain([this.axes.x.min, this.axes.x.max]).range([left_offset, this.style.dimensions.width]);
       this.graph.init(this);
       if ((this.title != null) && !this.graph.style.axis.x.hide) {
         this.style.dimensions.height += this.graph.style.dimensions.height + (this.graph.style.axis.x.size.height * 2) + this.style.title_height;
@@ -549,7 +549,7 @@ NHContext = (function(superClass) {
       parent_svg.style.dimensions.height += this.style.dimensions.height + (this.style.margin.top + this.style.margin.bottom);
       this.graph.drawables.brush = this.graph.obj.append('g').attr('class', 'brush-container');
       self = this;
-      this.brush = nh_graphs.svg.brush().x(this.graph.axes.x.scale).on("brush", function(context) {
+      this.brush = d3.svg.brush().x(this.graph.axes.x.scale).on("brush", function(context) {
         if (context == null) {
           context = self;
         }
@@ -925,8 +925,8 @@ NHGraph = (function(superClass) {
     this.drawables.data = this.obj.append('g').attr('class', 'data');
     this.axes.x.min = parent_obj.axes.x.min;
     this.axes.x.max = parent_obj.axes.x.max;
-    this.axes.x.scale = nh_graphs.time.scale().domain([this.axes.x.min, this.axes.x.max]).range([left_offset, this.style.dimensions.width]);
-    this.axes.x.axis = nh_graphs.svg.axis().scale(this.axes.x.scale).orient("top").ticks(this.style.dimensions.width / 100);
+    this.axes.x.scale = d3.time.scale().domain([this.axes.x.min, this.axes.x.max]).range([left_offset, this.style.dimensions.width]);
+    this.axes.x.axis = d3.svg.axis().scale(this.axes.x.scale).orient("top").ticks(this.style.dimensions.width / 100);
     if (!this.style.axis.x.hide) {
       this.axes.x.obj = this.axes.obj.append("g").attr("class", "x axis").call(this.axes.x.axis);
       line_self = this;
@@ -935,7 +935,7 @@ NHGraph = (function(superClass) {
       adjusted_line = Math.round(((tick_font_size * tick_line_height) * 10) / 10);
       this.axes.obj.selectAll(".x.axis g text").each(function(d) {
         var el, i, j, len, top_lines, tspan, word, words;
-        el = nh_graphs.select(this);
+        el = d3.select(this);
         words = line_self.date_to_string(d).split(" ");
         el.text("");
         for (i = j = 0, len = words.length; j < len; i = ++j) {
@@ -970,9 +970,9 @@ NHGraph = (function(superClass) {
           }
         }
       }
-      this.axes.y.ranged_extent = nh_graphs.extent(values.concat.apply([], values));
+      this.axes.y.ranged_extent = d3.extent(values.concat.apply([], values));
     } else {
-      this.axes.y.ranged_extent = nh_graphs.extent(self.parent_obj.parent_obj.data.raw, function(d) {
+      this.axes.y.ranged_extent = d3.extent(self.parent_obj.parent_obj.data.raw, function(d) {
         if (typeof d[self.options.keys[0]] === 'number') {
           return d[self.options.keys[0]];
         } else {
@@ -983,14 +983,14 @@ NHGraph = (function(superClass) {
     d0 = self.axes.y.ranged_extent[0] - self.style.range_padding;
     d1 = self.axes.y.ranged_extent[1] + self.style.range_padding;
     dom = [(d0 > 0 ? d0 : 0), d1];
-    scaleRanged = nh_graphs.scale.linear().domain(dom).range([top_offset + this.style.dimensions.height, top_offset]);
-    scaleNot = nh_graphs.scale.linear().domain([self.axes.y.min, self.axes.y.max]).range([top_offset + this.style.dimensions.height, top_offset]);
+    scaleRanged = d3.scale.linear().domain(dom).range([top_offset + this.style.dimensions.height, top_offset]);
+    scaleNot = d3.scale.linear().domain([self.axes.y.min, self.axes.y.max]).range([top_offset + this.style.dimensions.height, top_offset]);
     if (this.parent_obj.parent_obj.options.ranged) {
       this.axes.y.scale = scaleRanged;
     } else {
       this.axes.y.scale = scaleNot;
     }
-    this.axes.y.axis = nh_graphs.svg.axis().scale(this.axes.y.scale).orient('left').tickFormat(this.style.axis.step > 0 ? nh_graphs.format(",." + this.style.axis.step + "f") : nh_graphs.format("d")).tickSubdivide(this.style.axis.step);
+    this.axes.y.axis = d3.svg.axis().scale(this.axes.y.scale).orient('left').tickFormat(this.style.axis.step > 0 ? d3.format(",." + this.style.axis.step + "f") : d3.format("d")).tickSubdivide(this.style.axis.step);
     if (!this.style.axis.y.hide) {
       this.axes.y.obj = this.axes.obj.append('g').attr('class', 'y axis').call(this.axes.y.axis);
       this.style.axis.y.size = this.axes.y.obj[0][0].getBBox();
@@ -1115,7 +1115,7 @@ NHGraph = (function(superClass) {
     switch (self.style.data_style) {
       case 'stepped':
       case 'linear':
-        self.drawables.area = nh_graphs.svg.line().interpolate(self.style.data_style === 'stepped' ? "step-after" : "linear").defined(function(d) {
+        self.drawables.area = d3.svg.line().interpolate(self.style.data_style === 'stepped' ? "step-after" : "linear").defined(function(d) {
           if (d.none_values === "[]") {
             return d;
           }
@@ -1366,7 +1366,7 @@ NHGraph = (function(superClass) {
     adjusted_line = tick_font_size * tick_line_height;
     this.axes.obj.selectAll(".x.axis g text").each(function(d) {
       var el, i, j, len, top_lines, tspan, word, words;
-      el = nh_graphs.select(this);
+      el = d3.select(this);
       words = self.date_to_string(d).split(" ");
       el.text("");
       for (i = j = 0, len = words.length; j < len; i = ++j) {
@@ -1514,9 +1514,9 @@ NHTable = (function(superClass) {
     this.data = this.parent_obj.parent_obj.data.raw.concat();
     this.data.reverse();
     if (this.title != null) {
-      this.title_obj = nh_graphs.select(this.parent_obj.parent_obj.el).append('h3').html(this.title);
+      this.title_obj = d3.select(this.parent_obj.parent_obj.el).append('h3').html(this.title);
     }
-    this.obj = nh_graphs.select(parent_obj.parent_obj.el).append('table');
+    this.obj = d3.select(parent_obj.parent_obj.el).append('table');
     this.obj.attr('class', 'nhtable');
     this.range = [parent_obj.axes.x.min, parent_obj.axes.x.max];
     header = ['Date'];

@@ -34,9 +34,9 @@ class NHTable extends NHGraphLib
     @data = @.parent_obj.parent_obj.data.raw.concat()
     @data.reverse()
     if @.title?
-      @.title_obj = nh_graphs.select(@.parent_obj.parent_obj.el)
+      @.title_obj = d3.select(@.parent_obj.parent_obj.el)
       .append('h3').html(@.title)
-    @.obj = nh_graphs.select(parent_obj.parent_obj.el).append('table')
+    @.obj = d3.select(parent_obj.parent_obj.el).append('table')
     @.obj.attr('class', 'nhtable')
     @.range =  [parent_obj.axes.x.min, parent_obj.axes.x.max]
     header = ['Date']
