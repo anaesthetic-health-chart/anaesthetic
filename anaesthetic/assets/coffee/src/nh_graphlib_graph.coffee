@@ -440,74 +440,7 @@ class NHGraph extends NHGraphLib
       # mouseover and mouseout to control the tool tips
       # 4. For each empty point (normally used for partial observations) append
       # a circle with class 'empty_point'
-      when 'stepped', 'linear' then (
-        self.drawables.area = d3.svg.line()
-        .interpolate(if self.style.data_style is \
-          'stepped' then "step-after" else "linear")
-        .defined((d) ->
-          if d.none_values is "[]"
-            return d
-        )
-        .x((d) ->
-          return self.axes.x.scale(self.date_from_string(d.date_terminated))
-        )
-        .y((d) ->
-          return self.axes.y.scale(d[self.options.keys[0]])
-        )
-
-        if self.parent_obj.parent_obj.data.raw.length > 1
-          self.drawables.data.append("path")
-          .datum(self.parent_obj.parent_obj.data.raw)
-          .attr("d", self.drawables.area)
-          .attr("clip-path", "url(#"+ self.options.keys.join('-')+'-clip' +")")
-          .attr("class", "path")
-
-        self.drawables.data.selectAll(".point")
-        .data(self.parent_obj.parent_obj.data.raw.filter((d) ->
-          if d.none_values is "[]"
-            return d
-          )
-        )
-        .enter().append("circle").attr("cx", (d) ->
-          return self.axes.x.scale(self.date_from_string(d.date_terminated))
-        ).attr("cy", (d) ->
-          return self.axes.y.scale(d[self.options.keys[0]])
-        ).attr("r", 3).attr("class", "point")
-        .attr("clip-path", "url(#"+ self.options.keys.join('-')+'-clip' +")")
-        .on('mouseover', (d) ->
-          self.show_popup(d[self.options.keys[0]],event.pageX,event.pageY)
-        )
-        .on('mouseout', (d) ->
-          self.hide_popup()
-        )
-        self.drawables.data.selectAll(".empty_point")
-        .data(self.parent_obj.parent_obj.data.raw.filter((d) ->
-          none_vals = d.none_values
-          key = self.options.keys[0]
-          partial = self.options.plot_partial
-          if none_vals isnt "[]" and d[key] isnt false and partial
-            return d
-          )
-        )
-        .enter().append("circle")
-        .attr("cx", (d) ->
-          return self.axes.x.scale(self.date_from_string(d.date_terminated))
-        )
-        .attr("cy", (d) ->
-          return self.axes.y.scale(d[self.options.keys[0]])
-        )
-        .attr("r", 3)
-        .attr("class", "empty_point")
-        .attr("clip-path", "url(#"+ self.options.keys.join('-')+'-clip' +")")
-        .on('mouseover', (d) ->
-          self.show_popup('Partial observation: ' + d[self.options.keys[0]],
-            event.pageX,
-            event.pageY)
-        )
-        .on('mouseout', (d) ->
-          self.hide_popup()
-        )
-      )
+      when 'stepped', 'linear' then self.draw_linear(self)
       # Draw a ranged graph, which involves:
       # 1. Check that given two keys otherwise can't draw graph properly
       # 2. Draw the top caps of the range using the dimensions and offsets
@@ -518,225 +451,294 @@ class NHGraph extends NHGraphLib
       # popups
       # 4. Draw the rectangle for the range using the dimension in the style and
       # add mouseover and mouseout event listeners for popups
-      when 'range' then (
-        if self.options.keys.length is 2
-          self.drawables.data.selectAll(".range.top")
-          .data(self.parent_obj.parent_obj.data.raw.filter((d) ->
-            if d.none_values is "[]" and d[self.options.keys[0]]
-              return d
-            )
-          ).enter()
-          .append("rect")
-          .attr({
-            'y': (d) ->
-              return self.axes.y.scale(d[self.options.keys[0]])
-            ,
-            'x': (d) ->
-              return \
-                self.axes.x.scale(self.date_from_string(d.date_terminated)) -
-                (self.style.range.cap.width/2)+1
-            ,
-            'height': self.style.range.cap.height,
-            'width': self.style.range.cap.width,
-            'class': 'range top',
-            'clip-path': 'url(#'+ self.options.keys.join('-')+'-clip' +')'
-          })
-          .on('mouseover', (d) ->
-            string_to_use = ''
-            for key in self.options.keys
-              string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>'
-            self.show_popup('<p>'+string_to_use+'</p>',event.pageX,event.pageY)
-          )
-          .on('mouseout', (d) ->
-            self.hide_popup()
-          )
-
-
-          self.drawables.data.selectAll(".range.bottom")
-          .data(self.parent_obj.parent_obj.data.raw.filter((d) ->
-            if d.none_values is "[]" and d[self.options.keys[1]]
-              return d
-            )
-          ).enter()
-          .append("rect")
-          .attr({
-            'y': (d) ->
-              return self.axes.y.scale(d[self.options.keys[1]])
-            ,
-            'x': (d) ->
-              return \
-                self.axes.x.scale(self.date_from_string(d.date_terminated)) -
-                (self.style.range.cap.width/2)+1
-            ,
-            'height': self.style.range.cap.height,
-            'width': self.style.range.cap.width,
-            'class': 'range bottom',
-            'clip-path': 'url(#'+ self.options.keys.join('-')+'-clip' +')'
-          }).on('mouseover', (d) ->
-            string_to_use = ''
-            for key in self.options.keys
-              string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>'
-            self.show_popup('<p>'+string_to_use+'</p>',event.pageX,event.pageY)
-          )
-          .on('mouseout', (d) ->
-            self.hide_popup()
-          )
-
-          self.drawables.data.selectAll(".range.extent")
-          .data(self.parent_obj.parent_obj.data.raw.filter((d) ->
-            top = d[self.options.keys[0]]
-            bottom = d[self.options.keys[1]]
-            if d.none_values is "[]" and top and bottom
-              return d
-            )
-          ).enter()
-          .append("rect")
-          .attr({
-            'y': (d) ->
-              return self.axes.y.scale(d[self.options.keys[0]])
-            ,
-            'x': (d) ->
-              return self.axes.x.scale(self.date_from_string(d.date_terminated))
-            ,
-            'height': (d) ->
-              self.axes.y.scale(d[self.options.keys[1]]) -
-                self.axes.y.scale(d[self.options.keys[0]])
-            ,
-            'width': self.style.range.width,
-            'class': 'range extent',
-            'clip-path': 'url(#'+ self.options.keys.join('-')+'-clip' +')'
-          }).on('mouseover', (d) ->
-            string_to_use = ''
-            for key in self.options.keys
-              string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>'
-            self.show_popup('<p>'+string_to_use+'</p>',event.pageX,event.pageY)
-          )
-          .on('mouseout', (d) ->
-            self.hide_popup()
-          )
-
-          self.drawables.data.selectAll(".range.top.empty_point")
-          .data(self.parent_obj.parent_obj.data.raw.filter((d) ->
-            none_vals = d.none_values
-            key = self.options.keys[0]
-            partial = self.options.plot_partial
-            if none_vals isnt "[]" and d[key] isnt false and partial
-              return d
-            )
-          ).enter()
-          .append("rect")
-          .attr({
-            'y': (d) ->
-              return self.axes.y.scale(d[self.options.keys[0]])
-            ,
-            'x': (d) ->
-              return \
-                self.axes.x.scale(self.date_from_string(d.date_terminated)) -
-                (self.style.range.cap.width/2)+1
-            ,
-            'height': self.style.range.cap.height,
-            'width': self.style.range.cap.width,
-            'class': 'range top empty_point',
-            'clip-path': 'url(#'+ self.options.keys.join('-')+'-clip' +')'
-          })
-          .on('mouseover', (d) ->
-            string_to_use = 'Partial Observation:<br>'
-            for key in self.options.keys
-              string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>'
-            self.show_popup('<p>'+string_to_use+'</p>',
-              event.pageX,
-              event.pageY)
-          )
-          .on('mouseout', (d) ->
-            self.hide_popup()
-          )
-
-
-          self.drawables.data.selectAll(".range.bottom.empty_point")
-          .data(self.parent_obj.parent_obj.data.raw.filter((d) ->
-            none_vals = d.none_values
-            key = self.options.keys[1]
-            partial = self.options.plot_partial
-            if none_vals isnt "[]" and d[key] isnt false and partial
-              return d
-            )
-          ).enter()
-          .append("rect")
-          .attr({
-            'y': (d) ->
-              return self.axes.y.scale(d[self.options.keys[1]])
-            ,
-            'x': (d) ->
-              return \
-                self.axes.x.scale(self.date_from_string(d.date_terminated)) -
-                (self.style.range.cap.width/2)+1
-            ,
-            'height': self.style.range.cap.height,
-            'width': self.style.range.cap.width,
-            'class': 'range bottom empty_point',
-            'clip-path': 'url(#'+ self.options.keys.join('-')+'-clip' +')'
-          }).on('mouseover', (d) ->
-            string_to_use = 'Partial Observation:<br>'
-            for key in self.options.keys
-              string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>'
-            self.show_popup('<p>'+string_to_use+'</p>',
-              event.pageX,
-              event.pageY)
-          )
-          .on('mouseout', (d) ->
-            self.hide_popup()
-          )
-
-          self.drawables.data.selectAll(".range.extent.empty_point")
-          .data(self.parent_obj.parent_obj.data.raw.filter((d) ->
-            partial = self.options.plot_partial
-            top = d[self.options.keys[0]]
-            bottom = d[self.options.keys[1]]
-            none_vals = d.none_values
-            keys_valid = top isnt false and bottom isnt false
-            if none_vals isnt "[]" and keys_valid and partial
-              return d
-            )
-          ).enter()
-          .append("rect")
-          .attr({
-            'y': (d) ->
-              return self.axes.y.scale(d[self.options.keys[0]])
-            ,
-            'x': (d) ->
-              return self.axes.x.scale(
-                self.date_from_string(d.date_terminated))
-            ,
-            'height': (d) ->
-              self.axes.y.scale(d[self.options.keys[1]]) -
-                self.axes.y.scale(d[self.options.keys[0]])
-            ,
-            'width': self.style.range.width,
-            'class': 'range extent empty_point',
-            'clip-path': 'url(#'+ self.options.keys.join('-')+'-clip' +')'
-          }).on('mouseover', (d) ->
-            string_to_use = 'Partial Observation<br>'
-            for key in self.options.keys
-              string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>'
-            self.show_popup('<p>'+string_to_use+'</p>',
-              event.pageX,
-              event.pageY)
-          )
-          .on('mouseout', (d) ->
-            self.hide_popup()
-          )
-        else
-          # Throw error if given incorrect number of keys to plot
-          throw new Error('Cannot plot ranged graph with ' +
-            self.options.keys.length + ' data point(s)')
-     )
+      when 'range' then self.draw_range(self)
       when 'star' then console.log('star')
       when 'pie' then console.log('pie')
       when 'sparkline' then console.log('sparkline')
       when 'multi'
-        
+
       # Throw an error if graph style isn't defined
       else throw new Error('no graph style defined')
+    
+  draw_ranged: (obj) ->
+    if obj.options.keys.length is 2
+      obj.drawables.data.selectAll(".range.top")
+      .data(obj.parent_obj.parent_obj.data.raw.filter((d) ->
+        if d.none_values is "[]" and d[obj.options.keys[0]]
+          return d
+        )
+      ).enter()
+      .append("rect")
+      .attr({
+        'y': (d) ->
+          return obj.axes.y.scale(d[obj.options.keys[0]])
+        ,
+        'x': (d) ->
+          return \
+            obj.axes.x.scale(obj.date_from_string(d.date_terminated)) -
+            (obj.style.range.cap.width/2)+1
+        ,
+        'height': obj.style.range.cap.height,
+        'width': obj.style.range.cap.width,
+        'class': 'range top',
+        'clip-path': 'url(#'+ obj.options.keys.join('-')+'-clip' +')'
+      })
+      .on('mouseover', (d) ->
+        string_to_use = ''
+        for key in obj.options.keys
+          string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>'
+        obj.show_popup('<p>'+string_to_use+'</p>',event.pageX,event.pageY)
+      )
+      .on('mouseout', (d) ->
+        obj.hide_popup()
+      )
+
+
+      obj.drawables.data.selectAll(".range.bottom")
+      .data(obj.parent_obj.parent_obj.data.raw.filter((d) ->
+        if d.none_values is "[]" and d[obj.options.keys[1]]
+          return d
+        )
+      ).enter()
+      .append("rect")
+      .attr({
+        'y': (d) ->
+          return obj.axes.y.scale(d[obj.options.keys[1]])
+        ,
+        'x': (d) ->
+          return \
+            obj.axes.x.scale(obj.date_from_string(d.date_terminated)) -
+            (obj.style.range.cap.width/2)+1
+        ,
+        'height': obj.style.range.cap.height,
+        'width': obj.style.range.cap.width,
+        'class': 'range bottom',
+        'clip-path': 'url(#'+ obj.options.keys.join('-')+'-clip' +')'
+      }).on('mouseover', (d) ->
+        string_to_use = ''
+        for key in obj.options.keys
+          string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>'
+        obj.show_popup('<p>'+string_to_use+'</p>',event.pageX,event.pageY)
+      )
+      .on('mouseout', (d) ->
+        obj.hide_popup()
+      )
+
+      obj.drawables.data.selectAll(".range.extent")
+      .data(obj.parent_obj.parent_obj.data.raw.filter((d) ->
+        top = d[obj.options.keys[0]]
+        bottom = d[obj.options.keys[1]]
+        if d.none_values is "[]" and top and bottom
+          return d
+        )
+      ).enter()
+      .append("rect")
+      .attr({
+        'y': (d) ->
+          return obj.axes.y.scale(d[obj.options.keys[0]])
+        ,
+        'x': (d) ->
+          return obj.axes.x.scale(obj.date_from_string(d.date_terminated))
+        ,
+        'height': (d) ->
+          obj.axes.y.scale(d[obj.options.keys[1]]) -
+            obj.axes.y.scale(d[obj.options.keys[0]])
+        ,
+        'width': obj.style.range.width,
+        'class': 'range extent',
+        'clip-path': 'url(#'+ obj.options.keys.join('-')+'-clip' +')'
+      }).on('mouseover', (d) ->
+        string_to_use = ''
+        for key in obj.options.keys
+          string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>'
+        obj.show_popup('<p>'+string_to_use+'</p>',event.pageX,event.pageY)
+      )
+      .on('mouseout', (d) ->
+        obj.hide_popup()
+      )
+
+      obj.drawables.data.selectAll(".range.top.empty_point")
+      .data(obj.parent_obj.parent_obj.data.raw.filter((d) ->
+        none_vals = d.none_values
+        key = obj.options.keys[0]
+        partial = obj.options.plot_partial
+        if none_vals isnt "[]" and d[key] isnt false and partial
+          return d
+        )
+      ).enter()
+      .append("rect")
+      .attr({
+        'y': (d) ->
+          return obj.axes.y.scale(d[obj.options.keys[0]])
+        ,
+        'x': (d) ->
+          return \
+            obj.axes.x.scale(obj.date_from_string(d.date_terminated)) -
+            (obj.style.range.cap.width/2)+1
+        ,
+        'height': obj.style.range.cap.height,
+        'width': obj.style.range.cap.width,
+        'class': 'range top empty_point',
+        'clip-path': 'url(#'+ obj.options.keys.join('-')+'-clip' +')'
+      })
+      .on('mouseover', (d) ->
+        string_to_use = 'Partial Observation:<br>'
+        for key in obj.options.keys
+          string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>'
+        obj.show_popup('<p>'+string_to_use+'</p>',
+          event.pageX,
+          event.pageY)
+      )
+      .on('mouseout', (d) ->
+        obj.hide_popup()
+      )
+
+
+      obj.drawables.data.selectAll(".range.bottom.empty_point")
+      .data(obj.parent_obj.parent_obj.data.raw.filter((d) ->
+        none_vals = d.none_values
+        key = obj.options.keys[1]
+        partial = obj.options.plot_partial
+        if none_vals isnt "[]" and d[key] isnt false and partial
+          return d
+        )
+      ).enter()
+      .append("rect")
+      .attr({
+        'y': (d) ->
+          return obj.axes.y.scale(d[obj.options.keys[1]])
+        ,
+        'x': (d) ->
+          return \
+            obj.axes.x.scale(obj.date_from_string(d.date_terminated)) -
+            (obj.style.range.cap.width/2)+1
+        ,
+        'height': obj.style.range.cap.height,
+        'width': obj.style.range.cap.width,
+        'class': 'range bottom empty_point',
+        'clip-path': 'url(#'+ obj.options.keys.join('-')+'-clip' +')'
+      }).on('mouseover', (d) ->
+        string_to_use = 'Partial Observation:<br>'
+        for key in obj.options.keys
+          string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>'
+        obj.show_popup('<p>'+string_to_use+'</p>',
+          event.pageX,
+          event.pageY)
+      )
+      .on('mouseout', (d) ->
+        obj.hide_popup()
+      )
+
+      obj.drawables.data.selectAll(".range.extent.empty_point")
+      .data(obj.parent_obj.parent_obj.data.raw.filter((d) ->
+        partial = obj.options.plot_partial
+        top = d[obj.options.keys[0]]
+        bottom = d[obj.options.keys[1]]
+        none_vals = d.none_values
+        keys_valid = top isnt false and bottom isnt false
+        if none_vals isnt "[]" and keys_valid and partial
+          return d
+        )
+      ).enter()
+      .append("rect")
+      .attr({
+        'y': (d) ->
+          return obj.axes.y.scale(d[obj.options.keys[0]])
+        ,
+        'x': (d) ->
+          return obj.axes.x.scale(
+            obj.date_from_string(d.date_terminated))
+        ,
+        'height': (d) ->
+          obj.axes.y.scale(d[obj.options.keys[1]]) -
+            obj.axes.y.scale(d[obj.options.keys[0]])
+        ,
+        'width': obj.style.range.width,
+        'class': 'range extent empty_point',
+        'clip-path': 'url(#'+ obj.options.keys.join('-')+'-clip' +')'
+      }).on('mouseover', (d) ->
+        string_to_use = 'Partial Observation<br>'
+        for key in obj.options.keys
+          string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>'
+        obj.show_popup('<p>'+string_to_use+'</p>',
+          event.pageX,
+          event.pageY)
+      )
+      .on('mouseout', (d) ->
+        obj.hide_popup()
+      )
+    else
+      # Throw error if given incorrect number of keys to plot
+      throw new Error('Cannot plot ranged graph with ' +
+        obj.options.keys.length + ' data point(s)')
+
+  draw_linear: (obj) ->
+    obj.drawables.area = d3.svg.line()
+    .interpolate(if obj.style.data_style is \
+      'stepped' then "step-after" else "linear")
+    .defined((d) ->
+      if d.none_values is "[]"
+        return d
+    )
+    .x((d) ->
+      return obj.axes.x.scale(obj.date_from_string(d.date_terminated))
+    )
+    .y((d) ->
+      return obj.axes.y.scale(d[obj.options.keys[0]])
+    )
+
+    if obj.parent_obj.parent_obj.data.raw.length > 1
+      obj.drawables.data.append("path")
+      .datum(obj.parent_obj.parent_obj.data.raw)
+      .attr("d", obj.drawables.area)
+      .attr("clip-path", "url(#"+ obj.options.keys.join('-')+'-clip' +")")
+      .attr("class", "path")
+
+    obj.drawables.data.selectAll(".point")
+    .data(obj.parent_obj.parent_obj.data.raw.filter((d) ->
+      if d.none_values is "[]"
+        return d
+      )
+    )
+    .enter().append("circle").attr("cx", (d) ->
+      return obj.axes.x.scale(obj.date_from_string(d.date_terminated))
+    ).attr("cy", (d) ->
+      return obj.axes.y.scale(d[obj.options.keys[0]])
+    ).attr("r", 3).attr("class", "point")
+    .attr("clip-path", "url(#"+ obj.options.keys.join('-')+'-clip' +")")
+    .on('mouseover', (d) ->
+      obj.show_popup(d[obj.options.keys[0]],event.pageX,event.pageY)
+    )
+    .on('mouseout', (d) ->
+      obj.hide_popup()
+    )
+    obj.drawables.data.selectAll(".empty_point")
+    .data(obj.parent_obj.parent_obj.data.raw.filter((d) ->
+      none_vals = d.none_values
+      key = obj.options.keys[0]
+      partial = obj.options.plot_partial
+      if none_vals isnt "[]" and d[key] isnt false and partial
+        return d
+      )
+    )
+    .enter().append("circle")
+    .attr("cx", (d) ->
+      return obj.axes.x.scale(obj.date_from_string(d.date_terminated))
+    )
+    .attr("cy", (d) ->
+      return obj.axes.y.scale(d[obj.options.keys[0]])
+    )
+    .attr("r", 3)
+    .attr("class", "empty_point")
+    .attr("clip-path", "url(#"+ obj.options.keys.join('-')+'-clip' +")")
+    .on('mouseover', (d) ->
+      obj.show_popup('Partial observation: ' + d[obj.options.keys[0]],
+        event.pageX,
+        event.pageY)
+    )
+    .on('mouseout', (d) ->
+      obj.hide_popup()
+    )
 
   # Redraw graph data on changes from NHFocus or NHContext, which involves:
   # 1. Redrawing Axis
