@@ -10,3 +10,6 @@ class Application(application.OpalApplication):
         'js/anaesthetic/routes.js',
         'js/opal/controllers/discharge.js'
     ]
+    styles = [
+        "css/anaesthetic.css"
+    ]
