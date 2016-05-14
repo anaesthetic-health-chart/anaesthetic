@@ -2,27 +2,35 @@
 {% load forms %}
 <div class="container-fluid">
     <!-- Header -->
-    <div class="row title-banner">
-      <div class="col-md-1 title-banner-link highlighted">
-        DAC
-      </div>
-      <div class="col-md-2 title-banner-link">
-        <div>
-          <h5>Name</h5>
-          [[ patient.demographics[0].first_name ]] [[ patient.demographics[0].surname ]]
+    <div class="title-banner">
+      <div class="left-menu-items">
+        <div class="title-banner-link highlighted">
+          DAC
+        </div>
+        <div class="title-banner-link">
+          <div>
+            <h5>Name</h5>
+            [[ patient.demographics[0].first_name ]] [[ patient.demographics[0].surname ]]
+          </div>
+        </div>
+        <div class="title-banner-link">
+          <div>
+            <h5>Age</h5>
+            [[ patient.demographics[0].date_of_birth | age ]]
+          </div>
+        </div>
+        <div class="title-banner-link">
+          <div>
+            <h5>NHS Number</h5>
+            [[ patient.demographics[0].hospital_number ]]
+          </div>
         </div>
       </div>
-      <div class="col-md-2 title-banner-link">
+      <div class="col-md-1 title-banner-link highlighted" style="align-self: flex-end;">
         <div>
-          <h5>Age</h5>
-          [[ patient.demographics[0].date_of_birth | age ]]
+          <h5>MORE</h5>
         </div>
       </div>
-      <div class="col-md-2 title-banner-link">
-        <div>
-          <h5>NHS Number</h5>
-          [[ patient.demographics[0].hospital_number ]]
-        </div>
       </div>
     </div>
     <div class="row">
