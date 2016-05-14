@@ -127,8 +127,10 @@
         events_graph.options.label = '';
         events_graph.options.measurement = '';
         events_graph.axes.y.min = 0;
-        events_graph.axes.y.max = 0;
-        events_graph.style.dimensions.height = 100;
+        events_graph.axes.y.max = 100;
+        events_graph.axes.y.type = 'label';
+        events_graph.axes.y.options = ['This', 'Is', 'A', 'Test'];
+        events_graph.style.dimensions.height = 300;
         events_graph.style.data_style = 'stepped';
 
         var bp_pulse_graph = new window.NH.NHGraph();

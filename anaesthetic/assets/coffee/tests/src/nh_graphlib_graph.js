@@ -30,7 +30,9 @@ NHGraph = (function(superClass) {
         min: 0,
         max: 0,
         obj: null,
-        ranged_extent: null
+        ranged_extent: null,
+        type: 'number',
+        options: []
       },
       obj: null
     };
@@ -229,10 +231,16 @@ NHGraph = (function(superClass) {
     } else {
       this.axes.y.scale = scaleNot;
     }
-    this.axes.y.axis = d3.svg.axis().scale(this.axes.y.scale).orient('left').tickFormat(this.style.axis.step > 0 ? d3.format(",." + this.style.axis.step + "f") : d3.format("d")).tickSubdivide(this.style.axis.step);
-    if (!this.style.axis.y.hide) {
-      this.axes.y.obj = this.axes.obj.append('g').attr('class', 'y axis').call(this.axes.y.axis);
-      this.style.axis.y.size = this.axes.y.obj[0][0].getBBox();
+    if (this.axes.y.type === 'number') {
+      this.axes.y.axis = d3.svg.axis().scale(this.axes.y.scale).orient('left').tickFormat(this.style.axis.step > 0 ? d3.format(",." + this.style.axis.step + "f") : d3.format("d")).tickSubdivide(this.style.axis.step);
+      if (!this.style.axis.y.hide) {
+        this.axes.y.obj = this.axes.obj.append('g').attr('class', 'y axis').call(this.axes.y.axis);
+        this.style.axis.y.size = this.axes.y.obj[0][0].getBBox();
+      }
+    }
+    if (this.axes.y.type === 'label') {
+      this.axes.y.scale = d3.scale.ordinal().domain(this.axes.y.options).range([top_offset + this.style.dimensions.height, top_offset]);
+      this.axes.y.axes = d3.svg.axis().scale(this.axes.y.scale).orient('left');
     }
     if (this.options.label != null) {
       y_label = scaleNot(this.axes.y.min) - (this.style.label_text_height * (this.options.keys.length + 1));
@@ -340,17 +348,19 @@ NHGraph = (function(superClass) {
       y1: self.axes.y.scale.range()[1],
       y2: self.axes.y.scale.range()[0]
     });
-    self.drawables.background.obj.selectAll(".grid.horizontal").data(self.axes.y.scale.ticks()).enter().append("line").attr({
-      "class": "horizontal grid",
-      x1: self.axes.x.scale(self.axes.x.scale.domain()[0]),
-      x2: self.axes.x.scale(self.axes.x.scale.domain()[1]),
-      y1: function(d) {
-        return self.axes.y.scale(d);
-      },
-      y2: function(d) {
-        return self.axes.y.scale(d);
-      }
-    });
+    if (self.axes.y.type === 'number') {
+      self.drawables.background.obj.selectAll(".grid.horizontal").data(self.axes.y.scale.ticks()).enter().append("line").attr({
+        "class": "horizontal grid",
+        x1: self.axes.x.scale(self.axes.x.scale.domain()[0]),
+        x2: self.axes.x.scale(self.axes.x.scale.domain()[1]),
+        y1: function(d) {
+          return self.axes.y.scale(d);
+        },
+        y2: function(d) {
+          return self.axes.y.scale(d);
+        }
+      });
+    }
     switch (self.style.data_style) {
       case 'stepped':
       case 'linear':

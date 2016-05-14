@@ -29,7 +29,9 @@ class NHGraph extends NHGraphLib
         min: 0,
         max: 0,
         obj: null,
-        ranged_extent: null
+        ranged_extent: null,
+        type: 'number'
+        options: []
       }
       obj: null
     }
@@ -294,14 +296,29 @@ class NHGraph extends NHGraphLib
     else
       @.axes.y.scale = scaleNot
 
-    @.axes.y.axis = d3.svg.axis().scale(@.axes.y.scale).orient('left')
-    .tickFormat(if @.style.axis.step > 0 then \
-      d3.format(",." + @.style.axis.step + "f") else \
-      d3.format("d")).tickSubdivide(@.style.axis.step)
-    if not @.style.axis.y.hide
-      @.axes.y.obj = @.axes.obj.append('g').attr('class', 'y axis')
-      .call(@.axes.y.axis)
-      @.style.axis.y.size = @.axes.y.obj[0][0].getBBox()
+    if @.axes.y.type == 'number'
+      @.axes.y.axis = d3.svg.axis().scale(@.axes.y.scale).orient('left')
+      .tickFormat(if @.style.axis.step > 0 then \
+        d3.format(",." + @.style.axis.step + "f") else \
+        d3.format("d")).tickSubdivide(@.style.axis.step)
+      if not @.style.axis.y.hide
+        @.axes.y.obj = @.axes.obj.append('g').attr('class', 'y axis')
+        .call(@.axes.y.axis)
+        @.style.axis.y.size = @.axes.y.obj[0][0].getBBox()
+
+    if @.axes.y.type == 'label'
+      label_range = []
+      for label, index in @.axes.y.options
+        label_range.push(index*(top_offset+@style.dimensions.height)/
+            @.axes.y.options.length + top_offset)
+      @.axes.y.scale = d3.scale.ordinal()
+      .domain(@.axes.y.options)
+      .range(label_range)
+      @.axes.y.axis = d3.svg.axis().scale(@.axes.y.scale).orient('left')
+      if not @.style.axis.y.hide
+        @.axes.y.obj = @.axes.obj.append('g').attr('class', 'y axis')
+        .call(@.axes.y.axis)
+        @.style.axis.y.size = @.axes.y.obj[0][0].getBBox()
 
     # Label positioning uses non-ranged scale
     if @.options.label?
@@ -418,18 +435,19 @@ class NHGraph extends NHGraphLib
       y2: self.axes.y.scale.range()[0],
     })
 
-    self.drawables.background.obj.selectAll(".grid.horizontal")
-    .data(self.axes.y.scale.ticks()).enter().append("line").attr({
-      "class": "horizontal grid",
-      x1: self.axes.x.scale(self.axes.x.scale.domain()[0]),
-      x2: self.axes.x.scale(self.axes.x.scale.domain()[1]),
-      y1: (d) ->
-        return self.axes.y.scale(d)
-      ,
-      y2: (d) ->
-        return self.axes.y.scale(d)
-      ,
-    })
+    if self.axes.y.type == 'number'
+      self.drawables.background.obj.selectAll(".grid.horizontal")
+      .data(self.axes.y.scale.ticks()).enter().append("line").attr({
+        "class": "horizontal grid",
+        x1: self.axes.x.scale(self.axes.x.scale.domain()[0]),
+        x2: self.axes.x.scale(self.axes.x.scale.domain()[1]),
+        y1: (d) ->
+          return self.axes.y.scale(d)
+        ,
+        y2: (d) ->
+          return self.axes.y.scale(d)
+        ,
+      })
 
     switch self.style.data_style
       # Draw a stepped or linear graph, which involves:
