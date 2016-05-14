@@ -24,9 +24,9 @@ class GivenDrug(models.PatientSubrecord):
     drug_type = db_models.CharField(max_length=255)
     rates = db_models.CharField(max_length=255)
     rates = db_models.CharField(max_length=255)
-    started = db_models.DateTimeField()
-    stopped = db_models.DateTimeField()
-    one_off = db_models.DateTimeField()
+    started = db_models.DateTimeField(blank=True, null=True)
+    stopped = db_models.DateTimeField(blank=True, null=True)
+    one_off = db_models.DateTimeField(blank=True, null=True)
 
 
 class Observation(models.PatientSubrecord):
@@ -46,18 +46,22 @@ class Observation(models.PatientSubrecord):
 
 
 class AnaestheticTechnique(models.PatientSubrecord):
+    _title = "Anaesthetic Technique"
+    _is_singleton = True
     induction = db_models.TextField(blank=True, null=True)
     maintenance = db_models.TextField(blank=True, null=True)
 
 
 class Gases(models.PatientSubrecord):
+    _title = "Gases"
     inspired_carbon_dioxide = db_models.FloatField(blank=True, null=True)
     expired_carbon_dioxide = db_models.FloatField(blank=True, null=True)
     inspired_oxygen = db_models.FloatField(blank=True, null=True)
-    expired_oxygens = db_models.FloatField(blank=True, null=True)
+    expired_oxygen = db_models.FloatField(blank=True, null=True)
 
 
 class Ventilators(models.PatientSubrecord):
+    _title = "Ventilators"
     mode = db_models.CharField(max_length=255)
     peak_airway_pressure = db_models.FloatField(blank=True, null=True)
     mean_airway_pressure = db_models.FloatField(blank=True, null=True)

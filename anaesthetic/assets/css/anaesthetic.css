@@ -1,0 +1,105 @@
+body {
+  background-color: #EEE; }
+
+.bg-primary {
+  background-color: #0054B5; }
+
+.bg-secondary {
+  background-color: #C9046F; }
+
+.panel-primary .panel-default .panel-heading.bg-active,
+.bg-active {
+  background-color: #0054B5; }
+
+.panel.panel-primary {
+  border-color: #0054B5; }
+
+.panel.panel-primary .panel-heading {
+  background-color: #0054B5;
+  color: white; }
+
+h5 {
+  font-weight: 600;
+  text-transform: capitalize;
+  font-size: 14px; }
+
+.btn-primary {
+  background-color: #0054B5;
+  border-color: #0054B5; }
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: #E4EDF6;
+  border-color: #E4EDF6; }
+
+.btn-secondary {
+  background-color: #C9046F;
+  border-color: #C9046F; }
+
+.btn-secondary:hover,
+.btn-secondary:focus {
+  background-color: #F9CAE4;
+  border-color: #F9CAE4; }
+
+.panel-primary .panel-active .panel-heading,
+.panel-active .panel-heading {
+  border-bottom: 3px solid #E4EDF6; }
+
+.modal-header {
+  background: #0054B5; }
+
+.loading {
+  background-color: #EEE;
+  color: white; }
+
+body {
+  height: 100%; }
+
+.navbar-collapse {
+  display: none !important; }
+
+.navbar {
+  display: none !important; }
+
+.title-banner {
+  border: 1px solid #FFF;
+  background-color: #E4EDF6;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+  -webkit-justify-content: flex-start;
+  justify-content: space-between; }
+
+.left-menu-items {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+  -webkit-justify-content: flex-start;
+  justify-content: flex-start; }
+
+.title-banner-link {
+  border: 1px solid #FFF;
+  padding: 10px;
+  height: 77px;
+  display: flex;
+  justify-content: space-between; }
+  .title-banner-link.highlighted {
+    align-items: center;
+    color: #FFF;
+    background-color: #0054B5;
+    text-align: center;
+    justify-content: center; }
+
+/* ngProgress overrides */
+.ngProgressLiteBar {
+  background-color: #C9046F;
+  box-shadow: 0 0 10px 0;
+  /* Inherits the font color */
+  top: 77px; }
+
+.ngProgressLite .ngProgressLiteBarShadow {
+  display: none; }
+
+/*# sourceMappingURL=anaesthetic.css.map */
