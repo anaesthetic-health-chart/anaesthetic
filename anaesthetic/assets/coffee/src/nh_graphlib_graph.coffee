@@ -311,7 +311,7 @@ class NHGraph extends NHGraphLib
       label_range = []
       for label, index in @.axes.y.options
         label_range.push(index*(top_offset+@style.dimensions.height)/
-            @.axes.y.options.length + top_offset)
+            (@.axes.y.options.length-1))
       @.axes.y.scale = d3.scale.ordinal()
       .domain(@.axes.y.options)
       .range(label_range)
