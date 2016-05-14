@@ -13,4 +13,4 @@ requests==2.7.0
 djangorestframework==3.2.2
 django-compressor==1.5
 supervisor==3.0
--e git://github.com/openhealthcare/opal.git@master#egg=opal
+-e git://github.com/openhealthcare/opal.git@v0.6.0#egg=opal

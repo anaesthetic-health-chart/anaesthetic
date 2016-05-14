@@ -1,0 +1,33 @@
+{% load panels %}
+<div class="panel panel-active">
+<div class="panel-heading text-center">
+  <h3>
+    Anaesthetic Readings
+  </h3>
+</div>
+</div>
+<div class="bg-white">
+  <div class="patient-timeline-container">
+    <div class="row">
+      <div class="col-md-6">
+        {% record_panel models.GivenDrug %}
+      </div>
+      <div class="col-md-6">
+        {% record_panel models.Observation %}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        {% record_panel models.AnaestheticTechnique %}
+      </div>
+      <div class="col-md-6">
+        {% record_panel models.Gases %}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        {% record_panel models.Ventilators %}
+      </div>
+    </div>
+  </div>
+</div>

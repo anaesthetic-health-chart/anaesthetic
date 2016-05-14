@@ -2,3 +2,11 @@
 {% input  field="GivenDrug.route"  %}
 {% input  field="GivenDrug.drug_type"  %}
 {% input  field="GivenDrug.rates"  %}
+{% datepicker "data-date-type=\"date\"" label="Started Date" model="editing.given_drug.started" %}
+<label class="control-label col-sm-3">Started Time</label>
+<div class="col-sm-3">
+  <input class="form-control" type="text"
+         ng-model="editing.given_drug.started"
+         bs-timepicker
+         />
+</div>
