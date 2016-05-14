@@ -451,27 +451,32 @@ class NHGraph extends NHGraphLib
       # popups
       # 4. Draw the rectangle for the range using the dimension in the style and
       # add mouseover and mouseout event listeners for popups
-      when 'range' then self.draw_range(self)
+      when 'range' then self.draw_ranged(self)
       when 'star' then console.log('star')
       when 'pie' then console.log('pie')
       when 'sparkline' then console.log('sparkline')
-      when 'multi'
+      when 'multi' then (
+        for key, index in self.options.keys
+          if typeof(key) == 'Array'
+            self.draw_ranged(self, index)
+      )
 
       # Throw an error if graph style isn't defined
       else throw new Error('no graph style defined')
     
-  draw_ranged: (obj) ->
-    if obj.options.keys.length is 2
+  draw_ranged: (obj, key_index=false) ->
+    keys = if key_index then obj.options.keys[key_index] else obj.options.keys
+    if keys.length is 2
       obj.drawables.data.selectAll(".range.top")
       .data(obj.parent_obj.parent_obj.data.raw.filter((d) ->
-        if d.none_values is "[]" and d[obj.options.keys[0]]
+        if d.none_values is "[]" and d[keys[0]]
           return d
         )
       ).enter()
       .append("rect")
       .attr({
         'y': (d) ->
-          return obj.axes.y.scale(d[obj.options.keys[0]])
+          return obj.axes.y.scale(d[[0]])
         ,
         'x': (d) ->
           return \
@@ -481,11 +486,11 @@ class NHGraph extends NHGraphLib
         'height': obj.style.range.cap.height,
         'width': obj.style.range.cap.width,
         'class': 'range top',
-        'clip-path': 'url(#'+ obj.options.keys.join('-')+'-clip' +')'
+        'clip-path': 'url(#'+ keys.join('-')+'-clip' +')'
       })
       .on('mouseover', (d) ->
         string_to_use = ''
-        for key in obj.options.keys
+        for key in keys
           string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>'
         obj.show_popup('<p>'+string_to_use+'</p>',event.pageX,event.pageY)
       )
@@ -496,14 +501,14 @@ class NHGraph extends NHGraphLib
 
       obj.drawables.data.selectAll(".range.bottom")
       .data(obj.parent_obj.parent_obj.data.raw.filter((d) ->
-        if d.none_values is "[]" and d[obj.options.keys[1]]
+        if d.none_values is "[]" and d[keys[1]]
           return d
         )
       ).enter()
       .append("rect")
       .attr({
         'y': (d) ->
-          return obj.axes.y.scale(d[obj.options.keys[1]])
+          return obj.axes.y.scale(d[keys[1]])
         ,
         'x': (d) ->
           return \
@@ -513,10 +518,10 @@ class NHGraph extends NHGraphLib
         'height': obj.style.range.cap.height,
         'width': obj.style.range.cap.width,
         'class': 'range bottom',
-        'clip-path': 'url(#'+ obj.options.keys.join('-')+'-clip' +')'
+        'clip-path': 'url(#'+ keys.join('-')+'-clip' +')'
       }).on('mouseover', (d) ->
         string_to_use = ''
-        for key in obj.options.keys
+        for key in keys
           string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>'
         obj.show_popup('<p>'+string_to_use+'</p>',event.pageX,event.pageY)
       )
@@ -526,8 +531,8 @@ class NHGraph extends NHGraphLib
 
       obj.drawables.data.selectAll(".range.extent")
       .data(obj.parent_obj.parent_obj.data.raw.filter((d) ->
-        top = d[obj.options.keys[0]]
-        bottom = d[obj.options.keys[1]]
+        top = d[keys[0]]
+        bottom = d[keys[1]]
         if d.none_values is "[]" and top and bottom
           return d
         )
@@ -535,21 +540,21 @@ class NHGraph extends NHGraphLib
       .append("rect")
       .attr({
         'y': (d) ->
-          return obj.axes.y.scale(d[obj.options.keys[0]])
+          return obj.axes.y.scale(d[keys[0]])
         ,
         'x': (d) ->
           return obj.axes.x.scale(obj.date_from_string(d.date_terminated))
         ,
         'height': (d) ->
-          obj.axes.y.scale(d[obj.options.keys[1]]) -
-            obj.axes.y.scale(d[obj.options.keys[0]])
+          obj.axes.y.scale(d[keys[1]]) -
+            obj.axes.y.scale(d[keys[0]])
         ,
         'width': obj.style.range.width,
         'class': 'range extent',
-        'clip-path': 'url(#'+ obj.options.keys.join('-')+'-clip' +')'
+        'clip-path': 'url(#'+ keys.join('-')+'-clip' +')'
       }).on('mouseover', (d) ->
         string_to_use = ''
-        for key in obj.options.keys
+        for key in keys
           string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>'
         obj.show_popup('<p>'+string_to_use+'</p>',event.pageX,event.pageY)
       )
@@ -560,7 +565,7 @@ class NHGraph extends NHGraphLib
       obj.drawables.data.selectAll(".range.top.empty_point")
       .data(obj.parent_obj.parent_obj.data.raw.filter((d) ->
         none_vals = d.none_values
-        key = obj.options.keys[0]
+        key = keys[0]
         partial = obj.options.plot_partial
         if none_vals isnt "[]" and d[key] isnt false and partial
           return d
@@ -569,7 +574,7 @@ class NHGraph extends NHGraphLib
       .append("rect")
       .attr({
         'y': (d) ->
-          return obj.axes.y.scale(d[obj.options.keys[0]])
+          return obj.axes.y.scale(d[keys[0]])
         ,
         'x': (d) ->
           return \
@@ -579,11 +584,11 @@ class NHGraph extends NHGraphLib
         'height': obj.style.range.cap.height,
         'width': obj.style.range.cap.width,
         'class': 'range top empty_point',
-        'clip-path': 'url(#'+ obj.options.keys.join('-')+'-clip' +')'
+        'clip-path': 'url(#'+ keys.join('-')+'-clip' +')'
       })
       .on('mouseover', (d) ->
         string_to_use = 'Partial Observation:<br>'
-        for key in obj.options.keys
+        for key in keys
           string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>'
         obj.show_popup('<p>'+string_to_use+'</p>',
           event.pageX,
@@ -597,7 +602,7 @@ class NHGraph extends NHGraphLib
       obj.drawables.data.selectAll(".range.bottom.empty_point")
       .data(obj.parent_obj.parent_obj.data.raw.filter((d) ->
         none_vals = d.none_values
-        key = obj.options.keys[1]
+        key = keys[1]
         partial = obj.options.plot_partial
         if none_vals isnt "[]" and d[key] isnt false and partial
           return d
@@ -606,7 +611,7 @@ class NHGraph extends NHGraphLib
       .append("rect")
       .attr({
         'y': (d) ->
-          return obj.axes.y.scale(d[obj.options.keys[1]])
+          return obj.axes.y.scale(d[keys[1]])
         ,
         'x': (d) ->
           return \
@@ -616,10 +621,10 @@ class NHGraph extends NHGraphLib
         'height': obj.style.range.cap.height,
         'width': obj.style.range.cap.width,
         'class': 'range bottom empty_point',
-        'clip-path': 'url(#'+ obj.options.keys.join('-')+'-clip' +')'
+        'clip-path': 'url(#'+ keys.join('-')+'-clip' +')'
       }).on('mouseover', (d) ->
         string_to_use = 'Partial Observation:<br>'
-        for key in obj.options.keys
+        for key in keys
           string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>'
         obj.show_popup('<p>'+string_to_use+'</p>',
           event.pageX,
@@ -632,8 +637,8 @@ class NHGraph extends NHGraphLib
       obj.drawables.data.selectAll(".range.extent.empty_point")
       .data(obj.parent_obj.parent_obj.data.raw.filter((d) ->
         partial = obj.options.plot_partial
-        top = d[obj.options.keys[0]]
-        bottom = d[obj.options.keys[1]]
+        top = d[keys[0]]
+        bottom = d[keys[1]]
         none_vals = d.none_values
         keys_valid = top isnt false and bottom isnt false
         if none_vals isnt "[]" and keys_valid and partial
@@ -643,22 +648,22 @@ class NHGraph extends NHGraphLib
       .append("rect")
       .attr({
         'y': (d) ->
-          return obj.axes.y.scale(d[obj.options.keys[0]])
+          return obj.axes.y.scale(d[keys[0]])
         ,
         'x': (d) ->
           return obj.axes.x.scale(
             obj.date_from_string(d.date_terminated))
         ,
         'height': (d) ->
-          obj.axes.y.scale(d[obj.options.keys[1]]) -
-            obj.axes.y.scale(d[obj.options.keys[0]])
+          obj.axes.y.scale(d[keys[1]]) -
+            obj.axes.y.scale(d[keys[0]])
         ,
         'width': obj.style.range.width,
         'class': 'range extent empty_point',
-        'clip-path': 'url(#'+ obj.options.keys.join('-')+'-clip' +')'
+        'clip-path': 'url(#'+ keys.join('-')+'-clip' +')'
       }).on('mouseover', (d) ->
         string_to_use = 'Partial Observation<br>'
-        for key in obj.options.keys
+        for key in keys
           string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>'
         obj.show_popup('<p>'+string_to_use+'</p>',
           event.pageX,
@@ -670,9 +675,9 @@ class NHGraph extends NHGraphLib
     else
       # Throw error if given incorrect number of keys to plot
       throw new Error('Cannot plot ranged graph with ' +
-        obj.options.keys.length + ' data point(s)')
+        keys.length + ' data point(s)')
 
-  draw_linear: (obj) ->
+  draw_linear: (obj, key_index=0) ->
     obj.drawables.area = d3.svg.line()
     .interpolate(if obj.style.data_style is \
       'stepped' then "step-after" else "linear")
@@ -684,7 +689,7 @@ class NHGraph extends NHGraphLib
       return obj.axes.x.scale(obj.date_from_string(d.date_terminated))
     )
     .y((d) ->
-      return obj.axes.y.scale(d[obj.options.keys[0]])
+      return obj.axes.y.scale(d[obj.options.keys[key_index]])
     )
 
     if obj.parent_obj.parent_obj.data.raw.length > 1
@@ -703,11 +708,11 @@ class NHGraph extends NHGraphLib
     .enter().append("circle").attr("cx", (d) ->
       return obj.axes.x.scale(obj.date_from_string(d.date_terminated))
     ).attr("cy", (d) ->
-      return obj.axes.y.scale(d[obj.options.keys[0]])
+      return obj.axes.y.scale(d[obj.options.keys[key_index]])
     ).attr("r", 3).attr("class", "point")
     .attr("clip-path", "url(#"+ obj.options.keys.join('-')+'-clip' +")")
     .on('mouseover', (d) ->
-      obj.show_popup(d[obj.options.keys[0]],event.pageX,event.pageY)
+      obj.show_popup(d[obj.options.keys[key_index]],event.pageX,event.pageY)
     )
     .on('mouseout', (d) ->
       obj.hide_popup()
@@ -715,7 +720,7 @@ class NHGraph extends NHGraphLib
     obj.drawables.data.selectAll(".empty_point")
     .data(obj.parent_obj.parent_obj.data.raw.filter((d) ->
       none_vals = d.none_values
-      key = obj.options.keys[0]
+      key = obj.options.keys[key_index]
       partial = obj.options.plot_partial
       if none_vals isnt "[]" and d[key] isnt false and partial
         return d
@@ -726,13 +731,13 @@ class NHGraph extends NHGraphLib
       return obj.axes.x.scale(obj.date_from_string(d.date_terminated))
     )
     .attr("cy", (d) ->
-      return obj.axes.y.scale(d[obj.options.keys[0]])
+      return obj.axes.y.scale(d[obj.options.keys[key_index]])
     )
     .attr("r", 3)
     .attr("class", "empty_point")
     .attr("clip-path", "url(#"+ obj.options.keys.join('-')+'-clip' +")")
     .on('mouseover', (d) ->
-      obj.show_popup('Partial observation: ' + d[obj.options.keys[0]],
+      obj.show_popup('Partial observation: ' + d[obj.options.keys[key_index]],
         event.pageX,
         event.pageY)
     )
