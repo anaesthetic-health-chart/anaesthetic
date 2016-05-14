@@ -699,9 +699,9 @@ class NHGraph extends NHGraphLib
       .datum(obj.parent_obj.parent_obj.data.raw)
       .attr("d", obj.drawables.area)
       .attr("clip-path", "url(#"+ obj.options.keys.join('-')+'-clip' +")")
-      .attr("class", "path")
+      .attr("class", "path path"+key_index)
 
-    obj.drawables.data.selectAll(".point")
+    obj.drawables.data.selectAll(".point"+key_index)
     .data(obj.parent_obj.parent_obj.data.raw.filter((d) ->
       return d
       )
@@ -710,7 +710,7 @@ class NHGraph extends NHGraphLib
       return obj.axes.x.scale(obj.date_from_string(d.date_terminated))
     ).attr("cy", (d) ->
       return obj.axes.y.scale(d[obj.options.keys[key_index]])
-    ).attr("r", 3).attr("class", "point")
+    ).attr("r", 3).attr("class", "point point"+key_index)
     .attr("clip-path", "url(#"+ obj.options.keys.join('-')+'-clip' +")")
     .on('mouseover', (d) ->
       obj.show_popup(d[obj.options.keys[key_index]],event.pageX,event.pageY)
@@ -820,53 +820,77 @@ class NHGraph extends NHGraphLib
     switch self.style.data_style
       # Redraw the line and points of the stepped and linear graphs with the
       # new scales
-      when 'stepped', 'linear' then (
-        self.drawables.data.selectAll('.path').attr("d", self.drawables.area)
-        self.drawables.data.selectAll('.point').attr('cx', (d) ->
-          return self.axes.x.scale(self.date_from_string(d.date_terminated))
-        ).attr('cy', (d) ->
-          return self.axes.y.scale(d[self.options.keys[0]])
-        )
-        self.drawables.data.selectAll('.empty_point').attr('cx', (d) ->
-          return self.axes.x.scale(self.date_from_string(d.date_terminated))
-        ).attr("cy", (d) ->
-          return self.axes.y.scale(d[self.options.keys[0]])
-        )
-      )
+      when 'stepped', 'linear' then self.redraw_linear(self, 0,
+        self.style.data_style)
       # Redraw the range caps and extent with the new scales
-      when 'range' then (
-        self.drawables.data.selectAll('.range.top').attr('x', (d) ->
-          return self.axes.x.scale(self.date_from_string(d.date_terminated)) -
-            (self.style.range.cap.width/2)+1
-        ).attr('y': (d) ->
-          return self.axes.y.scale(d[self.options.keys[0]])
-        )
-
-        self.drawables.data.selectAll('.range.bottom').attr('x', (d) ->
-          return self.axes.x.scale(self.date_from_string(d.date_terminated)) -
-            (self.style.range.cap.width/2)+1
-        ).attr('y': (d) ->
-          return self.axes.y.scale(d[self.options.keys[1]])
-        )
-
-        self.drawables.data.selectAll('.range.extent').attr('x', (d) ->
-          return self.axes.x.scale(self.date_from_string(d.date_terminated))
-        ).attr('y': (d) ->
-          return self.axes.y.scale(d[self.options.keys[0]])
-        ).attr('height': (d) ->
-          return self.axes.y.scale(d[self.options.keys[1]]) -
-            self.axes.y.scale(d[self.options.keys[0]])
-        )
-      )
+      when 'range' then self.redraw_ranged(self)
 
       when 'star' then console.log('star')
 
       when 'pie' then console.log('pie')
 
       when 'sparkline' then console.log('sparkline')
+      when 'multi' then (
+        for key, index in self.options.keys
+          if typeof(key) == 'object'
+            self.redraw_ranged(self, index)
+          else
+            self.redraw_linear(self, index)
+      )
       # If no graph style defined throw an error
       else throw new Error('no graph style defined')
     return
+
+  redraw_linear: (obj, key_index=0, style='linear') ->
+    obj.drawables.area = d3.svg.line()
+    .interpolate(if style is \
+      'stepped' then "step-after" else "linear")
+    .defined((d) ->
+      return d
+    )
+    .x((d) ->
+      return obj.axes.x.scale(obj.date_from_string(d.date_terminated))
+    )
+    .y((d) ->
+      return obj.axes.y.scale(d[obj.options.keys[key_index]])
+    )
+    obj.drawables.data.selectAll('.path'+key_index)
+    .attr("d", obj.drawables.area)
+    obj.drawables.data.selectAll('.point'+key_index).attr('cx', (d) ->
+      return obj.axes.x.scale(obj.date_from_string(d.date_terminated))
+    ).attr('cy', (d) ->
+      return obj.axes.y.scale(d[obj.options.keys[key_index]])
+    )
+    obj.drawables.data.selectAll('.empty_point').attr('cx', (d) ->
+      return obj.axes.x.scale(obj.date_from_string(d.date_terminated))
+    ).attr("cy", (d) ->
+      return obj.axes.y.scale(d[obj.options.keys[key_index]])
+    )
+
+  redraw_ranged: (obj, key_index=false) ->
+    keys = if key_index then obj.options.keys[key_index] else obj.options.keys
+    obj.drawables.data.selectAll('.range.top').attr('x', (d) ->
+      return obj.axes.x.scale(obj.date_from_string(d.date_terminated)) -
+        (obj.style.range.cap.width/2)+1
+    ).attr('y': (d) ->
+      return obj.axes.y.scale(d[keys[0]])
+    )
+
+    obj.drawables.data.selectAll('.range.bottom').attr('x', (d) ->
+      return obj.axes.x.scale(obj.date_from_string(d.date_terminated)) -
+        (obj.style.range.cap.width/2)+1
+    ).attr('y': (d) ->
+      return obj.axes.y.scale(d[keys[1]])
+    )
+
+    obj.drawables.data.selectAll('.range.extent').attr('x', (d) ->
+      return obj.axes.x.scale(obj.date_from_string(d.date_terminated))
+    ).attr('y': (d) ->
+      return obj.axes.y.scale(d[keys[0]])
+    ).attr('height': (d) ->
+      return obj.axes.y.scale(d[keys[1]]) -
+        obj.axes.y.scale(d[keys[0]])
+    )
 
 ### istanbul ignore if ###
 if !window.NH

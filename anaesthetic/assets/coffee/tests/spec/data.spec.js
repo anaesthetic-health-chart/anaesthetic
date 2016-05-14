@@ -168,7 +168,7 @@ describe('Data', function() {
         });
 
         it("..that has class of 'point'", function() {
-          expect(circles[0].getAttribute('class')).toBe('point');
+          expect(circles[0].getAttribute('class')).toBe('point point0');
         });
 
         it("..which is the right size", function() {
@@ -230,7 +230,7 @@ describe('Data', function() {
             var j, len, path;
             for (j = 0, len = paths.length; j < len; j++) {
               path = paths[j];
-              expect(path.getAttribute('class')).toBe('path');
+              expect(path.getAttribute('class')).toBe('path path0');
             }
           });
 
@@ -307,7 +307,7 @@ describe('Data', function() {
         });
 
         it("..that has class of 'point'", function() {
-          expect(circles[0].getAttribute('class')).toBe('point');
+          expect(circles[0].getAttribute('class')).toBe('point point0');
         });
 
         it("..which is the right size", function() {
@@ -369,7 +369,7 @@ describe('Data', function() {
             var j, len, path;
             for (j = 0, len = paths.length; j < len; j++) {
               path = paths[j];
-              expect(path.getAttribute('class')).toBe('path');
+              expect(path.getAttribute('class')).toBe('path path0');
             }
           });
 

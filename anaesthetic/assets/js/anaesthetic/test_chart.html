@@ -94,34 +94,81 @@
                 'date_terminated': '2016-05-14 09:00:00',
                 'blood_pressure_systolic': 120,
                 'blood_pressure_diastolic': 80,
-                'pulse': 80
+                'pulse': 80,
+                'et': 4.8,
+                'fico': 3.5,
+                'spo': 99,
+                'fio': 51,
+                'event': 'Gave paracetemol'
             },
             {
                 'date_terminated': '2016-05-14 09:05:00',
                 'blood_pressure_systolic': 110,
                 'blood_pressure_diastolic': 70,
-                'pulse': 70
+                'pulse': 70,
+                'et': 4.6,
+                'fico': 2.4,
+                'spo': 98,
+                'fio': 49
             },
             {
                 'date_terminated': '2016-05-14 09:10:00',
                 'blood_pressure_systolic': 100,
                 'blood_pressure_diastolic': 60,
-                'pulse': 80
+                'pulse': 80,
+                'et': 5.1,
+                'fico': 2.8,
+                'spo': 100,
+                'fio': 48
             }
-        ]
-        var graph = new window.NH.NHGraph();
-        graph.options.keys = ['pulse', ['blood_pressure_systolic', 'blood_pressure_diastolic']];
-        graph.options.label = '';
-        graph.options.measurement = '';
-        graph.axes.y.min = 30;
-        graph.axes.y.max = 220;
-        graph.style.dimensions.height = 300;
-        graph.style.data_style = 'multi';
+        ];
+        var events_graph = new window.NH.NHGraph();
+        events_graph.options.keys = ['event'];
+        events_graph.options.label = '';
+        events_graph.options.measurement = '';
+        events_graph.axes.y.min = 0;
+        events_graph.axes.y.max = 0;
+        events_graph.style.dimensions.height = 100;
+        events_graph.style.data_style = 'stepped';
+
+        var bp_pulse_graph = new window.NH.NHGraph();
+        bp_pulse_graph.options.keys = ['pulse', ['blood_pressure_systolic', 'blood_pressure_diastolic']];
+        bp_pulse_graph.options.label = 'Pulse, Blood Pressure';
+        bp_pulse_graph.options.measurement = '';
+        bp_pulse_graph.axes.y.min = 30;
+        bp_pulse_graph.axes.y.max = 220;
+        bp_pulse_graph.style.dimensions.height = 300;
+        bp_pulse_graph.style.data_style = 'multi';
+        
+        var oxygen_out_graph = new window.NH.NHGraph();
+        oxygen_out_graph.options.keys = ['et', 'fico'];
+        oxygen_out_graph.options.label = 'Fi/ETAA FiCO2';
+        oxygen_out_graph.options.measurement = '';
+        oxygen_out_graph.axes.y.min = 0;
+        oxygen_out_graph.axes.y.max = 12;
+        oxygen_out_graph.style.dimensions.height = 300;
+        oxygen_out_graph.style.data_style = 'multi';
+        
+        var oxygen_in_graph = new window.NH.NHGraph();
+        oxygen_in_graph.options.keys = ['spo', 'fio'];
+        oxygen_in_graph.options.label = 'SpO2 / FiO2';
+        oxygen_in_graph.options.measurement = '';
+        oxygen_in_graph.axes.y.min = 0;
+        oxygen_in_graph.axes.y.max = 100;
+        oxygen_in_graph.style.dimensions.height = 300;
+        oxygen_in_graph.style.data_style = 'multi';
 
         var focus = new window.NH.NHFocus();
-        focus.graphs.push(graph);
-        focus.title = 'Pulse/BP';
+        var context = new window.NH.NHContext();
+        context.graph = events_graph;
+        focus.graphs.push(bp_pulse_graph);
+        focus.graphs.push(oxygen_out_graph);
+        focus.graphs.push(oxygen_in_graph);
+        
+        focus.title = '';
         chart.focus = focus;
+        context.title = 'Events';
+        chart.context = context;
         chart.data.raw = data;
         chart.init();
         chart.draw();

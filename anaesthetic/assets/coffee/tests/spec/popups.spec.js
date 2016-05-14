@@ -157,7 +157,7 @@ describe('Pop-Ups', function() {
     describe("Linear / Stepped Points", function() {
 
       beforeEach(function() {
-        points = document.querySelectorAll('.point');
+        points = document.querySelectorAll('.point0');
       });
 
       it("mouse over event calls show_popup method on all points", function() {

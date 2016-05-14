@@ -584,15 +584,15 @@ NHGraph = (function(superClass) {
       return obj.axes.y.scale(d[obj.options.keys[key_index]]);
     });
     if (obj.parent_obj.parent_obj.data.raw.length > 1) {
-      obj.drawables.data.append("path").datum(obj.parent_obj.parent_obj.data.raw).attr("d", obj.drawables.area).attr("clip-path", "url(#" + obj.options.keys.join('-') + '-clip' + ")").attr("class", "path");
+      obj.drawables.data.append("path").datum(obj.parent_obj.parent_obj.data.raw).attr("d", obj.drawables.area).attr("clip-path", "url(#" + obj.options.keys.join('-') + '-clip' + ")").attr("class", "path path" + key_index);
     }
-    obj.drawables.data.selectAll(".point").data(obj.parent_obj.parent_obj.data.raw.filter(function(d) {
+    obj.drawables.data.selectAll(".point" + key_index).data(obj.parent_obj.parent_obj.data.raw.filter(function(d) {
       return d;
     })).enter().append("circle").attr("cx", function(d) {
       return obj.axes.x.scale(obj.date_from_string(d.date_terminated));
     }).attr("cy", function(d) {
       return obj.axes.y.scale(d[obj.options.keys[key_index]]);
-    }).attr("r", 3).attr("class", "point").attr("clip-path", "url(#" + obj.options.keys.join('-') + '-clip' + ")").on('mouseover', function(d) {
+    }).attr("r", 3).attr("class", "point point" + key_index).attr("clip-path", "url(#" + obj.options.keys.join('-') + '-clip' + ")").on('mouseover', function(d) {
       return obj.show_popup(d[obj.options.keys[key_index]], event.pageX, event.pageY);
     }).on('mouseout', function(d) {
       return obj.hide_popup();
@@ -617,7 +617,7 @@ NHGraph = (function(superClass) {
   };
 
   NHGraph.prototype.redraw = function(parent_obj) {
-    var adjusted_line, self, tick_font_size, tick_line_height;
+    var adjusted_line, index, j, key, len, ref, self, tick_font_size, tick_line_height;
     self = this;
     self.axes.obj.select('.x.axis').call(self.axes.x.axis);
     self.axes.obj.select('.y.axis').call(self.axes.y.axis);
@@ -678,44 +678,10 @@ NHGraph = (function(superClass) {
     switch (self.style.data_style) {
       case 'stepped':
       case 'linear':
-        self.drawables.data.selectAll('.path').attr("d", self.drawables.area);
-        self.drawables.data.selectAll('.point').attr('cx', function(d) {
-          return self.axes.x.scale(self.date_from_string(d.date_terminated));
-        }).attr('cy', function(d) {
-          return self.axes.y.scale(d[self.options.keys[0]]);
-        });
-        self.drawables.data.selectAll('.empty_point').attr('cx', function(d) {
-          return self.axes.x.scale(self.date_from_string(d.date_terminated));
-        }).attr("cy", function(d) {
-          return self.axes.y.scale(d[self.options.keys[0]]);
-        });
+        self.redraw_linear(self, 0, self.style.data_style);
         break;
       case 'range':
-        self.drawables.data.selectAll('.range.top').attr('x', function(d) {
-          return self.axes.x.scale(self.date_from_string(d.date_terminated)) - (self.style.range.cap.width / 2) + 1;
-        }).attr({
-          'y': function(d) {
-            return self.axes.y.scale(d[self.options.keys[0]]);
-          }
-        });
-        self.drawables.data.selectAll('.range.bottom').attr('x', function(d) {
-          return self.axes.x.scale(self.date_from_string(d.date_terminated)) - (self.style.range.cap.width / 2) + 1;
-        }).attr({
-          'y': function(d) {
-            return self.axes.y.scale(d[self.options.keys[1]]);
-          }
-        });
-        self.drawables.data.selectAll('.range.extent').attr('x', function(d) {
-          return self.axes.x.scale(self.date_from_string(d.date_terminated));
-        }).attr({
-          'y': function(d) {
-            return self.axes.y.scale(d[self.options.keys[0]]);
-          }
-        }).attr({
-          'height': function(d) {
-            return self.axes.y.scale(d[self.options.keys[1]]) - self.axes.y.scale(d[self.options.keys[0]]);
-          }
-        });
+        self.redraw_ranged(self);
         break;
       case 'star':
         console.log('star');
@@ -726,9 +692,80 @@ NHGraph = (function(superClass) {
       case 'sparkline':
         console.log('sparkline');
         break;
+      case 'multi':
+        ref = self.options.keys;
+        for (index = j = 0, len = ref.length; j < len; index = ++j) {
+          key = ref[index];
+          if (typeof key === 'object') {
+            self.redraw_ranged(self, index);
+          } else {
+            self.redraw_linear(self, index);
+          }
+        }
+        break;
       default:
         throw new Error('no graph style defined');
     }
+  };
+
+  NHGraph.prototype.redraw_linear = function(obj, key_index, style) {
+    if (key_index == null) {
+      key_index = 0;
+    }
+    if (style == null) {
+      style = 'linear';
+    }
+    obj.drawables.area = d3.svg.line().interpolate(style === 'stepped' ? "step-after" : "linear").defined(function(d) {
+      return d;
+    }).x(function(d) {
+      return obj.axes.x.scale(obj.date_from_string(d.date_terminated));
+    }).y(function(d) {
+      return obj.axes.y.scale(d[obj.options.keys[key_index]]);
+    });
+    obj.drawables.data.selectAll('.path' + key_index).attr("d", obj.drawables.area);
+    obj.drawables.data.selectAll('.point' + key_index).attr('cx', function(d) {
+      return obj.axes.x.scale(obj.date_from_string(d.date_terminated));
+    }).attr('cy', function(d) {
+      return obj.axes.y.scale(d[obj.options.keys[key_index]]);
+    });
+    return obj.drawables.data.selectAll('.empty_point').attr('cx', function(d) {
+      return obj.axes.x.scale(obj.date_from_string(d.date_terminated));
+    }).attr("cy", function(d) {
+      return obj.axes.y.scale(d[obj.options.keys[key_index]]);
+    });
+  };
+
+  NHGraph.prototype.redraw_ranged = function(obj, key_index) {
+    var keys;
+    if (key_index == null) {
+      key_index = false;
+    }
+    keys = key_index ? obj.options.keys[key_index] : obj.options.keys;
+    obj.drawables.data.selectAll('.range.top').attr('x', function(d) {
+      return obj.axes.x.scale(obj.date_from_string(d.date_terminated)) - (obj.style.range.cap.width / 2) + 1;
+    }).attr({
+      'y': function(d) {
+        return obj.axes.y.scale(d[keys[0]]);
+      }
+    });
+    obj.drawables.data.selectAll('.range.bottom').attr('x', function(d) {
+      return obj.axes.x.scale(obj.date_from_string(d.date_terminated)) - (obj.style.range.cap.width / 2) + 1;
+    }).attr({
+      'y': function(d) {
+        return obj.axes.y.scale(d[keys[1]]);
+      }
+    });
+    return obj.drawables.data.selectAll('.range.extent').attr('x', function(d) {
+      return obj.axes.x.scale(obj.date_from_string(d.date_terminated));
+    }).attr({
+      'y': function(d) {
+        return obj.axes.y.scale(d[keys[0]]);
+      }
+    }).attr({
+      'height': function(d) {
+        return obj.axes.y.scale(d[keys[1]]) - obj.axes.y.scale(d[keys[0]]);
+      }
+    });
   };
 
   return NHGraph;
