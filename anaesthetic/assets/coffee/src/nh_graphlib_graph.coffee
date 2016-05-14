@@ -440,7 +440,8 @@ class NHGraph extends NHGraphLib
       # mouseover and mouseout to control the tool tips
       # 4. For each empty point (normally used for partial observations) append
       # a circle with class 'empty_point'
-      when 'stepped', 'linear' then self.draw_linear(self)
+      when 'stepped', 'linear' then self.draw_linear(self, 0,
+        self.style.data_style)
       # Draw a ranged graph, which involves:
       # 1. Check that given two keys otherwise can't draw graph properly
       # 2. Draw the top caps of the range using the dimensions and offsets
@@ -457,8 +458,10 @@ class NHGraph extends NHGraphLib
       when 'sparkline' then console.log('sparkline')
       when 'multi' then (
         for key, index in self.options.keys
-          if typeof(key) == 'Array'
+          if typeof(key) == 'object'
             self.draw_ranged(self, index)
+          else
+            self.draw_linear(self, index)
       )
 
       # Throw an error if graph style isn't defined
@@ -677,13 +680,12 @@ class NHGraph extends NHGraphLib
       throw new Error('Cannot plot ranged graph with ' +
         keys.length + ' data point(s)')
 
-  draw_linear: (obj, key_index=0) ->
+  draw_linear: (obj, key_index=0, style='linear') ->
     obj.drawables.area = d3.svg.line()
-    .interpolate(if obj.style.data_style is \
+    .interpolate(if style is \
       'stepped' then "step-after" else "linear")
     .defined((d) ->
-      if d.none_values is "[]"
-        return d
+      return d
     )
     .x((d) ->
       return obj.axes.x.scale(obj.date_from_string(d.date_terminated))
@@ -701,8 +703,7 @@ class NHGraph extends NHGraphLib
 
     obj.drawables.data.selectAll(".point")
     .data(obj.parent_obj.parent_obj.data.raw.filter((d) ->
-      if d.none_values is "[]"
-        return d
+      return d
       )
     )
     .enter().append("circle").attr("cx", (d) ->

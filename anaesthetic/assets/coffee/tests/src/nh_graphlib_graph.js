@@ -354,7 +354,7 @@ NHGraph = (function(superClass) {
     switch (self.style.data_style) {
       case 'stepped':
       case 'linear':
-        return self.draw_linear(self);
+        return self.draw_linear(self, 0, self.style.data_style);
       case 'range':
         return self.draw_ranged(self);
       case 'star':
@@ -368,10 +368,10 @@ NHGraph = (function(superClass) {
         results = [];
         for (index = k = 0, len1 = ref1.length; k < len1; index = ++k) {
           key = ref1[index];
-          if (typeof key === 'Array') {
+          if (typeof key === 'object') {
             results.push(self.draw_ranged(self, index));
           } else {
-            results.push(void 0);
+            results.push(self.draw_linear(self, index));
           }
         }
         return results;
@@ -569,14 +569,15 @@ NHGraph = (function(superClass) {
     }
   };
 
-  NHGraph.prototype.draw_linear = function(obj, key_index) {
+  NHGraph.prototype.draw_linear = function(obj, key_index, style) {
     if (key_index == null) {
       key_index = 0;
     }
-    obj.drawables.area = d3.svg.line().interpolate(obj.style.data_style === 'stepped' ? "step-after" : "linear").defined(function(d) {
-      if (d.none_values === "[]") {
-        return d;
-      }
+    if (style == null) {
+      style = 'linear';
+    }
+    obj.drawables.area = d3.svg.line().interpolate(style === 'stepped' ? "step-after" : "linear").defined(function(d) {
+      return d;
     }).x(function(d) {
       return obj.axes.x.scale(obj.date_from_string(d.date_terminated));
     }).y(function(d) {
@@ -586,9 +587,7 @@ NHGraph = (function(superClass) {
       obj.drawables.data.append("path").datum(obj.parent_obj.parent_obj.data.raw).attr("d", obj.drawables.area).attr("clip-path", "url(#" + obj.options.keys.join('-') + '-clip' + ")").attr("class", "path");
     }
     obj.drawables.data.selectAll(".point").data(obj.parent_obj.parent_obj.data.raw.filter(function(d) {
-      if (d.none_values === "[]") {
-        return d;
-      }
+      return d;
     })).enter().append("circle").attr("cx", function(d) {
       return obj.axes.x.scale(obj.date_from_string(d.date_terminated));
     }).attr("cy", function(d) {

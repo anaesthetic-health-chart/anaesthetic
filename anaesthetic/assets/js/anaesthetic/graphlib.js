@@ -1056,7 +1056,7 @@ NHGraph = (function(superClass) {
   };
 
   NHGraph.prototype.draw = function(parent_obj) {
-    var background_object, j, len, ref, self;
+    var background_object, index, j, k, key, len, len1, ref, ref1, results, self;
     self = this;
     if (self.drawables.background.data != null) {
       ref = self.drawables.background.data;
@@ -1115,245 +1115,266 @@ NHGraph = (function(superClass) {
     switch (self.style.data_style) {
       case 'stepped':
       case 'linear':
-        self.drawables.area = d3.svg.line().interpolate(self.style.data_style === 'stepped' ? "step-after" : "linear").defined(function(d) {
-          if (d.none_values === "[]") {
-            return d;
-          }
-        }).x(function(d) {
-          return self.axes.x.scale(self.date_from_string(d.date_terminated));
-        }).y(function(d) {
-          return self.axes.y.scale(d[self.options.keys[0]]);
-        });
-        if (self.parent_obj.parent_obj.data.raw.length > 1) {
-          self.drawables.data.append("path").datum(self.parent_obj.parent_obj.data.raw).attr("d", self.drawables.area).attr("clip-path", "url(#" + self.options.keys.join('-') + '-clip' + ")").attr("class", "path");
-        }
-        self.drawables.data.selectAll(".point").data(self.parent_obj.parent_obj.data.raw.filter(function(d) {
-          if (d.none_values === "[]") {
-            return d;
-          }
-        })).enter().append("circle").attr("cx", function(d) {
-          return self.axes.x.scale(self.date_from_string(d.date_terminated));
-        }).attr("cy", function(d) {
-          return self.axes.y.scale(d[self.options.keys[0]]);
-        }).attr("r", 3).attr("class", "point").attr("clip-path", "url(#" + self.options.keys.join('-') + '-clip' + ")").on('mouseover', function(d) {
-          return self.show_popup(d[self.options.keys[0]], event.pageX, event.pageY);
-        }).on('mouseout', function(d) {
-          return self.hide_popup();
-        });
-        return self.drawables.data.selectAll(".empty_point").data(self.parent_obj.parent_obj.data.raw.filter(function(d) {
-          var key, none_vals, partial;
-          none_vals = d.none_values;
-          key = self.options.keys[0];
-          partial = self.options.plot_partial;
-          if (none_vals !== "[]" && d[key] !== false && partial) {
-            return d;
-          }
-        })).enter().append("circle").attr("cx", function(d) {
-          return self.axes.x.scale(self.date_from_string(d.date_terminated));
-        }).attr("cy", function(d) {
-          return self.axes.y.scale(d[self.options.keys[0]]);
-        }).attr("r", 3).attr("class", "empty_point").attr("clip-path", "url(#" + self.options.keys.join('-') + '-clip' + ")").on('mouseover', function(d) {
-          return self.show_popup('Partial observation: ' + d[self.options.keys[0]], event.pageX, event.pageY);
-        }).on('mouseout', function(d) {
-          return self.hide_popup();
-        });
+        return self.draw_linear(self, 0, self.style.data_style);
       case 'range':
-        if (self.options.keys.length === 2) {
-          self.drawables.data.selectAll(".range.top").data(self.parent_obj.parent_obj.data.raw.filter(function(d) {
-            if (d.none_values === "[]" && d[self.options.keys[0]]) {
-              return d;
-            }
-          })).enter().append("rect").attr({
-            'y': function(d) {
-              return self.axes.y.scale(d[self.options.keys[0]]);
-            },
-            'x': function(d) {
-              return self.axes.x.scale(self.date_from_string(d.date_terminated)) - (self.style.range.cap.width / 2) + 1;
-            },
-            'height': self.style.range.cap.height,
-            'width': self.style.range.cap.width,
-            'class': 'range top',
-            'clip-path': 'url(#' + self.options.keys.join('-') + '-clip' + ')'
-          }).on('mouseover', function(d) {
-            var k, key, len1, ref1, string_to_use;
-            string_to_use = '';
-            ref1 = self.options.keys;
-            for (k = 0, len1 = ref1.length; k < len1; k++) {
-              key = ref1[k];
-              string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>';
-            }
-            return self.show_popup('<p>' + string_to_use + '</p>', event.pageX, event.pageY);
-          }).on('mouseout', function(d) {
-            return self.hide_popup();
-          });
-          self.drawables.data.selectAll(".range.bottom").data(self.parent_obj.parent_obj.data.raw.filter(function(d) {
-            if (d.none_values === "[]" && d[self.options.keys[1]]) {
-              return d;
-            }
-          })).enter().append("rect").attr({
-            'y': function(d) {
-              return self.axes.y.scale(d[self.options.keys[1]]);
-            },
-            'x': function(d) {
-              return self.axes.x.scale(self.date_from_string(d.date_terminated)) - (self.style.range.cap.width / 2) + 1;
-            },
-            'height': self.style.range.cap.height,
-            'width': self.style.range.cap.width,
-            'class': 'range bottom',
-            'clip-path': 'url(#' + self.options.keys.join('-') + '-clip' + ')'
-          }).on('mouseover', function(d) {
-            var k, key, len1, ref1, string_to_use;
-            string_to_use = '';
-            ref1 = self.options.keys;
-            for (k = 0, len1 = ref1.length; k < len1; k++) {
-              key = ref1[k];
-              string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>';
-            }
-            return self.show_popup('<p>' + string_to_use + '</p>', event.pageX, event.pageY);
-          }).on('mouseout', function(d) {
-            return self.hide_popup();
-          });
-          self.drawables.data.selectAll(".range.extent").data(self.parent_obj.parent_obj.data.raw.filter(function(d) {
-            var bottom, top;
-            top = d[self.options.keys[0]];
-            bottom = d[self.options.keys[1]];
-            if (d.none_values === "[]" && top && bottom) {
-              return d;
-            }
-          })).enter().append("rect").attr({
-            'y': function(d) {
-              return self.axes.y.scale(d[self.options.keys[0]]);
-            },
-            'x': function(d) {
-              return self.axes.x.scale(self.date_from_string(d.date_terminated));
-            },
-            'height': function(d) {
-              return self.axes.y.scale(d[self.options.keys[1]]) - self.axes.y.scale(d[self.options.keys[0]]);
-            },
-            'width': self.style.range.width,
-            'class': 'range extent',
-            'clip-path': 'url(#' + self.options.keys.join('-') + '-clip' + ')'
-          }).on('mouseover', function(d) {
-            var k, key, len1, ref1, string_to_use;
-            string_to_use = '';
-            ref1 = self.options.keys;
-            for (k = 0, len1 = ref1.length; k < len1; k++) {
-              key = ref1[k];
-              string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>';
-            }
-            return self.show_popup('<p>' + string_to_use + '</p>', event.pageX, event.pageY);
-          }).on('mouseout', function(d) {
-            return self.hide_popup();
-          });
-          self.drawables.data.selectAll(".range.top.empty_point").data(self.parent_obj.parent_obj.data.raw.filter(function(d) {
-            var key, none_vals, partial;
-            none_vals = d.none_values;
-            key = self.options.keys[0];
-            partial = self.options.plot_partial;
-            if (none_vals !== "[]" && d[key] !== false && partial) {
-              return d;
-            }
-          })).enter().append("rect").attr({
-            'y': function(d) {
-              return self.axes.y.scale(d[self.options.keys[0]]);
-            },
-            'x': function(d) {
-              return self.axes.x.scale(self.date_from_string(d.date_terminated)) - (self.style.range.cap.width / 2) + 1;
-            },
-            'height': self.style.range.cap.height,
-            'width': self.style.range.cap.width,
-            'class': 'range top empty_point',
-            'clip-path': 'url(#' + self.options.keys.join('-') + '-clip' + ')'
-          }).on('mouseover', function(d) {
-            var k, key, len1, ref1, string_to_use;
-            string_to_use = 'Partial Observation:<br>';
-            ref1 = self.options.keys;
-            for (k = 0, len1 = ref1.length; k < len1; k++) {
-              key = ref1[k];
-              string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>';
-            }
-            return self.show_popup('<p>' + string_to_use + '</p>', event.pageX, event.pageY);
-          }).on('mouseout', function(d) {
-            return self.hide_popup();
-          });
-          self.drawables.data.selectAll(".range.bottom.empty_point").data(self.parent_obj.parent_obj.data.raw.filter(function(d) {
-            var key, none_vals, partial;
-            none_vals = d.none_values;
-            key = self.options.keys[1];
-            partial = self.options.plot_partial;
-            if (none_vals !== "[]" && d[key] !== false && partial) {
-              return d;
-            }
-          })).enter().append("rect").attr({
-            'y': function(d) {
-              return self.axes.y.scale(d[self.options.keys[1]]);
-            },
-            'x': function(d) {
-              return self.axes.x.scale(self.date_from_string(d.date_terminated)) - (self.style.range.cap.width / 2) + 1;
-            },
-            'height': self.style.range.cap.height,
-            'width': self.style.range.cap.width,
-            'class': 'range bottom empty_point',
-            'clip-path': 'url(#' + self.options.keys.join('-') + '-clip' + ')'
-          }).on('mouseover', function(d) {
-            var k, key, len1, ref1, string_to_use;
-            string_to_use = 'Partial Observation:<br>';
-            ref1 = self.options.keys;
-            for (k = 0, len1 = ref1.length; k < len1; k++) {
-              key = ref1[k];
-              string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>';
-            }
-            return self.show_popup('<p>' + string_to_use + '</p>', event.pageX, event.pageY);
-          }).on('mouseout', function(d) {
-            return self.hide_popup();
-          });
-          return self.drawables.data.selectAll(".range.extent.empty_point").data(self.parent_obj.parent_obj.data.raw.filter(function(d) {
-            var bottom, keys_valid, none_vals, partial, top;
-            partial = self.options.plot_partial;
-            top = d[self.options.keys[0]];
-            bottom = d[self.options.keys[1]];
-            none_vals = d.none_values;
-            keys_valid = top !== false && bottom !== false;
-            if (none_vals !== "[]" && keys_valid && partial) {
-              return d;
-            }
-          })).enter().append("rect").attr({
-            'y': function(d) {
-              return self.axes.y.scale(d[self.options.keys[0]]);
-            },
-            'x': function(d) {
-              return self.axes.x.scale(self.date_from_string(d.date_terminated));
-            },
-            'height': function(d) {
-              return self.axes.y.scale(d[self.options.keys[1]]) - self.axes.y.scale(d[self.options.keys[0]]);
-            },
-            'width': self.style.range.width,
-            'class': 'range extent empty_point',
-            'clip-path': 'url(#' + self.options.keys.join('-') + '-clip' + ')'
-          }).on('mouseover', function(d) {
-            var k, key, len1, ref1, string_to_use;
-            string_to_use = 'Partial Observation<br>';
-            ref1 = self.options.keys;
-            for (k = 0, len1 = ref1.length; k < len1; k++) {
-              key = ref1[k];
-              string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>';
-            }
-            return self.show_popup('<p>' + string_to_use + '</p>', event.pageX, event.pageY);
-          }).on('mouseout', function(d) {
-            return self.hide_popup();
-          });
-        } else {
-          throw new Error('Cannot plot ranged graph with ' + self.options.keys.length + ' data point(s)');
-        }
+        return self.draw_ranged(self);
       case 'star':
         return console.log('star');
       case 'pie':
         return console.log('pie');
       case 'sparkline':
         return console.log('sparkline');
+      case 'multi':
+        ref1 = self.options.keys;
+        results = [];
+        for (index = k = 0, len1 = ref1.length; k < len1; index = ++k) {
+          key = ref1[index];
+          if (typeof key === 'object') {
+            results.push(self.draw_ranged(self, index));
+          } else {
+            results.push(self.draw_linear(self, index));
+          }
+        }
+        return results;
       default:
         throw new Error('no graph style defined');
     }
+  };
+
+  NHGraph.prototype.draw_ranged = function(obj, key_index) {
+    var keys;
+    if (key_index == null) {
+      key_index = false;
+    }
+    keys = key_index ? obj.options.keys[key_index] : obj.options.keys;
+    if (keys.length === 2) {
+      obj.drawables.data.selectAll(".range.top").data(obj.parent_obj.parent_obj.data.raw.filter(function(d) {
+        if (d.none_values === "[]" && d[keys[0]]) {
+          return d;
+        }
+      })).enter().append("rect").attr({
+        'y': function(d) {
+          return obj.axes.y.scale(d[[0]]);
+        },
+        'x': function(d) {
+          return obj.axes.x.scale(obj.date_from_string(d.date_terminated)) - (obj.style.range.cap.width / 2) + 1;
+        },
+        'height': obj.style.range.cap.height,
+        'width': obj.style.range.cap.width,
+        'class': 'range top',
+        'clip-path': 'url(#' + keys.join('-') + '-clip' + ')'
+      }).on('mouseover', function(d) {
+        var j, key, len, string_to_use;
+        string_to_use = '';
+        for (j = 0, len = keys.length; j < len; j++) {
+          key = keys[j];
+          string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>';
+        }
+        return obj.show_popup('<p>' + string_to_use + '</p>', event.pageX, event.pageY);
+      }).on('mouseout', function(d) {
+        return obj.hide_popup();
+      });
+      obj.drawables.data.selectAll(".range.bottom").data(obj.parent_obj.parent_obj.data.raw.filter(function(d) {
+        if (d.none_values === "[]" && d[keys[1]]) {
+          return d;
+        }
+      })).enter().append("rect").attr({
+        'y': function(d) {
+          return obj.axes.y.scale(d[keys[1]]);
+        },
+        'x': function(d) {
+          return obj.axes.x.scale(obj.date_from_string(d.date_terminated)) - (obj.style.range.cap.width / 2) + 1;
+        },
+        'height': obj.style.range.cap.height,
+        'width': obj.style.range.cap.width,
+        'class': 'range bottom',
+        'clip-path': 'url(#' + keys.join('-') + '-clip' + ')'
+      }).on('mouseover', function(d) {
+        var j, key, len, string_to_use;
+        string_to_use = '';
+        for (j = 0, len = keys.length; j < len; j++) {
+          key = keys[j];
+          string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>';
+        }
+        return obj.show_popup('<p>' + string_to_use + '</p>', event.pageX, event.pageY);
+      }).on('mouseout', function(d) {
+        return obj.hide_popup();
+      });
+      obj.drawables.data.selectAll(".range.extent").data(obj.parent_obj.parent_obj.data.raw.filter(function(d) {
+        var bottom, top;
+        top = d[keys[0]];
+        bottom = d[keys[1]];
+        if (d.none_values === "[]" && top && bottom) {
+          return d;
+        }
+      })).enter().append("rect").attr({
+        'y': function(d) {
+          return obj.axes.y.scale(d[keys[0]]);
+        },
+        'x': function(d) {
+          return obj.axes.x.scale(obj.date_from_string(d.date_terminated));
+        },
+        'height': function(d) {
+          return obj.axes.y.scale(d[keys[1]]) - obj.axes.y.scale(d[keys[0]]);
+        },
+        'width': obj.style.range.width,
+        'class': 'range extent',
+        'clip-path': 'url(#' + keys.join('-') + '-clip' + ')'
+      }).on('mouseover', function(d) {
+        var j, key, len, string_to_use;
+        string_to_use = '';
+        for (j = 0, len = keys.length; j < len; j++) {
+          key = keys[j];
+          string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>';
+        }
+        return obj.show_popup('<p>' + string_to_use + '</p>', event.pageX, event.pageY);
+      }).on('mouseout', function(d) {
+        return obj.hide_popup();
+      });
+      obj.drawables.data.selectAll(".range.top.empty_point").data(obj.parent_obj.parent_obj.data.raw.filter(function(d) {
+        var key, none_vals, partial;
+        none_vals = d.none_values;
+        key = keys[0];
+        partial = obj.options.plot_partial;
+        if (none_vals !== "[]" && d[key] !== false && partial) {
+          return d;
+        }
+      })).enter().append("rect").attr({
+        'y': function(d) {
+          return obj.axes.y.scale(d[keys[0]]);
+        },
+        'x': function(d) {
+          return obj.axes.x.scale(obj.date_from_string(d.date_terminated)) - (obj.style.range.cap.width / 2) + 1;
+        },
+        'height': obj.style.range.cap.height,
+        'width': obj.style.range.cap.width,
+        'class': 'range top empty_point',
+        'clip-path': 'url(#' + keys.join('-') + '-clip' + ')'
+      }).on('mouseover', function(d) {
+        var j, key, len, string_to_use;
+        string_to_use = 'Partial Observation:<br>';
+        for (j = 0, len = keys.length; j < len; j++) {
+          key = keys[j];
+          string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>';
+        }
+        return obj.show_popup('<p>' + string_to_use + '</p>', event.pageX, event.pageY);
+      }).on('mouseout', function(d) {
+        return obj.hide_popup();
+      });
+      obj.drawables.data.selectAll(".range.bottom.empty_point").data(obj.parent_obj.parent_obj.data.raw.filter(function(d) {
+        var key, none_vals, partial;
+        none_vals = d.none_values;
+        key = keys[1];
+        partial = obj.options.plot_partial;
+        if (none_vals !== "[]" && d[key] !== false && partial) {
+          return d;
+        }
+      })).enter().append("rect").attr({
+        'y': function(d) {
+          return obj.axes.y.scale(d[keys[1]]);
+        },
+        'x': function(d) {
+          return obj.axes.x.scale(obj.date_from_string(d.date_terminated)) - (obj.style.range.cap.width / 2) + 1;
+        },
+        'height': obj.style.range.cap.height,
+        'width': obj.style.range.cap.width,
+        'class': 'range bottom empty_point',
+        'clip-path': 'url(#' + keys.join('-') + '-clip' + ')'
+      }).on('mouseover', function(d) {
+        var j, key, len, string_to_use;
+        string_to_use = 'Partial Observation:<br>';
+        for (j = 0, len = keys.length; j < len; j++) {
+          key = keys[j];
+          string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>';
+        }
+        return obj.show_popup('<p>' + string_to_use + '</p>', event.pageX, event.pageY);
+      }).on('mouseout', function(d) {
+        return obj.hide_popup();
+      });
+      return obj.drawables.data.selectAll(".range.extent.empty_point").data(obj.parent_obj.parent_obj.data.raw.filter(function(d) {
+        var bottom, keys_valid, none_vals, partial, top;
+        partial = obj.options.plot_partial;
+        top = d[keys[0]];
+        bottom = d[keys[1]];
+        none_vals = d.none_values;
+        keys_valid = top !== false && bottom !== false;
+        if (none_vals !== "[]" && keys_valid && partial) {
+          return d;
+        }
+      })).enter().append("rect").attr({
+        'y': function(d) {
+          return obj.axes.y.scale(d[keys[0]]);
+        },
+        'x': function(d) {
+          return obj.axes.x.scale(obj.date_from_string(d.date_terminated));
+        },
+        'height': function(d) {
+          return obj.axes.y.scale(d[keys[1]]) - obj.axes.y.scale(d[keys[0]]);
+        },
+        'width': obj.style.range.width,
+        'class': 'range extent empty_point',
+        'clip-path': 'url(#' + keys.join('-') + '-clip' + ')'
+      }).on('mouseover', function(d) {
+        var j, key, len, string_to_use;
+        string_to_use = 'Partial Observation<br>';
+        for (j = 0, len = keys.length; j < len; j++) {
+          key = keys[j];
+          string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>';
+        }
+        return obj.show_popup('<p>' + string_to_use + '</p>', event.pageX, event.pageY);
+      }).on('mouseout', function(d) {
+        return obj.hide_popup();
+      });
+    } else {
+      throw new Error('Cannot plot ranged graph with ' + keys.length + ' data point(s)');
+    }
+  };
+
+  NHGraph.prototype.draw_linear = function(obj, key_index, style) {
+    if (key_index == null) {
+      key_index = 0;
+    }
+    if (style == null) {
+      style = 'linear';
+    }
+    obj.drawables.area = d3.svg.line().interpolate(style === 'stepped' ? "step-after" : "linear").defined(function(d) {
+      return d;
+    }).x(function(d) {
+      return obj.axes.x.scale(obj.date_from_string(d.date_terminated));
+    }).y(function(d) {
+      return obj.axes.y.scale(d[obj.options.keys[key_index]]);
+    });
+    if (obj.parent_obj.parent_obj.data.raw.length > 1) {
+      obj.drawables.data.append("path").datum(obj.parent_obj.parent_obj.data.raw).attr("d", obj.drawables.area).attr("clip-path", "url(#" + obj.options.keys.join('-') + '-clip' + ")").attr("class", "path");
+    }
+    obj.drawables.data.selectAll(".point").data(obj.parent_obj.parent_obj.data.raw.filter(function(d) {
+      return d;
+    })).enter().append("circle").attr("cx", function(d) {
+      return obj.axes.x.scale(obj.date_from_string(d.date_terminated));
+    }).attr("cy", function(d) {
+      return obj.axes.y.scale(d[obj.options.keys[key_index]]);
+    }).attr("r", 3).attr("class", "point").attr("clip-path", "url(#" + obj.options.keys.join('-') + '-clip' + ")").on('mouseover', function(d) {
+      return obj.show_popup(d[obj.options.keys[key_index]], event.pageX, event.pageY);
+    }).on('mouseout', function(d) {
+      return obj.hide_popup();
+    });
+    return obj.drawables.data.selectAll(".empty_point").data(obj.parent_obj.parent_obj.data.raw.filter(function(d) {
+      var key, none_vals, partial;
+      none_vals = d.none_values;
+      key = obj.options.keys[key_index];
+      partial = obj.options.plot_partial;
+      if (none_vals !== "[]" && d[key] !== false && partial) {
+        return d;
+      }
+    })).enter().append("circle").attr("cx", function(d) {
+      return obj.axes.x.scale(obj.date_from_string(d.date_terminated));
+    }).attr("cy", function(d) {
+      return obj.axes.y.scale(d[obj.options.keys[key_index]]);
+    }).attr("r", 3).attr("class", "empty_point").attr("clip-path", "url(#" + obj.options.keys.join('-') + '-clip' + ")").on('mouseover', function(d) {
+      return obj.show_popup('Partial observation: ' + d[obj.options.keys[key_index]], event.pageX, event.pageY);
+    }).on('mouseout', function(d) {
+      return obj.hide_popup();
+    });
   };
 
   NHGraph.prototype.redraw = function(parent_obj) {

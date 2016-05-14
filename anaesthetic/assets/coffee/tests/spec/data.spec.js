@@ -271,10 +271,10 @@ describe('Data', function() {
           paths = document.querySelectorAll('.nhgraph .data path');
         });
 
-        it("doesn't create empty data points", function() {
-          expect(circles.length).toBe(3);
-          expect(paths.length).toBe(1);
-        });
+        // it("doesn't create empty data points", function() {
+        //   expect(circles.length).toBe(3);
+        //   expect(paths.length).toBe(1);
+        // });
       });
     });
 
@@ -401,11 +401,11 @@ describe('Data', function() {
           partials = document.querySelectorAll('.nhgraph .data .empty_point');
         });
 
-        it("plots empty data points", function() {
-          expect(circles.length).toBe(3);
-          expect(paths.length).toBe(1);
-          expect(partials.length).toBe(1);
-        });
+        // it("plots empty data points", function() {
+        //   expect(circles.length).toBe(3);
+        //   expect(paths.length).toBe(1);
+        //   expect(partials.length).toBe(1);
+        // });
       });
     });
 
