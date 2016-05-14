@@ -88,8 +88,16 @@
 </head>
 <body>
     <div class="container">
+        <div id="demographics">
+            <ul>
+                <li>DAC</li>
+                <li><strong>Name</strong><br>Jakob Mathiszig</li>
+                <li><strong>Age</strong> 28</li>
+                <li><strong>NHS Number</strong>128 256 512</li>
+                <li>More</li>
+            </ul>
+        </div>
         <div id="events"></div>
-        <div id="drugs"></div>
         <div id="observations"></div>
     </div>
     <div id="chart"></div>
@@ -98,7 +106,6 @@
     <script>
         var observation_chart = new window.NH.NHGraphLib('#observations');
         var events_chart = new window.NH.NHGraphLib('#events');
-        var drugs_chart = new window.NH.NHGraphLib('#drugs');
         var data = [
             {
                 'date_terminated': '2016-05-14 09:00:00',
@@ -110,7 +117,7 @@
                 'spo': 99,
                 'fio': 51,
                 'drug': 'Test',
-                'event': 'foo'
+                'event': 'Foo'
             },
             {
                 'date_terminated': '2016-05-14 09:05:00',
@@ -122,7 +129,7 @@
                 'spo': 98,
                 'fio': 49,
                 'drug': 'Is',
-                'event': 'foo'
+                'event': 'Foo'
             },
             {
                 'date_terminated': '2016-05-14 09:10:00',
@@ -134,16 +141,16 @@
                 'spo': 100,
                 'fio': 48,
                 'drug': 'Test',
-                'event': 'foo'
+                'event': 'Bar'
             }
         ];
         var drugs_graph = new window.NH.NHGraph();
         drugs_graph.options.keys = ['drug'];
-        drugs_graph.options.label = '';
-        drugs_graph.options.measurement = '';
         drugs_graph.axes.y.min = 0;
         drugs_graph.axes.y.max = 100;
         drugs_graph.axes.y.type = 'label';
+        drugs_graph.style.axis_label_text_padding = 100;
+        drugs_graph.style.padding.left = 100;
         drugs_graph.axes.y.options = ['This', 'Is', 'A', 'Test'];
         drugs_graph.style.dimensions.height = 300;
         drugs_graph.style.data_style = 'stepped';
@@ -154,7 +161,8 @@
         events_graph.axes.y.max = 2;
         events_graph.style.axis.x.hide = true;
         events_graph.style.axis.y.hide = true;
-        events_graph.style.label_width = 0;
+        events_graph.style.label_width = 100;
+        events_graph.style.margin.left = 100;
         events_graph.axes.y.type = 'graphic';
         events_graph.axes.y.options = ['this', 'is'];
         events_graph.style.dimensions.height = 50;
@@ -176,6 +184,7 @@
         bp_pulse_graph.axes.y.max = 220;
         bp_pulse_graph.style.dimensions.height = 300;
         bp_pulse_graph.style.data_style = 'multi';
+        bp_pulse_graph.style.axis.x.hide = true;
         
         var oxygen_out_graph = new window.NH.NHGraph();
         oxygen_out_graph.options.keys = ['et', 'fico'];
@@ -185,6 +194,7 @@
         oxygen_out_graph.axes.y.max = 12;
         oxygen_out_graph.style.dimensions.height = 300;
         oxygen_out_graph.style.data_style = 'multi';
+        oxygen_out_graph.style.axis.x.hide = true;
         
         var oxygen_in_graph = new window.NH.NHGraph();
         oxygen_in_graph.options.keys = ['spo', 'fio'];
@@ -194,31 +204,31 @@
         oxygen_in_graph.axes.y.max = 100;
         oxygen_in_graph.style.dimensions.height = 300;
         oxygen_in_graph.style.data_style = 'multi';
+        oxygen_in_graph.style.axis.x.hide = true;
 
         var observations_focus = new window.NH.NHFocus();
         var events_focus = new window.NH.NHFocus();
         var drugs_context = new window.NH.NHContext();
-        drugs_context.graph = drugs_graph;     
+        drugs_context.graph = drugs_graph;
+        drugs_context.style.margin.bottom = 0;
+        drugs_context.style.margin.top = 0;
         observations_focus.graphs.push(bp_pulse_graph);
         observations_focus.graphs.push(oxygen_out_graph);
         observations_focus.graphs.push(oxygen_in_graph);
         events_focus.graphs.push(events_graph);
         
         observations_focus.title = '';
+        observation_chart.context = drugs_context;
         observation_chart.focus = observations_focus;
         observation_chart.data.raw = data;
         observation_chart.init();
         observation_chart.draw();
         
-        drugs_chart.context = drugs_context;
-        drugs_chart.focus = null;
-        drugs_chart.data.raw = data;
-        drugs_chart.init();
-        drugs_chart.draw();
-        
         events_focus.title = '';
         events_chart.focus = events_focus;
         events_chart.data.raw = data;
+        events_chart.style.margin.top = 0;
+        events_chart.style.padding.top = 0;
         events_chart.init();
         events_chart.draw();
     </script>

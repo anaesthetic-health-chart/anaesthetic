@@ -1005,7 +1005,7 @@ NHGraph = (function(superClass) {
       ref2 = this.axes.y.options;
       for (index = l = 0, len2 = ref2.length; l < len2; index = ++l) {
         label = ref2[index];
-        label_range.push(index * (top_offset + this.style.dimensions.height) / this.axes.y.options.length + top_offset);
+        label_range.push(index * (top_offset + this.style.dimensions.height) / (this.axes.y.options.length - 1));
       }
       this.axes.y.scale = d3.scale.ordinal().domain(this.axes.y.options).range(label_range);
       this.axes.y.axis = d3.svg.axis().scale(this.axes.y.scale).orient('left');
