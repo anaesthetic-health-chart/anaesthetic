@@ -9,14 +9,8 @@
       {% record_panel models.Observation angular_filter="$index < 5 || $index - items.length < 5" %}
     </div>
     <div class="col-md-6">
-      {% record_panel models.Gases angular_filter="$index < 5 || $index - items.length < 5" %}
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6">
       {% record_panel models.Ventilators angular_filter="$index < 5 || $index - items.length < 5" %}
-    </div>
-    <div class="col-md-6">
+      {% record_panel models.Gases angular_filter="$index < 5 || $index - items.length < 5" %}
     </div>
   </div>
 </div>
