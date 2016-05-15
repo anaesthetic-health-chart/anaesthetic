@@ -142,7 +142,6 @@ ul#patient-meta-data {
 //     border-bottom: 3px solid $active;
 // }
 
-
 .panel-primary .panel-active .panel-heading,
 .panel-active .panel-heading {
     border-bottom: 3px solid $primary-background;
@@ -178,5 +177,86 @@ body{
 }
 
 .ngProgressLite .ngProgressLiteBarShadow {
+  display: none;
+}
+
+
+text.title{
+  font-weight: bold;
+  font-size: 2em;
+}
+
+circle .point{
+   fill: black;
+    stroke: black;
+    stroke-width: 1px;
+  }
+circle .empty_point{
+    fill: white;
+    stroke: black;
+    stroke-width: 1px;
+}
+rect .empty_point{
+    fill: white;
+    stroke: black;
+    stroke-width: 1px;
+}
+
+
+svg .axis path, svg .axis line{
+  fill: none;
+  stroke: #262626;
+  shape-rendering: crispEdges;
+}
+svg .axis text{
+  font-family: sans-serif;
+}
+svg .background .green{
+  fill: #ccffcc;
+}
+svg .background .amber{
+  fill: #ffe9c8;
+}
+svg .background .red{
+  fill: #ffcccc;
+}
+svg .background .event{
+    fill: #2c2c2c;
+}
+
+svg .background .normal{
+  fill: white;
+  stroke: white;
+}
+
+svg .background line{
+  fill: none;
+  stroke: rgba(0,0,0,0.15);
+  shape-rendering: crispEdges;
+}
+svg .brush{
+  fill: rgba(0,0,0,0.3);
+}
+
+svg .data path{
+  fill: none;
+  stroke: rgba(40,40,40,0.6);
+  shape-rendering: optimizeSpeed;
+}
+
+#chart_popup{
+  font-family: sans-serif;
+  background-color: rgba(0,0,0,0.6);
+  color: #ffffff;
+  display: inline-block;
+  padding: 0.5em 1%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 10px;
+  margin-top: -2.2em;
+  margin-left: -1.5%;
+}
+#chart_popup.hidden{
   display: none;
 }
