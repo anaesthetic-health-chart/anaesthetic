@@ -720,6 +720,7 @@ class NHGraph extends NHGraphLib
     )
 
     if obj.parent_obj.parent_obj.data.raw.length > 1
+      obj.drawables.data.selectAll("path").remove()
       obj.drawables.data.append("path")
       .datum(obj.parent_obj.parent_obj.data.raw)
       .attr("d", obj.drawables.area)

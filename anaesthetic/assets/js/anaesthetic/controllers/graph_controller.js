@@ -8,29 +8,31 @@ angular.module('opal.controllers').controller(
 
         setInterval(function(){
           patientLoader().then(function(patient){
-             $scope.patient = patient;
+                $scope.patient = patient;
+                $scope.observation_chart.data.raw = $scope.patient.episodes[0].observation.map(function(a){
+                    a.date_terminated = $scope.observation_chart.date_to_proper_string(a.created._d);
+                    return a;
+                });
+                $scope.observation_chart.draw();
+
           });
         }, 10000);
 
-        var observation_chart = new window.NH.NHGraphLib('#observations');
-        var events_chart = new window.NH.NHGraphLib('#events');
-        var data = $scope.patient.episodes[0].observation.map(function(a){
-            a.date_terminated = observation_chart.date_to_proper_string(a.created._d);
-            return a;
-        });
+        $scope.observation_chart = new window.NH.NHGraphLib('#observations');
+        // var events_chart = new window.NH.NHGraphLib('#events');
 
-        var drugs_graph = new window.NH.NHGraph();
-        drugs_graph.options.keys = ['drug'];
-        drugs_graph.axes.y.min = 0;
-        drugs_graph.axes.y.max = 100;
-        drugs_graph.axes.y.type = 'label';
-        drugs_graph.style.axis_label_text_padding = 0;
-        drugs_graph.axes.y.options = [
-            'Propofol',
-            'Fentanyl',
-            'Rocuronium', 'Test'];
-        drugs_graph.style.dimensions.height = 300;
-        drugs_graph.style.data_style = 'stepped';
+        // var drugs_graph = new window.NH.NHGraph();
+        // drugs_graph.options.keys = ['drug'];
+        // drugs_graph.axes.y.min = 0;
+        // drugs_graph.axes.y.max = 100;
+        // drugs_graph.axes.y.type = 'label';
+        // drugs_graph.style.axis_label_text_padding = 0;
+        // drugs_graph.axes.y.options = [
+        //     'Propofol',
+        //     'Fentanyl',
+        //     'Rocuronium', 'Test'];
+        // drugs_graph.style.dimensions.height = 300;
+        // drugs_graph.style.data_style = 'stepped';
 
         // var events_graph = new window.NH.NHGraph();
         // events_graph.options.keys = ['event'];
@@ -63,17 +65,17 @@ angular.module('opal.controllers').controller(
         bp_pulse_graph.axes.y.max = 220;
         bp_pulse_graph.style.dimensions.height = 300;
         bp_pulse_graph.style.data_style = 'multi';
-        bp_pulse_graph.style.axis.x.hide = true;
+        // bp_pulse_graph.style.axis.x.hide = true;
 
-        var oxygen_out_graph = new window.NH.NHGraph();
-        oxygen_out_graph.options.keys = ['et', 'fico'];
-        oxygen_out_graph.options.label = 'Fi/ETAA FiCO2';
-        oxygen_out_graph.options.measurement = '';
-        oxygen_out_graph.axes.y.min = 0;
-        oxygen_out_graph.axes.y.max = 12;
-        oxygen_out_graph.style.dimensions.height = 300;
-        oxygen_out_graph.style.data_style = 'multi';
-        oxygen_out_graph.style.axis.x.hide = true;
+        // var oxygen_out_graph = new window.NH.NHGraph();
+        // oxygen_out_graph.options.keys = ['et', 'fico'];
+        // oxygen_out_graph.options.label = 'Fi/ETAA FiCO2';
+        // oxygen_out_graph.options.measurement = '';
+        // oxygen_out_graph.axes.y.min = 0;
+        // oxygen_out_graph.axes.y.max = 12;
+        // oxygen_out_graph.style.dimensions.height = 300;
+        // oxygen_out_graph.style.data_style = 'multi';
+        // oxygen_out_graph.style.axis.x.hide = true;
 
         var oxygen_in_graph = new window.NH.NHGraph();
         oxygen_in_graph.options.keys = ['sp02'];
@@ -89,22 +91,25 @@ angular.module('opal.controllers').controller(
         // var events_focus = new window.NH.NHFocus();
         var drugs_context = new window.NH.NHContext();
         drugs_context.graph = bp_pulse_graph;
-        drugs_context.style.margin.bottom = 0;
-        drugs_context.style.margin.top = 0;
-        drugs_context.style.margin.left = 100;
+        // drugs_context.style.margin.bottom = 0;
+        // drugs_context.style.margin.top = 0;
+        // drugs_context.style.margin.left = 100;
         // observations_focus.graphs.push(bp_pulse_graph);
         // observations_focus.graphs.push(oxygen_out_graph);
         observations_focus.graphs.push(oxygen_in_graph);
         // events_focus.graphs.push(events_graph);
 
         observations_focus.title = '';
-        observations_focus.style.margin.left = 100;
-        observation_chart.context = drugs_context;
-        observation_chart.focus = observations_focus;
+        // observations_focus.style.margin.left = 100;
+        $scope.observation_chart.context = drugs_context;
+        $scope.observation_chart.focus = observations_focus;
 
-        observation_chart.data.raw = data;
-        observation_chart.init();
-        observation_chart.draw();
+        $scope.observation_chart.data.raw = $scope.patient.episodes[0].observation.map(function(a){
+            a.date_terminated = $scope.observation_chart.date_to_proper_string(a.created._d);
+            return a;
+        });
+        $scope.observation_chart.init();
+        $scope.observation_chart.draw();
 
         // events_focus.title = '';
         // events_chart.focus = events_focus;
