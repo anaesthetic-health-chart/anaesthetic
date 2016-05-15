@@ -6,8 +6,7 @@ angular.module('opal.controllers').controller(
             $cookieStore, DrugLoader
           ){
 
-          // TODO this is naughty and should be used in the wild
-          // hopefuly ok for the hack day though
+
           var self = this;
           this.drugs_list = [];
           this.drug_types = [];
@@ -19,6 +18,8 @@ angular.module('opal.controllers').controller(
 
               self.drug_types = _.keys(drugs_list);
 
+              // TODO this is naughty and should be used in the wild
+              // hopefuly ok for the hack day though
               var setDrug = function(nv){
                   _.each(drugs_list, function(v, k){
                       if(v.indexOf(nv) != -1){
