@@ -892,42 +892,112 @@ class NHGraph extends NHGraphLib
     .y((d) ->
       return obj.axes.y.scale(d[obj.options.keys[key_index]])
     )
-    obj.drawables.data.selectAll('.path'+key_index)
+    obj.drawables.data.selectAll("path").remove()
+    obj.drawables.data.append("path")
+    .datum(obj.parent_obj.parent_obj.data.raw)
     .attr("d", obj.drawables.area)
-    obj.drawables.data.selectAll('.point'+key_index).attr('cx', (d) ->
-      return obj.axes.x.scale(obj.date_from_string(d.date_terminated))
-    ).attr('cy', (d) ->
-      return obj.axes.y.scale(d[obj.options.keys[key_index]])
+    .attr("clip-path", "url(#"+ obj.options.keys.join('-')+'-clip' +")")
+    .attr("class", "path path"+key_index)
+
+    obj.drawables.data.selectAll(".point"+key_index)
+    .data(obj.parent_obj.parent_obj.data.raw.filter((d) ->
+      return d
+      )
     )
-    obj.drawables.data.selectAll('.empty_point').attr('cx', (d) ->
+    .enter().append("circle").attr("cx", (d) ->
       return obj.axes.x.scale(obj.date_from_string(d.date_terminated))
     ).attr("cy", (d) ->
       return obj.axes.y.scale(d[obj.options.keys[key_index]])
+    ).attr("r", 3).attr("class", "point point"+key_index)
+    .attr("clip-path", "url(#"+ obj.options.keys.join('-')+'-clip' +")")
+    .on('mouseover', (d) ->
+      obj.show_popup(d[obj.options.keys[key_index]],event.pageX,event.pageY)
+    )
+    .on('mouseout', (d) ->
+      obj.hide_popup()
     )
 
   redraw_ranged: (obj, key_index=false) ->
     keys = if key_index then obj.options.keys[key_index] else obj.options.keys
-    obj.drawables.data.selectAll('.range.top').attr('x', (d) ->
-      return obj.axes.x.scale(obj.date_from_string(d.date_terminated)) -
-        (obj.style.range.cap.width/2)+1
-    ).attr('y': (d) ->
-      return obj.axes.y.scale(d[keys[0]])
+    obj.drawables.data.selectAll(".range.top")
+    .data(obj.parent_obj.parent_obj.data.raw).enter()
+    .append("rect")
+    .attr({
+      'y': (d) ->
+        return obj.axes.y.scale(d[[0]])
+      ,
+      'x': (d) ->
+        return \
+          obj.axes.x.scale(obj.date_from_string(d.date_terminated)) -
+          (obj.style.range.cap.width/2)+1
+      ,
+      'height': obj.style.range.cap.height,
+      'width': obj.style.range.cap.width,
+      'class': 'range top',
+      'clip-path': 'url(#'+ keys.join('-')+'-clip' +')'
+    })
+    .on('mouseover', (d) ->
+      string_to_use = ''
+      for key in keys
+        string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>'
+      obj.show_popup('<p>'+string_to_use+'</p>',event.pageX,event.pageY)
+    )
+    .on('mouseout', (d) ->
+      obj.hide_popup()
     )
 
-    obj.drawables.data.selectAll('.range.bottom').attr('x', (d) ->
-      return obj.axes.x.scale(obj.date_from_string(d.date_terminated)) -
-        (obj.style.range.cap.width/2)+1
-    ).attr('y': (d) ->
-      return obj.axes.y.scale(d[keys[1]])
+
+    obj.drawables.data.selectAll(".range.bottom")
+    .data(obj.parent_obj.parent_obj.data.raw).enter()
+    .append("rect")
+    .attr({
+      'y': (d) ->
+        return obj.axes.y.scale(d[keys[1]])
+      ,
+      'x': (d) ->
+        return \
+          obj.axes.x.scale(obj.date_from_string(d.date_terminated)) -
+          (obj.style.range.cap.width/2)+1
+      ,
+      'height': obj.style.range.cap.height,
+      'width': obj.style.range.cap.width,
+      'class': 'range bottom',
+      'clip-path': 'url(#'+ keys.join('-')+'-clip' +')'
+    }).on('mouseover', (d) ->
+      string_to_use = ''
+      for key in keys
+        string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>'
+      obj.show_popup('<p>'+string_to_use+'</p>',event.pageX,event.pageY)
+    )
+    .on('mouseout', (d) ->
+      obj.hide_popup()
     )
 
-    obj.drawables.data.selectAll('.range.extent').attr('x', (d) ->
-      return obj.axes.x.scale(obj.date_from_string(d.date_terminated))
-    ).attr('y': (d) ->
-      return obj.axes.y.scale(d[keys[0]])
-    ).attr('height': (d) ->
-      return obj.axes.y.scale(d[keys[1]]) -
-        obj.axes.y.scale(d[keys[0]])
+    obj.drawables.data.selectAll(".range.extent")
+    .data(obj.parent_obj.parent_obj.data.raw).enter()
+    .append("rect")
+    .attr({
+      'y': (d) ->
+        return obj.axes.y.scale(d[keys[0]])
+      ,
+      'x': (d) ->
+        return obj.axes.x.scale(obj.date_from_string(d.date_terminated))
+      ,
+      'height': (d) ->
+        obj.axes.y.scale(d[keys[1]]) -
+          obj.axes.y.scale(d[keys[0]])
+      ,
+      'width': obj.style.range.width,
+      'class': 'range extent',
+      'clip-path': 'url(#'+ keys.join('-')+'-clip' +')'
+    }).on('mouseover', (d) ->
+      string_to_use = ''
+      for key in keys
+        string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>'
+      obj.show_popup('<p>'+string_to_use+'</p>',event.pageX,event.pageY)
+    )
+    .on('mouseout', (d) ->
+      obj.hide_popup()
     )
 
 ### istanbul ignore if ###
