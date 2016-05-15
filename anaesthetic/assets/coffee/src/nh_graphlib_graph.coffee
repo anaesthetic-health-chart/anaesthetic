@@ -849,15 +849,16 @@ class NHGraph extends NHGraphLib
       return self.axes.x.scale(d)
     )
 
-    self.drawables.background.obj.selectAll('.grid.horizontal')
-    .data(self.axes.y.scale.ticks())
-    .attr('x2', self.axes.x.scale.range()[1])
-    .attr('y1', (d) ->
-      return self.axes.y.scale(d)
-    )
-    .attr('y2', (d) ->
-      return self.axes.y.scale(d)
-    )
+    if self.axes.y.type == 'number'
+      self.drawables.background.obj.selectAll('.grid.horizontal')
+      .data(self.axes.y.scale.ticks())
+      .attr('x2', self.axes.x.scale.range()[1])
+      .attr('y1', (d) ->
+        return self.axes.y.scale(d)
+      )
+      .attr('y2', (d) ->
+        return self.axes.y.scale(d)
+      )
     self.obj.selectAll('.clip').selectAll('rect')
     .attr('width', self.axes.x.scale.range()[1])
 

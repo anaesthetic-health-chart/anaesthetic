@@ -1463,11 +1463,13 @@ NHGraph = (function(superClass) {
     }).attr('x2', function(d) {
       return self.axes.x.scale(d);
     });
-    self.drawables.background.obj.selectAll('.grid.horizontal').data(self.axes.y.scale.ticks()).attr('x2', self.axes.x.scale.range()[1]).attr('y1', function(d) {
-      return self.axes.y.scale(d);
-    }).attr('y2', function(d) {
-      return self.axes.y.scale(d);
-    });
+    if (self.axes.y.type === 'number') {
+      self.drawables.background.obj.selectAll('.grid.horizontal').data(self.axes.y.scale.ticks()).attr('x2', self.axes.x.scale.range()[1]).attr('y1', function(d) {
+        return self.axes.y.scale(d);
+      }).attr('y2', function(d) {
+        return self.axes.y.scale(d);
+      });
+    }
     self.obj.selectAll('.clip').selectAll('rect').attr('width', self.axes.x.scale.range()[1]);
     switch (self.style.data_style) {
       case 'stepped':

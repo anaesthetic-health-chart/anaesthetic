@@ -244,7 +244,7 @@ NHGraph = (function(superClass) {
       ref2 = this.axes.y.options;
       for (index = l = 0, len2 = ref2.length; l < len2; index = ++l) {
         label = ref2[index];
-        label_range.push(index * (top_offset + this.style.dimensions.height) / this.axes.y.options.length + top_offset);
+        label_range.push(index * (top_offset + this.style.dimensions.height) / (this.axes.y.options.length - 1));
       }
       this.axes.y.scale = d3.scale.ordinal().domain(this.axes.y.options).range(label_range);
       this.axes.y.axis = d3.svg.axis().scale(this.axes.y.scale).orient('left');
@@ -645,10 +645,8 @@ NHGraph = (function(superClass) {
 
   NHGraph.prototype.draw_graphic = function(obj) {
     return obj.drawables.data.selectAll(".graphic").data(obj.parent_obj.parent_obj.data.raw).enter().append("svg:image").attr("x", function(d) {
-      return obj.axes.x.scale(obj.date_from_string(d.date_terminated));
-    }).attr("y", function(d) {
-      return obj.axes.y.scale(1);
-    }).attr("xlink:href", obj.options.graphic).attr("class", "graphic").attr("clip-path", "url(#" + obj.options.keys.join('-') + '-clip' + ")");
+      return obj.axes.x.scale(obj.date_from_string(d.date_terminated)) - obj.axes.y.scale.range()[0] / 4;
+    }).attr("y", obj.axes.y.scale.range()[0] / 4).attr("xlink:href", obj.options.graphic).attr("class", "graphic").attr('width', obj.axes.y.scale.range()[0] / 2).attr('height', obj.axes.y.scale.range()[0] / 2).attr("clip-path", "url(#" + obj.options.keys.join('-') + '-clip' + ")");
   };
 
   NHGraph.prototype.redraw = function(parent_obj) {
@@ -704,11 +702,13 @@ NHGraph = (function(superClass) {
     }).attr('x2', function(d) {
       return self.axes.x.scale(d);
     });
-    self.drawables.background.obj.selectAll('.grid.horizontal').data(self.axes.y.scale.ticks()).attr('x2', self.axes.x.scale.range()[1]).attr('y1', function(d) {
-      return self.axes.y.scale(d);
-    }).attr('y2', function(d) {
-      return self.axes.y.scale(d);
-    });
+    if (self.axes.y.type === 'number') {
+      self.drawables.background.obj.selectAll('.grid.horizontal').data(self.axes.y.scale.ticks()).attr('x2', self.axes.x.scale.range()[1]).attr('y1', function(d) {
+        return self.axes.y.scale(d);
+      }).attr('y2', function(d) {
+        return self.axes.y.scale(d);
+      });
+    }
     self.obj.selectAll('.clip').selectAll('rect').attr('width', self.axes.x.scale.range()[1]);
     switch (self.style.data_style) {
       case 'stepped':

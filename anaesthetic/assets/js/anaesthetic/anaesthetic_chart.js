@@ -1,13 +1,4 @@
-angular.module('opal.controllers').controller(
-    'GraphController',
-    function(
-        $rootScope, $scope, $window,
-            recordLoader, ngProgressLite, $q,
-            $cookieStore, DrugLoader
-          ){
-
-            
-        var observation_chart = new window.NH.NHGraphLib('#observations');
+var observation_chart = new window.NH.NHGraphLib('#observations');
         var events_chart = new window.NH.NHGraphLib('#events');
         var data = [
             {
@@ -85,9 +76,7 @@ angular.module('opal.controllers').controller(
         ]
 
         var bp_pulse_graph = new window.NH.NHGraph();
-        bp_pulse_graph.options.keys = ['pulse',
-            ['blood_pressure_systolic', 'blood_pressure_diastolic']
-        ];
+        bp_pulse_graph.options.keys = ['pulse', ['blood_pressure_systolic', 'blood_pressure_diastolic']];
         bp_pulse_graph.options.label = 'Pulse, Blood Pressure';
         bp_pulse_graph.options.measurement = '';
         bp_pulse_graph.axes.y.min = 30;
@@ -131,7 +120,7 @@ angular.module('opal.controllers').controller(
         observations_focus.title = '';
         observation_chart.context = drugs_context;
         observation_chart.focus = observations_focus;
-
+    
         observation_chart.data.raw = data;
         observation_chart.init();
         observation_chart.draw();
@@ -143,4 +132,3 @@ angular.module('opal.controllers').controller(
         events_chart.style.padding.top = 0;
         events_chart.init();
         events_chart.draw();
-});
