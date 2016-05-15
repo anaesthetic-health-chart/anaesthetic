@@ -109,7 +109,7 @@ NHGraphLib = (function() {
     if (isNaN(date.getTime())) {
       throw new Error("Invalid date format");
     }
-    return date.getFullYear() + '-' + this.leading_zero(date.getMonth() + 1) + "-" + date.getDate() + " " + this.leading_zero(date.getHours()) + ":" + this.leading_zero(date.getMinutes()) + ":" + this.leading_zero(date.getSeconds());
+    return date.getFullYear() + '-' + this.leading_zero(date.getMonth() + 1) + "-" + date.getDate() + " " + this.leading_zero(date.getHours()) + ":" + this.leading_zero(date.getMinutes());
   };
 
   NHGraphLib.prototype.leading_zero = function(date_element) {
@@ -301,15 +301,6 @@ NHGraphLib = (function() {
     } else {
       throw new Error('No raw data provided');
     }
-  };
-
-  NHGraphLib.prototype.redraw = function(extent) {
-    this.context.axes.x.min = extent[0];
-    this.context.axes.x.max = extent[1];
-    this.focus.axes.x.min = extent[0];
-    this.focus.axes.x.max = extent[1];
-    this.context.redraw(this);
-    return this.focus.redraw(extent);
   };
 
   NHGraphLib.prototype.draw_table = function(self) {
@@ -581,16 +572,6 @@ NHContext = (function(superClass) {
 
   NHContext.prototype.draw = function(parent_svg) {
     this.graph.draw(this);
-  };
-
-  NHContext.prototype.redraw = function(parent_svg) {
-    var left_offset;
-    left_offset = parent_svg.style.padding.left + this.style.margin.left;
-    this.graph.axes.x.scale.domain([this.axes.x.min, this.axes.x.max]);
-    this.graph.axes.x.axis.ticks(this.style.dimensions.width / 100);
-    this.graph.axes.x.scale.range([0, this.style.dimensions.width - this.graph.style.label_width]);
-    this.axes.x.scale = d3.time.scale().domain([this.axes.x.min, this.axes.x.max]).range([left_offset, this.style.dimensions.width]);
-    this.graph.redraw(this);
   };
 
   return NHContext;
@@ -1391,7 +1372,9 @@ NHGraph = (function(superClass) {
     if (style == null) {
       style = 'linear';
     }
-    obj.drawables.area = d3.svg.line().interpolate(style === 'stepped' ? "step-after" : "linear").x(function(d) {
+    obj.drawables.area = d3.svg.line().interpolate(style === 'stepped' ? "step-after" : "linear").defined(function(d) {
+      return d;
+    }).x(function(d) {
       return obj.axes.x.scale(obj.date_from_string(d.date_terminated));
     }).y(function(d) {
       return obj.axes.y.scale(d[obj.options.keys[key_index]]);
@@ -1500,7 +1483,7 @@ NHGraph = (function(superClass) {
     switch (self.style.data_style) {
       case 'stepped':
       case 'linear':
-        self.redraw_linear(self, 0, self.style.data_style);
+        self.draw_linear(self, 0, self.style.data_style);
         break;
       case 'range':
         self.redraw_ranged(self);
@@ -1519,9 +1502,9 @@ NHGraph = (function(superClass) {
         for (index = j = 0, len = ref.length; j < len; index = ++j) {
           key = ref[index];
           if (typeof key === 'object') {
-            self.redraw_ranged(self, index);
+            self.draw_ranged(self, index);
           } else {
-            self.redraw_linear(self, index);
+            self.draw_linear(self, index);
           }
         }
         break;
@@ -1537,7 +1520,9 @@ NHGraph = (function(superClass) {
     if (style == null) {
       style = 'linear';
     }
-    obj.drawables.area = d3.svg.line().interpolate(style === 'stepped' ? "step-after" : "linear").x(function(d) {
+    obj.drawables.area = d3.svg.line().interpolate(style === 'stepped' ? "step-after" : "linear").defined(function(d) {
+      return d;
+    }).x(function(d) {
       return obj.axes.x.scale(obj.date_from_string(d.date_terminated));
     }).y(function(d) {
       return obj.axes.y.scale(d[obj.options.keys[key_index]]);
