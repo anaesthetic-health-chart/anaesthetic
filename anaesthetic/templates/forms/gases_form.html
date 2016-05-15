@@ -35,3 +35,12 @@
     </div>
   </div>
 </div>
+<div class="row content-offset-25">
+  <label class="control-label col-sm-3">Anaesthetic agent</label>
+  <div class="col-sm-4">
+    <input class="form-control" type="text"
+           placeholder="Inspired"
+           ng-pattern="/^[0-9\.]+$/"
+           ng-model="editing.gases.anaesthetic_agent" />
+  </div>
+</div>

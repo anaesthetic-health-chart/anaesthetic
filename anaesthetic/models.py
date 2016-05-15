@@ -1,6 +1,7 @@
 """
 anaesthetic models.
 """
+from datetime import datetime
 from django.db import models as db_models
 from opal.core.lookuplists import LookupList
 
@@ -25,17 +26,33 @@ class GivenDrug(models.PatientSubrecord):
     drug_name = db_models.CharField(max_length=255)
     drug_type = db_models.CharField(max_length=255)
     rates = db_models.CharField(max_length=255)
-    rates = db_models.CharField(max_length=255)
     started = db_models.DateTimeField(blank=True, null=True)
     stopped = db_models.DateTimeField(blank=True, null=True)
     one_off = db_models.DateTimeField(blank=True, null=True)
+
+
+class RemoteAdded(models.PatientSubrecord):
+    class Meta:
+        abstract = True
+
+    def update_from_dict(self, data, user, force=False):
+        data["patient_id"] = 1
+        data["datetime"] = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+        return super(RemoteAdded, self).update_from_dict(data, user, force=True)
+
+    def set_created_by_id(self, incoming_value, user, *args, **kwargs):
+        pass
+
+    def set_updated_by_id(self, incoming_value, user, *args, **kwargs):
+        pass
+
 
 class PatientPhysicalAttributes(models.PatientSubrecord):
     height       = db_models.FloatField(blank=True, null=True)
     weight       = db_models.FloatField(blank=True, null=True)
 
 
-class Observation(models.PatientSubrecord):
+class Observation(RemoteAdded):
     _sort           = 'datetime'
     _icon           = 'fa fa-line-chart'
     _list_limit     = 1
@@ -48,9 +65,6 @@ class Observation(models.PatientSubrecord):
     temperature  = db_models.FloatField(blank=True, null=True)
     datetime = db_models.DateTimeField()
 
-    def update_from_dict(self, data, user, force=False):
-        return super(Observation, self).update_from_dict(data, user, force=True)
-
 
 class AnaestheticTechnique(models.PatientSubrecord):
     _title = "Anaesthetic Technique"
@@ -59,16 +73,17 @@ class AnaestheticTechnique(models.PatientSubrecord):
     maintenance = db_models.TextField(blank=True, null=True)
 
 
-class Gases(models.PatientSubrecord):
+class Gases(RemoteAdded):
     _title = "Gases"
     inspired_carbon_dioxide = db_models.FloatField(blank=True, null=True)
     expired_carbon_dioxide = db_models.FloatField(blank=True, null=True)
     inspired_oxygen = db_models.FloatField(blank=True, null=True)
     expired_oxygen = db_models.FloatField(blank=True, null=True)
+    anaesthetic_agent = db_models.CharField(max_length=255)
     datetime = db_models.DateTimeField()
 
 
-class Ventilators(models.PatientSubrecord):
+class Ventilators(RemoteAdded):
     _title = "Ventilators"
     mode = db_models.CharField(max_length=255)
     peak_airway_pressure = db_models.FloatField(blank=True, null=True)
