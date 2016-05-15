@@ -8,10 +8,11 @@ class Application(application.OpalApplication):
     flow_module   = 'anaesthetic.flow'
     javascripts   = [
         'js/anaesthetic/routes.js',
+        'js/anaesthetic/controllers/drug_controller.js',
+        'js/anaesthetic/controllers/graph_controller.js',
+        'js/anaesthetic/services/drug_loader.js',
+        'js/anaesthetic/graphlib.js',
     ]
     styles = [
         "css/anaesthetic.css"
-    ]
-    angular_module_deps = [
-        'js/anaesthetic/graphlib.js'
     ]
