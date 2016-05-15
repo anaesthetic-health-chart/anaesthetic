@@ -1,9 +1,9 @@
 {% load forms %}
-<div ng-controller="DrugController">
-  {% input  field="GivenDrug.route"  %}
-  {% input field="GivenDrug.drug_name" %}
-  {% input field="GivenDrug.drug_type" %}
-  {% input  field="GivenDrug.rates"  %}
+<div ng-controller="DrugController as drug_controller">
+  {% input field="GivenDrug.route" %}
+  {% input field="GivenDrug.drug_name" lookuplist="drug_controller.drugs_list" %}
+  {% input field="GivenDrug.drug_type" lookuplist="drug_controller.drug_types" %}
+  {% input field="GivenDrug.rates"  %}
 </div>
 
 <div class="form-group">
