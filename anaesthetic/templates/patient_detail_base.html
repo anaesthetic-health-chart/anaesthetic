@@ -10,15 +10,15 @@
 
 <div class="container-fluid">
     <!-- Header -->
-    
+
     <header class="page-header">
-    
+
       <h2 class="logo">
         DAC
       </h2>
 
       <ul id="patient-meta-data">
-          
+
         <li>
           <h5>Name</h5>
           <p>[[ patient.demographics[0].first_name ]] [[ patient.demographics[0].surname ]]</p>
@@ -35,7 +35,7 @@
         </li>
 
       </ul>
-      
+
       <a href="#" class="more-button">
         More
       </a>
@@ -46,7 +46,7 @@
     <div class="row">
       {% block content %}
 
-      <div class="col-md-3"> <!-- Episode Switcher -->
+      <div class="col-md-3 content-offset menu-bar-offset"> <!-- Episode Switcher -->
         {% record_panel models.AnaestheticTechnique %}
 
       </div> <!-- End episode switcher -->
