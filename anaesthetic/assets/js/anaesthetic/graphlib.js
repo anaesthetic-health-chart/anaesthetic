@@ -3,6 +3,7 @@ var NHGraphLib,
 
 NHGraphLib = (function() {
   function NHGraphLib(element) {
+    this.date_to_proper_string = bind(this.date_to_proper_string, this);
     this.date_to_string = bind(this.date_to_string, this);
     var self;
     this.style = {
@@ -102,6 +103,13 @@ NHGraphLib = (function() {
       final += days[date.getDay()] + " ";
     }
     return final += date.getDate() + '/' + this.leading_zero(date.getMonth() + 1) + "/" + this.leading_zero(date.getFullYear()) + " " + this.leading_zero(date.getHours()) + ":" + this.leading_zero(date.getMinutes());
+  };
+
+  NHGraphLib.prototype.date_to_proper_string = function(date) {
+    if (isNaN(date.getTime())) {
+      throw new Error("Invalid date format");
+    }
+    return date.getFullYear() + '-' + this.leading_zero(date.getMonth() + 1) + "-" + date.getDate() + " " + this.leading_zero(date.getHours()) + ":" + this.leading_zero(date.getMinutes());
   };
 
   NHGraphLib.prototype.leading_zero = function(date_element) {
@@ -1372,6 +1380,7 @@ NHGraph = (function(superClass) {
       return obj.axes.y.scale(d[obj.options.keys[key_index]]);
     });
     if (obj.parent_obj.parent_obj.data.raw.length > 1) {
+      obj.drawables.data.selectAll("path").remove();
       obj.drawables.data.append("path").datum(obj.parent_obj.parent_obj.data.raw).attr("d", obj.drawables.area).attr("clip-path", "url(#" + obj.options.keys.join('-') + '-clip' + ")").attr("class", "path path" + key_index);
     }
     obj.drawables.data.selectAll(".point" + key_index).data(obj.parent_obj.parent_obj.data.raw.filter(function(d) {
@@ -1474,7 +1483,7 @@ NHGraph = (function(superClass) {
     switch (self.style.data_style) {
       case 'stepped':
       case 'linear':
-        self.redraw_linear(self, 0, self.style.data_style);
+        self.draw_linear(self, 0, self.style.data_style);
         break;
       case 'range':
         self.redraw_ranged(self);
@@ -1493,9 +1502,9 @@ NHGraph = (function(superClass) {
         for (index = j = 0, len = ref.length; j < len; index = ++j) {
           key = ref[index];
           if (typeof key === 'object') {
-            self.redraw_ranged(self, index);
+            self.draw_ranged(self, index);
           } else {
-            self.redraw_linear(self, index);
+            self.draw_linear(self, index);
           }
         }
         break;

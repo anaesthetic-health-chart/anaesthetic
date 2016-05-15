@@ -611,6 +611,7 @@ NHGraph = (function(superClass) {
       return obj.axes.y.scale(d[obj.options.keys[key_index]]);
     });
     if (obj.parent_obj.parent_obj.data.raw.length > 1) {
+      obj.drawables.data.selectAll("path").remove();
       obj.drawables.data.append("path").datum(obj.parent_obj.parent_obj.data.raw).attr("d", obj.drawables.area).attr("clip-path", "url(#" + obj.options.keys.join('-') + '-clip' + ")").attr("class", "path path" + key_index);
     }
     obj.drawables.data.selectAll(".point" + key_index).data(obj.parent_obj.parent_obj.data.raw.filter(function(d) {

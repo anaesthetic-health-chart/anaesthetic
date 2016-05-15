@@ -126,6 +126,14 @@ class NHGraphLib
       @leading_zero(date.getFullYear()) + " " + @leading_zero(date.getHours()) +
       ":" + @leading_zero(date.getMinutes())
 
+  date_to_proper_string: (date) =>
+    if isNaN(date.getTime())
+      throw new Error("Invalid date format")
+    return date.getFullYear() + '-' + @leading_zero(date.getMonth() + 1) + "-" +
+        date.getDate() + " " + @leading_zero(date.getHours()) +
+        ":" + @leading_zero(date.getMinutes())
+
+
   # Convert number like 1 into 01 and 12 into 12 (as no leading zero needed)
   leading_zero: (date_element) ->
     return ("0" + date_element).slice(-2)
