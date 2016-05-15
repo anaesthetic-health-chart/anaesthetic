@@ -463,8 +463,6 @@ class NHGraph extends NHGraphLib
       # 2. Append and draw the line using the plotted points
       # 3. For each point in the line append a circle which event listeners for
       # mouseover and mouseout to control the tool tips
-      # 4. For each empty point (normally used for partial observations) append
-      # a circle with class 'empty_point'
       when 'stepped', 'linear' then self.draw_linear(self, 0,
         self.style.data_style)
       # Draw a ranged graph, which involves:
@@ -508,7 +506,7 @@ class NHGraph extends NHGraphLib
         ,
         'x': (d) ->
           return \
-            obj.axes.x.scale(obj.date_from_string(d.date_terminated)) -
+            obj.axes.x.scale(d.created._d) -
             (obj.style.range.cap.width/2)+1
         ,
         'height': obj.style.range.cap.height,
@@ -540,7 +538,7 @@ class NHGraph extends NHGraphLib
         ,
         'x': (d) ->
           return \
-            obj.axes.x.scale(obj.date_from_string(d.date_terminated)) -
+            obj.axes.x.scale(d.created._d) -
             (obj.style.range.cap.width/2)+1
         ,
         'height': obj.style.range.cap.height,
@@ -571,7 +569,7 @@ class NHGraph extends NHGraphLib
           return obj.axes.y.scale(d[keys[0]])
         ,
         'x': (d) ->
-          return obj.axes.x.scale(obj.date_from_string(d.date_terminated))
+          return obj.axes.x.scale(d.created._d)
         ,
         'height': (d) ->
           obj.axes.y.scale(d[keys[1]]) -
@@ -589,117 +587,6 @@ class NHGraph extends NHGraphLib
       .on('mouseout', (d) ->
         obj.hide_popup()
       )
-
-      obj.drawables.data.selectAll(".range.top.empty_point")
-      .data(obj.parent_obj.parent_obj.data.raw.filter((d) ->
-        none_vals = d.none_values
-        key = keys[0]
-        partial = obj.options.plot_partial
-        if none_vals isnt "[]" and d[key] isnt false and partial
-          return d
-        )
-      ).enter()
-      .append("rect")
-      .attr({
-        'y': (d) ->
-          return obj.axes.y.scale(d[keys[0]])
-        ,
-        'x': (d) ->
-          return \
-            obj.axes.x.scale(obj.date_from_string(d.date_terminated)) -
-            (obj.style.range.cap.width/2)+1
-        ,
-        'height': obj.style.range.cap.height,
-        'width': obj.style.range.cap.width,
-        'class': 'range top empty_point',
-        'clip-path': 'url(#'+ keys.join('-')+'-clip' +')'
-      })
-      .on('mouseover', (d) ->
-        string_to_use = 'Partial Observation:<br>'
-        for key in keys
-          string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>'
-        obj.show_popup('<p>'+string_to_use+'</p>',
-          event.pageX,
-          event.pageY)
-      )
-      .on('mouseout', (d) ->
-        obj.hide_popup()
-      )
-
-
-      obj.drawables.data.selectAll(".range.bottom.empty_point")
-      .data(obj.parent_obj.parent_obj.data.raw.filter((d) ->
-        none_vals = d.none_values
-        key = keys[1]
-        partial = obj.options.plot_partial
-        if none_vals isnt "[]" and d[key] isnt false and partial
-          return d
-        )
-      ).enter()
-      .append("rect")
-      .attr({
-        'y': (d) ->
-          return obj.axes.y.scale(d[keys[1]])
-        ,
-        'x': (d) ->
-          return \
-            obj.axes.x.scale(obj.date_from_string(d.date_terminated)) -
-            (obj.style.range.cap.width/2)+1
-        ,
-        'height': obj.style.range.cap.height,
-        'width': obj.style.range.cap.width,
-        'class': 'range bottom empty_point',
-        'clip-path': 'url(#'+ keys.join('-')+'-clip' +')'
-      }).on('mouseover', (d) ->
-        string_to_use = 'Partial Observation:<br>'
-        for key in keys
-          string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>'
-        obj.show_popup('<p>'+string_to_use+'</p>',
-          event.pageX,
-          event.pageY)
-      )
-      .on('mouseout', (d) ->
-        obj.hide_popup()
-      )
-
-      obj.drawables.data.selectAll(".range.extent.empty_point")
-      .data(obj.parent_obj.parent_obj.data.raw.filter((d) ->
-        partial = obj.options.plot_partial
-        top = d[keys[0]]
-        bottom = d[keys[1]]
-        none_vals = d.none_values
-        keys_valid = top isnt false and bottom isnt false
-        if none_vals isnt "[]" and keys_valid and partial
-          return d
-        )
-      ).enter()
-      .append("rect")
-      .attr({
-        'y': (d) ->
-          return obj.axes.y.scale(d[keys[0]])
-        ,
-        'x': (d) ->
-          return obj.axes.x.scale(
-            obj.date_from_string(d.date_terminated))
-        ,
-        'height': (d) ->
-          obj.axes.y.scale(d[keys[1]]) -
-            obj.axes.y.scale(d[keys[0]])
-        ,
-        'width': obj.style.range.width,
-        'class': 'range extent empty_point',
-        'clip-path': 'url(#'+ keys.join('-')+'-clip' +')'
-      }).on('mouseover', (d) ->
-        string_to_use = 'Partial Observation<br>'
-        for key in keys
-          string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>'
-        obj.show_popup('<p>'+string_to_use+'</p>',
-          event.pageX,
-          event.pageY)
-      )
-      .on('mouseout', (d) ->
-        obj.hide_popup()
-      )
     else
       # Throw error if given incorrect number of keys to plot
       throw new Error('Cannot plot ranged graph with ' +
@@ -713,7 +600,7 @@ class NHGraph extends NHGraphLib
       return d
     )
     .x((d) ->
-      return obj.axes.x.scale(obj.date_from_string(d.date_terminated))
+      return obj.axes.x.scale(d.created._d)
     )
     .y((d) ->
       return obj.axes.y.scale(d[obj.options.keys[key_index]])
@@ -734,7 +621,7 @@ class NHGraph extends NHGraphLib
       )
     )
     .enter().append("circle").attr("cx", (d) ->
-      return obj.axes.x.scale(obj.date_from_string(d.date_terminated))
+      return obj.axes.x.scale(d.created._d)
     ).attr("cy", (d) ->
       return obj.axes.y.scale(d[obj.options.keys[key_index]])
     ).attr("r", 3).attr("class", "point point"+key_index)
@@ -745,39 +632,12 @@ class NHGraph extends NHGraphLib
     .on('mouseout', (d) ->
       obj.hide_popup()
     )
-    obj.drawables.data.selectAll(".empty_point")
-    .data(obj.parent_obj.parent_obj.data.raw.filter((d) ->
-      none_vals = d.none_values
-      key = obj.options.keys[key_index]
-      partial = obj.options.plot_partial
-      if none_vals isnt "[]" and d[key] isnt false and partial
-        return d
-      )
-    )
-    .enter().append("circle")
-    .attr("cx", (d) ->
-      return obj.axes.x.scale(obj.date_from_string(d.date_terminated))
-    )
-    .attr("cy", (d) ->
-      return obj.axes.y.scale(d[obj.options.keys[key_index]])
-    )
-    .attr("r", 3)
-    .attr("class", "empty_point")
-    .attr("clip-path", "url(#"+ obj.options.keys.join('-')+'-clip' +")")
-    .on('mouseover', (d) ->
-      obj.show_popup('Partial observation: ' + d[obj.options.keys[key_index]],
-        event.pageX,
-        event.pageY)
-    )
-    .on('mouseout', (d) ->
-      obj.hide_popup()
-    )
 
   draw_graphic: (obj) ->
     obj.drawables.data.selectAll(".graphic")
     .data(obj.parent_obj.parent_obj.data.raw)
     .enter().append("svg:image").attr("x", (d) ->
-      return obj.axes.x.scale(obj.date_from_string(d.date_terminated)) -
+      return obj.axes.x.scale(d.created._d) -
           obj.axes.y.scale.range()[0]/4
     ).attr("y", obj.axes.y.scale.range()[0]/4)
     .attr("xlink:href", obj.options.graphic)
@@ -867,7 +727,7 @@ class NHGraph extends NHGraphLib
     switch self.style.data_style
       # Redraw the line and points of the stepped and linear graphs with the
       # new scales
-      when 'stepped', 'linear' then self.redraw_linear(self, 0,
+      when 'stepped', 'linear' then self.draw_linear(self, 0,
         self.style.data_style)
       # Redraw the range caps and extent with the new scales
       when 'range' then self.redraw_ranged(self)
@@ -893,7 +753,7 @@ class NHGraph extends NHGraphLib
     .interpolate(if style is \
       'stepped' then "step-after" else "linear")
     .x((d) ->
-      return obj.axes.x.scale(obj.date_from_string(d.date_terminated))
+      return obj.axes.x.scale(d.created._d)
     )
     .y((d) ->
       return obj.axes.y.scale(d[obj.options.keys[key_index]])
@@ -903,34 +763,29 @@ class NHGraph extends NHGraphLib
     .attr("d", obj.drawables.area)
 
     obj.drawables.data.selectAll('.point'+key_index).attr('cx', (d) ->
-      return obj.axes.x.scale(obj.date_from_string(d.date_terminated))
+      return obj.axes.x.scale(d.created._d)
     ).attr('cy', (d) ->
-      return obj.axes.y.scale(d[obj.options.keys[key_index]])
-    )
-    obj.drawables.data.selectAll('.empty_point').attr('cx', (d) ->
-      return obj.axes.x.scale(obj.date_from_string(d.date_terminated))
-    ).attr("cy", (d) ->
       return obj.axes.y.scale(d[obj.options.keys[key_index]])
     )
 
   redraw_ranged: (obj, key_index=false) ->
     keys = if key_index then obj.options.keys[key_index] else obj.options.keys
     obj.drawables.data.selectAll('.range.top').attr('x', (d) ->
-      return obj.axes.x.scale(obj.date_from_string(d.date_terminated)) -
+      return obj.axes.x.scale(d.created._d) -
         (obj.style.range.cap.width/2)+1
     ).attr('y': (d) ->
       return obj.axes.y.scale(d[keys[0]])
     )
 
     obj.drawables.data.selectAll('.range.bottom').attr('x', (d) ->
-      return obj.axes.x.scale(obj.date_from_string(d.date_terminated)) -
+      return obj.axes.x.scale(d.created._d) -
         (obj.style.range.cap.width/2)+1
     ).attr('y': (d) ->
       return obj.axes.y.scale(d[keys[1]])
     )
 
     obj.drawables.data.selectAll('.range.extent').attr('x', (d) ->
-      return obj.axes.x.scale(obj.date_from_string(d.date_terminated))
+      return obj.axes.x.scale(d.created._d)
     ).attr('y': (d) ->
       return obj.axes.y.scale(d[keys[0]])
     ).attr('height': (d) ->

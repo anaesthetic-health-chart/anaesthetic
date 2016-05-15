@@ -163,6 +163,15 @@ NHContext = (function(superClass) {
     this.graph.draw(this);
   };
 
+  NHContext.prototype.redraw = function(parent_svg) {
+    var left_offset;
+    left_offset = parent_svg.style.padding.left + this.style.margin.left;
+    this.axes.x.min = parent_svg.data.extent.start;
+    this.axes.x.max = parent_svg.data.extent.end;
+    this.axes.x.scale = d3.time.scale().domain([this.axes.x.min, this.axes.x.max]).range([left_offset, this.style.dimensions.width]);
+    this.graph.draw(this);
+  };
+
   return NHContext;
 
 })(NHGraphLib);

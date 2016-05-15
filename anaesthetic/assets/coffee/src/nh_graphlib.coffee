@@ -281,9 +281,8 @@ class NHGraphLib
       if @.data.raw.length < 2 and not @.style.time_padding
         @.style.time_padding = 100
       if @.data.raw.length > 0
-        start = @.date_from_string(@.data.raw[0]['date_terminated'])
-        end = \
-          @.date_from_string(@.data.raw[@.data.raw.length-1]['date_terminated'])
+        start = @.data.raw[0].created._d
+        end = @.data.raw[@.data.raw.length-1].created._d
         if not @.style.time_padding
           @.style.time_padding = ((end-start)/@.style.dimensions.width)/500
         start.setMinutes(start.getMinutes()-@.style.time_padding)
@@ -332,6 +331,10 @@ class NHGraphLib
         @.draw_table(@)
     else
       throw new Error('No raw data provided')
+
+  redraw: () ->
+    @.context?.redraw(@)
+    @.focus?.redraw(@)
 
   # Draw the tabular representation
   # 1. Get the elements

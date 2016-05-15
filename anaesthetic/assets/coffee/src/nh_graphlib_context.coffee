@@ -216,6 +216,16 @@ class NHContext extends NHGraphLib
     @.graph.draw(@)
     return
 
+  redraw: (parent_svg) ->
+    left_offset = parent_svg.style.padding.left + @.style.margin.left
+    @.axes.x.min = parent_svg.data.extent.start
+    @.axes.x.max = parent_svg.data.extent.end
+    @.axes.x.scale = d3.time.scale()
+    .domain([@.axes.x.min, @.axes.x.max])
+    .range([left_offset, @.style.dimensions.width])
+    @.graph.draw(@)
+    return
+
 ### istanbul ignore if ###
 if !window.NH
   window.NH = {}

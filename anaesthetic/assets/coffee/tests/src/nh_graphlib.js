@@ -229,8 +229,8 @@ NHGraphLib = (function() {
         this.style.time_padding = 100;
       }
       if (this.data.raw.length > 0) {
-        start = this.date_from_string(this.data.raw[0]['date_terminated']);
-        end = this.date_from_string(this.data.raw[this.data.raw.length - 1]['date_terminated']);
+        start = this.data.raw[0].created._d;
+        end = this.data.raw[this.data.raw.length - 1].created._d;
         if (!this.style.time_padding) {
           this.style.time_padding = ((end - start) / this.style.dimensions.width) / 500;
         }
@@ -293,6 +293,14 @@ NHGraphLib = (function() {
     } else {
       throw new Error('No raw data provided');
     }
+  };
+
+  NHGraphLib.prototype.redraw = function() {
+    var ref, ref1;
+    if ((ref = this.context) != null) {
+      ref.redraw(this);
+    }
+    return (ref1 = this.focus) != null ? ref1.redraw(this) : void 0;
   };
 
   NHGraphLib.prototype.draw_table = function(self) {

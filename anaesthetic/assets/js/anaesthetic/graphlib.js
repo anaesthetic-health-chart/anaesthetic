@@ -229,8 +229,8 @@ NHGraphLib = (function() {
         this.style.time_padding = 100;
       }
       if (this.data.raw.length > 0) {
-        start = this.date_from_string(this.data.raw[0]['date_terminated']);
-        end = this.date_from_string(this.data.raw[this.data.raw.length - 1]['date_terminated']);
+        start = this.data.raw[0].created._d;
+        end = this.data.raw[this.data.raw.length - 1].created._d;
         if (!this.style.time_padding) {
           this.style.time_padding = ((end - start) / this.style.dimensions.width) / 500;
         }
@@ -293,6 +293,14 @@ NHGraphLib = (function() {
     } else {
       throw new Error('No raw data provided');
     }
+  };
+
+  NHGraphLib.prototype.redraw = function() {
+    var ref, ref1;
+    if ((ref = this.context) != null) {
+      ref.redraw(this);
+    }
+    return (ref1 = this.focus) != null ? ref1.redraw(this) : void 0;
   };
 
   NHGraphLib.prototype.draw_table = function(self) {
@@ -563,6 +571,15 @@ NHContext = (function(superClass) {
   };
 
   NHContext.prototype.draw = function(parent_svg) {
+    this.graph.draw(this);
+  };
+
+  NHContext.prototype.redraw = function(parent_svg) {
+    var left_offset;
+    left_offset = parent_svg.style.padding.left + this.style.margin.left;
+    this.axes.x.min = parent_svg.data.extent.start;
+    this.axes.x.max = parent_svg.data.extent.end;
+    this.axes.x.scale = d3.time.scale().domain([this.axes.x.min, this.axes.x.max]).range([left_offset, this.style.dimensions.width]);
     this.graph.draw(this);
   };
 
@@ -1184,7 +1201,7 @@ NHGraph = (function(superClass) {
           return obj.axes.y.scale(d[[0]]);
         },
         'x': function(d) {
-          return obj.axes.x.scale(obj.date_from_string(d.date_terminated)) - (obj.style.range.cap.width / 2) + 1;
+          return obj.axes.x.scale(d.created._d) - (obj.style.range.cap.width / 2) + 1;
         },
         'height': obj.style.range.cap.height,
         'width': obj.style.range.cap.width,
@@ -1210,7 +1227,7 @@ NHGraph = (function(superClass) {
           return obj.axes.y.scale(d[keys[1]]);
         },
         'x': function(d) {
-          return obj.axes.x.scale(obj.date_from_string(d.date_terminated)) - (obj.style.range.cap.width / 2) + 1;
+          return obj.axes.x.scale(d.created._d) - (obj.style.range.cap.width / 2) + 1;
         },
         'height': obj.style.range.cap.height,
         'width': obj.style.range.cap.width,
@@ -1227,7 +1244,7 @@ NHGraph = (function(superClass) {
       }).on('mouseout', function(d) {
         return obj.hide_popup();
       });
-      obj.drawables.data.selectAll(".range.extent").data(obj.parent_obj.parent_obj.data.raw.filter(function(d) {
+      return obj.drawables.data.selectAll(".range.extent").data(obj.parent_obj.parent_obj.data.raw.filter(function(d) {
         var bottom, top;
         top = d[keys[0]];
         bottom = d[keys[1]];
@@ -1239,7 +1256,7 @@ NHGraph = (function(superClass) {
           return obj.axes.y.scale(d[keys[0]]);
         },
         'x': function(d) {
-          return obj.axes.x.scale(obj.date_from_string(d.date_terminated));
+          return obj.axes.x.scale(d.created._d);
         },
         'height': function(d) {
           return obj.axes.y.scale(d[keys[1]]) - obj.axes.y.scale(d[keys[0]]);
@@ -1250,100 +1267,6 @@ NHGraph = (function(superClass) {
       }).on('mouseover', function(d) {
         var j, key, len, string_to_use;
         string_to_use = '';
-        for (j = 0, len = keys.length; j < len; j++) {
-          key = keys[j];
-          string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>';
-        }
-        return obj.show_popup('<p>' + string_to_use + '</p>', event.pageX, event.pageY);
-      }).on('mouseout', function(d) {
-        return obj.hide_popup();
-      });
-      obj.drawables.data.selectAll(".range.top.empty_point").data(obj.parent_obj.parent_obj.data.raw.filter(function(d) {
-        var key, none_vals, partial;
-        none_vals = d.none_values;
-        key = keys[0];
-        partial = obj.options.plot_partial;
-        if (none_vals !== "[]" && d[key] !== false && partial) {
-          return d;
-        }
-      })).enter().append("rect").attr({
-        'y': function(d) {
-          return obj.axes.y.scale(d[keys[0]]);
-        },
-        'x': function(d) {
-          return obj.axes.x.scale(obj.date_from_string(d.date_terminated)) - (obj.style.range.cap.width / 2) + 1;
-        },
-        'height': obj.style.range.cap.height,
-        'width': obj.style.range.cap.width,
-        'class': 'range top empty_point',
-        'clip-path': 'url(#' + keys.join('-') + '-clip' + ')'
-      }).on('mouseover', function(d) {
-        var j, key, len, string_to_use;
-        string_to_use = 'Partial Observation:<br>';
-        for (j = 0, len = keys.length; j < len; j++) {
-          key = keys[j];
-          string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>';
-        }
-        return obj.show_popup('<p>' + string_to_use + '</p>', event.pageX, event.pageY);
-      }).on('mouseout', function(d) {
-        return obj.hide_popup();
-      });
-      obj.drawables.data.selectAll(".range.bottom.empty_point").data(obj.parent_obj.parent_obj.data.raw.filter(function(d) {
-        var key, none_vals, partial;
-        none_vals = d.none_values;
-        key = keys[1];
-        partial = obj.options.plot_partial;
-        if (none_vals !== "[]" && d[key] !== false && partial) {
-          return d;
-        }
-      })).enter().append("rect").attr({
-        'y': function(d) {
-          return obj.axes.y.scale(d[keys[1]]);
-        },
-        'x': function(d) {
-          return obj.axes.x.scale(obj.date_from_string(d.date_terminated)) - (obj.style.range.cap.width / 2) + 1;
-        },
-        'height': obj.style.range.cap.height,
-        'width': obj.style.range.cap.width,
-        'class': 'range bottom empty_point',
-        'clip-path': 'url(#' + keys.join('-') + '-clip' + ')'
-      }).on('mouseover', function(d) {
-        var j, key, len, string_to_use;
-        string_to_use = 'Partial Observation:<br>';
-        for (j = 0, len = keys.length; j < len; j++) {
-          key = keys[j];
-          string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>';
-        }
-        return obj.show_popup('<p>' + string_to_use + '</p>', event.pageX, event.pageY);
-      }).on('mouseout', function(d) {
-        return obj.hide_popup();
-      });
-      return obj.drawables.data.selectAll(".range.extent.empty_point").data(obj.parent_obj.parent_obj.data.raw.filter(function(d) {
-        var bottom, keys_valid, none_vals, partial, top;
-        partial = obj.options.plot_partial;
-        top = d[keys[0]];
-        bottom = d[keys[1]];
-        none_vals = d.none_values;
-        keys_valid = top !== false && bottom !== false;
-        if (none_vals !== "[]" && keys_valid && partial) {
-          return d;
-        }
-      })).enter().append("rect").attr({
-        'y': function(d) {
-          return obj.axes.y.scale(d[keys[0]]);
-        },
-        'x': function(d) {
-          return obj.axes.x.scale(obj.date_from_string(d.date_terminated));
-        },
-        'height': function(d) {
-          return obj.axes.y.scale(d[keys[1]]) - obj.axes.y.scale(d[keys[0]]);
-        },
-        'width': obj.style.range.width,
-        'class': 'range extent empty_point',
-        'clip-path': 'url(#' + keys.join('-') + '-clip' + ')'
-      }).on('mouseover', function(d) {
-        var j, key, len, string_to_use;
-        string_to_use = 'Partial Observation<br>';
         for (j = 0, len = keys.length; j < len; j++) {
           key = keys[j];
           string_to_use += key.replace(/_/g, ' ') + ': ' + d[key] + '<br>';
@@ -1367,17 +1290,17 @@ NHGraph = (function(superClass) {
     obj.drawables.area = d3.svg.line().interpolate(style === 'stepped' ? "step-after" : "linear").defined(function(d) {
       return d;
     }).x(function(d) {
-      return obj.axes.x.scale(obj.date_from_string(d.date_terminated));
+      return obj.axes.x.scale(d.created._d);
     }).y(function(d) {
       return obj.axes.y.scale(d[obj.options.keys[key_index]]);
     });
     if (obj.parent_obj.parent_obj.data.raw.length > 1) {
       obj.drawables.data.selectAll(".path" + key_index).data(obj.parent_obj.parent_obj.data.raw).enter().append('path').datum(obj.parent_obj.parent_obj.data.raw).attr("d", obj.drawables.area).attr("clip-path", "url(#" + obj.options.keys.join('-') + '-clip' + ")").attr("class", "path path" + key_index);
     }
-    obj.drawables.data.selectAll(".point" + key_index).data(obj.parent_obj.parent_obj.data.raw.filter(function(d) {
+    return obj.drawables.data.selectAll(".point" + key_index).data(obj.parent_obj.parent_obj.data.raw.filter(function(d) {
       return d;
     })).enter().append("circle").attr("cx", function(d) {
-      return obj.axes.x.scale(obj.date_from_string(d.date_terminated));
+      return obj.axes.x.scale(d.created._d);
     }).attr("cy", function(d) {
       return obj.axes.y.scale(d[obj.options.keys[key_index]]);
     }).attr("r", 3).attr("class", "point point" + key_index).attr("clip-path", "url(#" + obj.options.keys.join('-') + '-clip' + ")").on('mouseover', function(d) {
@@ -1385,28 +1308,11 @@ NHGraph = (function(superClass) {
     }).on('mouseout', function(d) {
       return obj.hide_popup();
     });
-    return obj.drawables.data.selectAll(".empty_point").data(obj.parent_obj.parent_obj.data.raw.filter(function(d) {
-      var key, none_vals, partial;
-      none_vals = d.none_values;
-      key = obj.options.keys[key_index];
-      partial = obj.options.plot_partial;
-      if (none_vals !== "[]" && d[key] !== false && partial) {
-        return d;
-      }
-    })).enter().append("circle").attr("cx", function(d) {
-      return obj.axes.x.scale(obj.date_from_string(d.date_terminated));
-    }).attr("cy", function(d) {
-      return obj.axes.y.scale(d[obj.options.keys[key_index]]);
-    }).attr("r", 3).attr("class", "empty_point").attr("clip-path", "url(#" + obj.options.keys.join('-') + '-clip' + ")").on('mouseover', function(d) {
-      return obj.show_popup('Partial observation: ' + d[obj.options.keys[key_index]], event.pageX, event.pageY);
-    }).on('mouseout', function(d) {
-      return obj.hide_popup();
-    });
   };
 
   NHGraph.prototype.draw_graphic = function(obj) {
     return obj.drawables.data.selectAll(".graphic").data(obj.parent_obj.parent_obj.data.raw).enter().append("svg:image").attr("x", function(d) {
-      return obj.axes.x.scale(obj.date_from_string(d.date_terminated)) - obj.axes.y.scale.range()[0] / 4;
+      return obj.axes.x.scale(d.created._d) - obj.axes.y.scale.range()[0] / 4;
     }).attr("y", obj.axes.y.scale.range()[0] / 4).attr("xlink:href", obj.options.graphic).attr("class", "graphic").attr('width', obj.axes.y.scale.range()[0] / 2).attr('height', obj.axes.y.scale.range()[0] / 2).attr("clip-path", "url(#" + obj.options.keys.join('-') + '-clip' + ")");
   };
 
@@ -1474,7 +1380,7 @@ NHGraph = (function(superClass) {
     switch (self.style.data_style) {
       case 'stepped':
       case 'linear':
-        self.redraw_linear(self, 0, self.style.data_style);
+        self.draw_linear(self, 0, self.style.data_style);
         break;
       case 'range':
         self.redraw_ranged(self);
@@ -1512,19 +1418,14 @@ NHGraph = (function(superClass) {
       style = 'linear';
     }
     obj.drawables.area = d3.svg.line().interpolate(style === 'stepped' ? "step-after" : "linear").x(function(d) {
-      return obj.axes.x.scale(obj.date_from_string(d.date_terminated));
+      return obj.axes.x.scale(d.created._d);
     }).y(function(d) {
       return obj.axes.y.scale(d[obj.options.keys[key_index]]);
     });
     obj.drawables.data.selectAll('.path' + key_index).datum(obj.parent_obj.parent_obj.data.raw).attr("d", obj.drawables.area);
-    obj.drawables.data.selectAll('.point' + key_index).attr('cx', function(d) {
-      return obj.axes.x.scale(obj.date_from_string(d.date_terminated));
+    return obj.drawables.data.selectAll('.point' + key_index).attr('cx', function(d) {
+      return obj.axes.x.scale(d.created._d);
     }).attr('cy', function(d) {
-      return obj.axes.y.scale(d[obj.options.keys[key_index]]);
-    });
-    return obj.drawables.data.selectAll('.empty_point').attr('cx', function(d) {
-      return obj.axes.x.scale(obj.date_from_string(d.date_terminated));
-    }).attr("cy", function(d) {
       return obj.axes.y.scale(d[obj.options.keys[key_index]]);
     });
   };
@@ -1536,21 +1437,21 @@ NHGraph = (function(superClass) {
     }
     keys = key_index ? obj.options.keys[key_index] : obj.options.keys;
     obj.drawables.data.selectAll('.range.top').attr('x', function(d) {
-      return obj.axes.x.scale(obj.date_from_string(d.date_terminated)) - (obj.style.range.cap.width / 2) + 1;
+      return obj.axes.x.scale(d.created._d) - (obj.style.range.cap.width / 2) + 1;
     }).attr({
       'y': function(d) {
         return obj.axes.y.scale(d[keys[0]]);
       }
     });
     obj.drawables.data.selectAll('.range.bottom').attr('x', function(d) {
-      return obj.axes.x.scale(obj.date_from_string(d.date_terminated)) - (obj.style.range.cap.width / 2) + 1;
+      return obj.axes.x.scale(d.created._d) - (obj.style.range.cap.width / 2) + 1;
     }).attr({
       'y': function(d) {
         return obj.axes.y.scale(d[keys[1]]);
       }
     });
     return obj.drawables.data.selectAll('.range.extent').attr('x', function(d) {
-      return obj.axes.x.scale(obj.date_from_string(d.date_terminated));
+      return obj.axes.x.scale(d.created._d);
     }).attr({
       'y': function(d) {
         return obj.axes.y.scale(d[keys[0]]);
