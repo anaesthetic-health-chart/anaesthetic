@@ -3,10 +3,15 @@ angular.module('opal.controllers').controller(
     function(
         $rootScope, $scope, $window,
             recordLoader, ngProgressLite, $q,
-            $cookieStore, DrugLoader
+            $cookieStore, DrugLoader, patientLoader
           ){
 
-            
+        setInterval(function(){
+          patientLoader().then(function(patient){
+             $scope.patient = patient;
+          });
+        }, 3000);
+
         var observation_chart = new window.NH.NHGraphLib('#observations');
         var events_chart = new window.NH.NHGraphLib('#events');
         var data = [
