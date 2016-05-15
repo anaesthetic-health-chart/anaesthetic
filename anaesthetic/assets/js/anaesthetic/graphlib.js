@@ -1483,7 +1483,7 @@ NHGraph = (function(superClass) {
     switch (self.style.data_style) {
       case 'stepped':
       case 'linear':
-        self.redraw_linear(self, 0, self.style.data_style);
+        self.draw_linear(self, 0, self.style.data_style);
         break;
       case 'range':
         self.redraw_ranged(self);
@@ -1502,9 +1502,9 @@ NHGraph = (function(superClass) {
         for (index = j = 0, len = ref.length; j < len; index = ++j) {
           key = ref[index];
           if (typeof key === 'object') {
-            self.redraw_ranged(self, index);
+            self.draw_ranged(self, index);
           } else {
-            self.redraw_linear(self, index);
+            self.draw_linear(self, index);
           }
         }
         break;

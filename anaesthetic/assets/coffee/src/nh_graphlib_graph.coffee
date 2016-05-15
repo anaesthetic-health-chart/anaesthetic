@@ -866,7 +866,7 @@ class NHGraph extends NHGraphLib
     switch self.style.data_style
       # Redraw the line and points of the stepped and linear graphs with the
       # new scales
-      when 'stepped', 'linear' then self.redraw_linear(self, 0,
+      when 'stepped', 'linear' then self.draw_linear(self, 0,
         self.style.data_style)
       # Redraw the range caps and extent with the new scales
       when 'range' then self.redraw_ranged(self)
@@ -879,9 +879,9 @@ class NHGraph extends NHGraphLib
       when 'multi' then (
         for key, index in self.options.keys
           if typeof(key) == 'object'
-            self.redraw_ranged(self, index)
+            self.draw_ranged(self, index)
           else
-            self.redraw_linear(self, index)
+            self.draw_linear(self, index)
       )
       # If no graph style defined throw an error
       else throw new Error('no graph style defined')

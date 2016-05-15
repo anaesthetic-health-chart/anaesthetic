@@ -9,8 +9,8 @@ angular.module('opal.controllers').controller(
         setInterval(function(){
           patientLoader().then(function(patient){
                 $scope.patient = patient;
-                $scope.observation_chart.data.raw = $scope.patient.episodes[0].observation.map(function(a){
-                    a.date_terminated = $scope.observation_chart.date_to_proper_string(a.created._d);
+                $scope.observation_chart.data.raw = $scope.patient.episodes[0].observation.reverse().map(function(a){
+                    a.date_terminated = $scope.observation_chart.date_to_proper_string(a.datetime._d);
                     return a;
                 });
                 $scope.observation_chart.draw();
@@ -104,8 +104,8 @@ angular.module('opal.controllers').controller(
         $scope.observation_chart.context = drugs_context;
         $scope.observation_chart.focus = observations_focus;
 
-        $scope.observation_chart.data.raw = $scope.patient.episodes[0].observation.map(function(a){
-            a.date_terminated = $scope.observation_chart.date_to_proper_string(a.created._d);
+        $scope.observation_chart.data.raw = $scope.patient.episodes[0].observation.reverse().map(function(a){
+            a.date_terminated = $scope.observation_chart.date_to_proper_string(a.datetime._d);
             return a;
         });
         $scope.observation_chart.init();
