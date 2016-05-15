@@ -22,11 +22,18 @@ $navbar-height: 63px;
 body{
     background-color: $bg;
     color: $default-colour;
+}
+
+h3{
     font-family: $sans-serif;
 }
 
 .container-fluid {
   padding: 0;
+}
+
+.menu-bar-offset{
+  padding-left: 20px;
 }
 
 
@@ -259,4 +266,17 @@ svg .data path{
 }
 #chart_popup.hidden{
   display: none;
+}
+
+.panel-default{
+    border-color: $white;
+
+    .panel-heading{
+        background-color: $primary-background;
+        border-bottom: 2px solid $primary;
+    }
+
+    .list-group-item{
+        background-color: $bg;
+    }
 }

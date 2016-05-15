@@ -1,10 +1,15 @@
 body {
   background-color: #EEE;
-  color: #2F312E;
+  color: #2F312E; }
+
+h3 {
   font-family: "PT Sans", "Lucida Grande", "Lucida Sans", Arial, Verdana, sans-serif; }
 
 .container-fluid {
   padding: 0; }
+
+.menu-bar-offset {
+  padding-left: 20px; }
 
 .bg-primary {
   background-color: #0054B5; }
@@ -194,5 +199,13 @@ svg .data path {
 
 #chart_popup.hidden {
   display: none; }
+
+.panel-default {
+  border-color: #FFF; }
+  .panel-default .panel-heading {
+    background-color: #E4EDF6;
+    border-bottom: 2px solid #0054B5; }
+  .panel-default .list-group-item {
+    background-color: #EEE; }
 
 /*# sourceMappingURL=anaesthetic.css.map */
