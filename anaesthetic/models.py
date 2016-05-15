@@ -30,12 +30,22 @@ class GivenDrug(models.PatientSubrecord):
     stopped = db_models.DateTimeField(blank=True, null=True)
     one_off = db_models.DateTimeField(blank=True, null=True)
 
+
+class RemoteAdded(models.PatientSubrecord):
+    class Meta:
+        abstract = True
+
+    def update_from_dict(self, data, user, force=False):
+        data["patient_id"] = 1
+        return super(Observation, self).update_from_dict(data, user, force=True)
+
+
 class PatientPhysicalAttributes(models.PatientSubrecord):
     height       = db_models.FloatField(blank=True, null=True)
     weight       = db_models.FloatField(blank=True, null=True)
 
 
-class Observation(models.PatientSubrecord):
+class Observation(RemoteAdded):
     _sort           = 'datetime'
     _icon           = 'fa fa-line-chart'
     _list_limit     = 1
@@ -48,10 +58,6 @@ class Observation(models.PatientSubrecord):
     temperature  = db_models.FloatField(blank=True, null=True)
     datetime = db_models.DateTimeField()
 
-    def update_from_dict(self, data, user, force=False):
-        data["episode_id"] = 1
-        return super(Observation, self).update_from_dict(data, user, force=True)
-
 
 class AnaestheticTechnique(models.PatientSubrecord):
     _title = "Anaesthetic Technique"
@@ -60,7 +66,7 @@ class AnaestheticTechnique(models.PatientSubrecord):
     maintenance = db_models.TextField(blank=True, null=True)
 
 
-class Gases(models.PatientSubrecord):
+class Gases(RemoteAdded):
     _title = "Gases"
     inspired_carbon_dioxide = db_models.FloatField(blank=True, null=True)
     expired_carbon_dioxide = db_models.FloatField(blank=True, null=True)
@@ -69,7 +75,7 @@ class Gases(models.PatientSubrecord):
     datetime = db_models.DateTimeField()
 
 
-class Ventilators(models.PatientSubrecord):
+class Ventilators(RemoteAdded):
     _title = "Ventilators"
     mode = db_models.CharField(max_length=255)
     peak_airway_pressure = db_models.FloatField(blank=True, null=True)
