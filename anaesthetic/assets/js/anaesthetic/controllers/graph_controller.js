@@ -6,11 +6,11 @@ angular.module('opal.controllers').controller(
             $cookieStore, DrugLoader, patientLoader
           ){
 
-        setInterval(function(){
-          patientLoader().then(function(patient){
-             $scope.patient = patient;
-          });
-        }, 3000);
+        // setInterval(function(){
+        //   patientLoader().then(function(patient){
+        //      $scope.patient = patient;
+        //   });
+        // }, 10000);
 
         var observation_chart = new window.NH.NHGraphLib('#observations');
         var events_chart = new window.NH.NHGraphLib('#events');
