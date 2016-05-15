@@ -49,6 +49,7 @@ class Observation(models.PatientSubrecord):
     datetime = db_models.DateTimeField()
 
     def update_from_dict(self, data, user, force=False):
+        data["episode_id"] = 1
         return super(Observation, self).update_from_dict(data, user, force=True)
 
 
