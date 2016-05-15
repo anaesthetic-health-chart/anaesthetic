@@ -130,7 +130,7 @@ class NHGraphLib
     if isNaN(date.getTime())
       throw new Error("Invalid date format")
     return date.getFullYear() + '-' + @leading_zero(date.getMonth() + 1) + "-" +
-        " " + @leading_zero(date.getHours()) +
+        date.getDate() + " " + @leading_zero(date.getHours()) +
         ":" + @leading_zero(date.getMinutes())
 
 

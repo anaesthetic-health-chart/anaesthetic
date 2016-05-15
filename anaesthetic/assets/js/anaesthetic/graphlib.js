@@ -109,7 +109,7 @@ NHGraphLib = (function() {
     if (isNaN(date.getTime())) {
       throw new Error("Invalid date format");
     }
-    return date.getFullYear() + '-' + this.leading_zero(date.getMonth() + 1) + "-" + " " + this.leading_zero(date.getHours()) + ":" + this.leading_zero(date.getMinutes());
+    return date.getFullYear() + '-' + this.leading_zero(date.getMonth() + 1) + "-" + date.getDate() + " " + this.leading_zero(date.getHours()) + ":" + this.leading_zero(date.getMinutes());
   };
 
   NHGraphLib.prototype.leading_zero = function(date_element) {
