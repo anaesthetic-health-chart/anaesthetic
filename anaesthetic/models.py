@@ -1,6 +1,7 @@
 """
 anaesthetic models.
 """
+from datetime import datetime
 from django.db import models as db_models
 from opal.core.lookuplists import LookupList
 
@@ -37,7 +38,8 @@ class RemoteAdded(models.PatientSubrecord):
 
     def update_from_dict(self, data, user, force=False):
         data["patient_id"] = 1
-        return super(Observation, self).update_from_dict(data, user, force=True)
+        data["datetime"] = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+        return super(RemoteAdded, self).update_from_dict(data, user, force=True)
 
 
 class PatientPhysicalAttributes(models.PatientSubrecord):
