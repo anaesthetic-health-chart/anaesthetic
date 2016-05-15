@@ -129,6 +129,7 @@ angular.module('opal.controllers').controller(
         events_focus.graphs.push(events_graph);
 
         observations_focus.title = '';
+        observations_focus.style.margin.left = 100;
         observation_chart.context = drugs_context;
         observation_chart.focus = observations_focus;
 
