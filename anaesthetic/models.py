@@ -26,7 +26,6 @@ class GivenDrug(models.PatientSubrecord):
     drug_name = db_models.CharField(max_length=255)
     drug_type = db_models.CharField(max_length=255)
     rates = db_models.CharField(max_length=255)
-    rates = db_models.CharField(max_length=255)
     started = db_models.DateTimeField(blank=True, null=True)
     stopped = db_models.DateTimeField(blank=True, null=True)
     one_off = db_models.DateTimeField(blank=True, null=True)
