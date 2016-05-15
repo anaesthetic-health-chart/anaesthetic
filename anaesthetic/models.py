@@ -30,6 +30,10 @@ class GivenDrug(models.PatientSubrecord):
     stopped = db_models.DateTimeField(blank=True, null=True)
     one_off = db_models.DateTimeField(blank=True, null=True)
 
+class PatientPhysicalAttributes(models.PatientSubrecord):
+    height       = db_models.FloatField(blank=True, null=True)
+    weight       = db_models.FloatField(blank=True, null=True)
+
 
 class Observation(models.PatientSubrecord):
     _sort           = 'datetime'
@@ -42,8 +46,6 @@ class Observation(models.PatientSubrecord):
     resp_rate    = db_models.FloatField(blank=True, null=True)
     sp02         = db_models.FloatField(blank=True, null=True)
     temperature  = db_models.FloatField(blank=True, null=True)
-    height       = db_models.FloatField(blank=True, null=True)
-    weight       = db_models.FloatField(blank=True, null=True)
     datetime = db_models.DateTimeField()
 
     def update_from_dict(self, data, user, force=False):
@@ -63,11 +65,13 @@ class Gases(models.PatientSubrecord):
     expired_carbon_dioxide = db_models.FloatField(blank=True, null=True)
     inspired_oxygen = db_models.FloatField(blank=True, null=True)
     expired_oxygen = db_models.FloatField(blank=True, null=True)
+    datetime = db_models.DateTimeField()
 
 
 class Ventilators(models.PatientSubrecord):
     _title = "Ventilators"
     mode = db_models.CharField(max_length=255)
     peak_airway_pressure = db_models.FloatField(blank=True, null=True)
-    mean_airway_pressure = db_models.FloatField(blank=True, null=True)
+    peep_airway_pressure = db_models.FloatField(blank=True, null=True)
     rate = db_models.IntegerField(blank=True, null=True)
+    datetime = db_models.DateTimeField()
