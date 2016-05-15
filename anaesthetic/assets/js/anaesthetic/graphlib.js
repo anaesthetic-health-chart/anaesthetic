@@ -3,6 +3,7 @@ var NHGraphLib,
 
 NHGraphLib = (function() {
   function NHGraphLib(element) {
+    this.date_to_proper_string = bind(this.date_to_proper_string, this);
     this.date_to_string = bind(this.date_to_string, this);
     var self;
     this.style = {
@@ -102,6 +103,13 @@ NHGraphLib = (function() {
       final += days[date.getDay()] + " ";
     }
     return final += date.getDate() + '/' + this.leading_zero(date.getMonth() + 1) + "/" + this.leading_zero(date.getFullYear()) + " " + this.leading_zero(date.getHours()) + ":" + this.leading_zero(date.getMinutes());
+  };
+
+  NHGraphLib.prototype.date_to_proper_string = function(date) {
+    if (isNaN(date.getTime())) {
+      throw new Error("Invalid date format");
+    }
+    return date.getFullYear() + '-' + this.leading_zero(date.getMonth() + 1) + "-" + " " + this.leading_zero(date.getHours()) + ":" + this.leading_zero(date.getMinutes());
   };
 
   NHGraphLib.prototype.leading_zero = function(date_element) {
