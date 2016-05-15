@@ -8,12 +8,14 @@ angular.module('opal.controllers').controller(
 
         setInterval(function(){
           patientLoader().then(function(patient){
-             $scope.patient = patient;
+                $scope.patient = patient;
+                $scope.observation_chart.draw();
+                $scope.events_chart.draw();
           });
         }, 3000);
 
-        var observation_chart = new window.NH.NHGraphLib('#observations');
-        var events_chart = new window.NH.NHGraphLib('#events');
+        $scope.observation_chart = new window.NH.NHGraphLib('#observations');
+        $scope.events_chart = new window.NH.NHGraphLib('#events');
         var data = [
             {
                 'date_terminated': '2016-05-14 09:00:00',
@@ -135,18 +137,18 @@ angular.module('opal.controllers').controller(
 
         observations_focus.title = '';
         observations_focus.style.margin.left = 100;
-        observation_chart.context = drugs_context;
-        observation_chart.focus = observations_focus;
+        $scope.observation_chart.context = drugs_context;
+        $scope.observation_chart.focus = observations_focus;
 
-        observation_chart.data.raw = data;
-        observation_chart.init();
-        observation_chart.draw();
+        $scope.observation_chart.data.raw = data;
+        $scope.observation_chart.init();
+        $scope.observation_chart.draw();
 
         events_focus.title = '';
-        events_chart.focus = events_focus;
-        events_chart.data.raw = data;
-        events_chart.style.margin.top = 0;
-        events_chart.style.padding.top = 0;
-        events_chart.init();
-        events_chart.draw();
+        $scope.events_chart.focus = events_focus;
+        $scope.events_chart.data.raw = data;
+        $scope.events_chart.style.margin.top = 0;
+        $scope.events_chart.style.padding.top = 0;
+        $scope.events_chart.init();
+        $scope.events_chart.draw();
 });

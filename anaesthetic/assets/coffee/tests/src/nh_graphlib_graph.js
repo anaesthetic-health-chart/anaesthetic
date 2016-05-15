@@ -611,7 +611,7 @@ NHGraph = (function(superClass) {
       return obj.axes.y.scale(d[obj.options.keys[key_index]]);
     });
     if (obj.parent_obj.parent_obj.data.raw.length > 1) {
-      obj.drawables.data.append("path").datum(obj.parent_obj.parent_obj.data.raw).attr("d", obj.drawables.area).attr("clip-path", "url(#" + obj.options.keys.join('-') + '-clip' + ")").attr("class", "path path" + key_index);
+      obj.drawables.data.selectAll(".path" + key_index).datum(obj.parent_obj.parent_obj.data.raw).enter().append('path').datum(obj.parent_obj.parent_obj.data.raw).attr("d", obj.drawables.area).attr("clip-path", "url(#" + obj.options.keys.join('-') + '-clip' + ")").attr("class", "path path" + key_index);
     }
     obj.drawables.data.selectAll(".point" + key_index).data(obj.parent_obj.parent_obj.data.raw.filter(function(d) {
       return d;
@@ -750,14 +750,12 @@ NHGraph = (function(superClass) {
     if (style == null) {
       style = 'linear';
     }
-    obj.drawables.area = d3.svg.line().interpolate(style === 'stepped' ? "step-after" : "linear").defined(function(d) {
-      return d;
-    }).x(function(d) {
+    obj.drawables.area = d3.svg.line().interpolate(style === 'stepped' ? "step-after" : "linear").x(function(d) {
       return obj.axes.x.scale(obj.date_from_string(d.date_terminated));
     }).y(function(d) {
       return obj.axes.y.scale(d[obj.options.keys[key_index]]);
     });
-    obj.drawables.data.selectAll('.path' + key_index).attr("d", obj.drawables.area);
+    obj.drawables.data.select('.path' + key_index).attr("d", obj.drawables.area);
     obj.drawables.data.selectAll('.point' + key_index).attr('cx', function(d) {
       return obj.axes.x.scale(obj.date_from_string(d.date_terminated));
     }).attr('cy', function(d) {
