@@ -79,6 +79,7 @@ class Gases(RemoteAdded):
     expired_carbon_dioxide = db_models.FloatField(blank=True, null=True)
     inspired_oxygen = db_models.FloatField(blank=True, null=True)
     expired_oxygen = db_models.FloatField(blank=True, null=True)
+    anaesthetic_agent = db_models.CharField(max_length=255)
     datetime = db_models.DateTimeField()
 
 
