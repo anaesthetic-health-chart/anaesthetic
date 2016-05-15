@@ -40,6 +40,12 @@ class RemoteAdded(models.PatientSubrecord):
         data["datetime"] = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
         return super(RemoteAdded, self).update_from_dict(data, user, force=True)
 
+    def set_created_by_id(self, incoming_value, user, *args, **kwargs):
+        pass
+
+    def set_updated_by_id(self, incoming_value, user, *args, **kwargs):
+        pass
+
 
 class PatientPhysicalAttributes(models.PatientSubrecord):
     height       = db_models.FloatField(blank=True, null=True)
