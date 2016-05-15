@@ -46,6 +46,9 @@ class Observation(models.PatientSubrecord):
     weight       = db_models.FloatField(blank=True, null=True)
     datetime = db_models.DateTimeField()
 
+    def update_from_dict(self, data, user, force=False):
+        return super(Observation, self).update_from_dict(data, user, force=True)
+
 
 class AnaestheticTechnique(models.PatientSubrecord):
     _title = "Anaesthetic Technique"

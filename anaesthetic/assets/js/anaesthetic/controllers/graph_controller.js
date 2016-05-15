@@ -5,6 +5,8 @@ angular.module('opal.controllers').controller(
             recordLoader, ngProgressLite, $q,
             $cookieStore, DrugLoader
           ){
+
+            
   var observation_chart = new window.NH.NHGraphLib('#observations');
   var events_chart = new window.NH.NHGraphLib('#events');
   var data = [
