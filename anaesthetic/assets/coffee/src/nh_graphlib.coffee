@@ -131,8 +131,7 @@ class NHGraphLib
       throw new Error("Invalid date format")
     return date.getFullYear() + '-' + @leading_zero(date.getMonth() + 1) + "-" +
         date.getDate() + " " + @leading_zero(date.getHours()) +
-        ":" + @leading_zero(date.getMinutes()) +
-        ":" + @leading_zero(date.getSeconds())
+        ":" + @leading_zero(date.getMinutes())
 
 
   # Convert number like 1 into 01 and 12 into 12 (as no leading zero needed)
@@ -341,14 +340,6 @@ class NHGraphLib
         @.draw_table(@)
     else
       throw new Error('No raw data provided')
-
-  redraw: (extent) ->
-    @.context.axes.x.min = extent[0]
-    @.context.axes.x.max = extent[1]
-    @.focus.axes.x.min = extent[0]
-    @.focus.axes.x.max = extent[1]
-    @.context.redraw(@)
-    @.focus.redraw(extent)
 
   # Draw the tabular representation
   # 1. Get the elements

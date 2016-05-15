@@ -13,11 +13,7 @@ angular.module('opal.controllers').controller(
                     a.date_terminated = $scope.observation_chart.date_to_proper_string(a.datetime._d);
                     return a;
                 });
-                $scope.observation_chart.redraw(
-                    [$scope.observation_chart.data.raw[0].datetime._d,
-                    $scope.observation_chart.data.raw[$scope.observation_chart.data.raw.length-1].datetime._d]
-                )
-                // $scope.observation_chart.draw();
+                $scope.observation_chart.draw();
 
           });
         }, 10000);
@@ -85,7 +81,7 @@ angular.module('opal.controllers').controller(
         oxygen_in_graph.options.keys = ['sp02'];
         oxygen_in_graph.options.label = 'SpO2';
         oxygen_in_graph.options.measurement = '';
-        oxygen_in_graph.axes.y.min = 80;
+        oxygen_in_graph.axes.y.min = 0;
         oxygen_in_graph.axes.y.max = 100;
         oxygen_in_graph.style.dimensions.height = 300;
         oxygen_in_graph.style.data_style = 'linear';
