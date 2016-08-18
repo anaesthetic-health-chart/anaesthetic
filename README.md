@@ -1,14 +1,15 @@
 This is anaesthetic - an [OPAL](https://github.com/openhealthcare/opal) project.
 
-To get started, run the following commands: 
+## Setting up the applicaiton in development
 
+```bash
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver
 ```
-    python manage.py syncdb --migrate
-    python manage.py runserver
-    
-    
-```
 
-This to run it, go to http://127.0.0.1:800, select lists, add a patient. Then go to...
+To access the application, visit http://127.0.0.1:8000 in a browser, select lists, add a patient.
 
-http://127.0.0.1:8000/#/patient/1/anaesthetic_readings
+
+To view the live chart go to: http://127.0.0.1:8000/#/patient/1/anaesthetic_readings
