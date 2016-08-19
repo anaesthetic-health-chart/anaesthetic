@@ -25,18 +25,18 @@ angular.module('opal.controllers').controller(
         $scope.observation_chart = new window.NH.NHGraphLib('#observations');
         // var events_chart = new window.NH.NHGraphLib('#events');
 
-        // var drugs_graph = new window.NH.NHGraph();
-        // drugs_graph.options.keys = ['drug'];
-        // drugs_graph.axes.y.min = 0;
-        // drugs_graph.axes.y.max = 100;
-        // drugs_graph.axes.y.type = 'label';
-        // drugs_graph.style.axis_label_text_padding = 0;
-        // drugs_graph.axes.y.options = [
-        //     'Propofol',
-        //     'Fentanyl',
-        //     'Rocuronium', 'Test'];
-        // drugs_graph.style.dimensions.height = 300;
-        // drugs_graph.style.data_style = 'stepped';
+         var drugs_graph = new window.NH.NHGraph();
+         drugs_graph.options.keys = ['drug_name'];
+         drugs_graph.axes.y.min = 0;
+         drugs_graph.axes.y.max = 100;
+         drugs_graph.axes.y.type = 'label';
+         drugs_graph.style.axis_label_text_padding = 0;
+         drugs_graph.axes.y.options = [
+             'Propofol',
+             'Fentanyl',
+             'Rocuronium', 'Test'];
+         drugs_graph.style.dimensions.height = 120;
+         drugs_graph.style.data_style = 'linear';
 
         // var events_graph = new window.NH.NHGraph();
         // events_graph.options.keys = ['event'];
@@ -87,20 +87,36 @@ angular.module('opal.controllers').controller(
         oxygen_in_graph.options.measurement = '';
         oxygen_in_graph.axes.y.min = 80;
         oxygen_in_graph.axes.y.max = 100;
-        oxygen_in_graph.style.dimensions.height = 300;
+        oxygen_in_graph.style.dimensions.height = 100;
         oxygen_in_graph.style.data_style = 'linear';
         oxygen_in_graph.style.axis.x.hide = true;
+
+        //lets try and make a new cotext graph
+        var op_event_graph = new window.NH.NHGraph(); //op event as we'll be putting event markers on it
+        op_event_graph.options.keys = ['Title']
+        op_event_graph.style.dimensions.height = 30;
+        op_event_graph.style.data_style = 'linear';
+        op_event_graph.style.axis.x.hide = true;
+        op_event_graph.style.axis.y.hide = true;
+        op_event_graph.style.data_style = 'graphic';
+        op_event_graph.options.graphic = 'http://localhost:8000/assets/js/anaesthetic/icon-event.png';
+        op_event_graph.options.keys = ['event'];
+
 
         var observations_focus = new window.NH.NHFocus();
         // var events_focus = new window.NH.NHFocus();
         var drugs_context = new window.NH.NHContext();
-        drugs_context.graph = bp_pulse_graph;
-        // drugs_context.style.margin.bottom = 0;
+        drugs_context.graph = op_event_graph;
+        drugs_context.style.margin.bottom = 50;
+        // drugs_context.style.backgroundcolor = "#C9046F";
         // drugs_context.style.margin.top = 0;
         // drugs_context.style.margin.left = 100;
         // observations_focus.graphs.push(bp_pulse_graph);
         // observations_focus.graphs.push(oxygen_out_graph);
-        observations_focus.graphs.push(oxygen_in_graph);
+        observations_focus.graphs.push(drugs_graph);
+        observations_focus.graphs.push(bp_pulse_graph); // make bp focus graph
+        observations_focus.graphs.push(oxygen_in_graph); //make oxygen focus graph
+
         // events_focus.graphs.push(events_graph);
 
         observations_focus.title = '';
