@@ -17,18 +17,17 @@ class Investigation(models.Investigation): pass
 
 
 class GivenDrug(models.PatientSubrecord):
-    DRUG_TYPES = [
-        "induction_agent",
-        "opiat"
-    ]
+
+    _sort           = 'datetime'
 
     route = db_models.CharField(max_length=255)
     drug_name = db_models.CharField(max_length=255)
     drug_type = db_models.CharField(max_length=255)
     rates = db_models.CharField(max_length=255)
-    started = db_models.DateTimeField(blank=True, null=True)
-    stopped = db_models.DateTimeField(blank=True, null=True)
-    one_off = db_models.DateTimeField(blank=True, null=True)
+    # started = db_models.DateTimeField(blank=True, null=True)
+    # stopped = db_models.DateTimeField(blank=True, null=True)
+    # one_off = db_models.DateTimeField(blank=True, null=True)
+    datetime = db_models.DateTimeField(blank=True, null=True)
 
 
 class RemoteAdded(models.PatientSubrecord):
@@ -67,10 +66,12 @@ class Observation(RemoteAdded):
 
 
 class AnaestheticTechnique(models.PatientSubrecord):
-    _title = "Anaesthetic Technique"
-    _is_singleton = True
-    induction = db_models.TextField(blank=True, null=True)
-    maintenance = db_models.TextField(blank=True, null=True)
+    _title          = "Event"
+
+    Title = db_models.TextField(blank=True, null=True)
+    Description = db_models.TextField(blank=True, null=True)
+    datetime = db_models.DateTimeField(blank=True, null=True)
+
 
 
 class Gases(RemoteAdded):
