@@ -13,7 +13,7 @@ class Application(application.OpalApplication):
         'js/anaesthetic/controllers/newgraph.js',
         'js/anaesthetic/controllers/observations_controller.js',
         'js/anaesthetic/services/drug_loader.js',
-        'js/anaesthetic/graphlib.js',
+        #'js/anaesthetic/graphlib.js',
     ]
     styles = [
         "css/anaesthetic.css"
