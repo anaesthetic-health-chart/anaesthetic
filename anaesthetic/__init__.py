@@ -9,7 +9,8 @@ class Application(application.OpalApplication):
     javascripts   = [
         'js/anaesthetic/routes.js',
         'js/anaesthetic/controllers/drug_controller.js',
-        'js/anaesthetic/controllers/graph_controller.js',
+        #'js/anaesthetic/controllers/graph_controller.js',
+        'js/anaesthetic/controllers/newgraph.js',
         'js/anaesthetic/controllers/observations_controller.js',
         'js/anaesthetic/services/drug_loader.js',
         'js/anaesthetic/graphlib.js',
