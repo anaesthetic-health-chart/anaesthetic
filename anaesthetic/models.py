@@ -36,7 +36,9 @@ class RemoteAdded(models.PatientSubrecord):
 
     def update_from_dict(self, data, user, force=False):
         data["patient_id"] = 1
-        data["datetime"] = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+
+        if "datetime" not in data:
+            data["datetime"] = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
         return super(RemoteAdded, self).update_from_dict(data, user, force=True)
 
     def set_created_by_id(self, incoming_value, user, *args, **kwargs):
@@ -55,6 +57,7 @@ class Observation(RemoteAdded):
     _sort           = 'datetime'
     _icon           = 'fa fa-line-chart'
     _list_limit     = 1
+    _angular_service = 'ObservationRecord'
 
     bp_systolic  = db_models.FloatField(blank=True, null=True)
     bp_diastolic = db_models.FloatField(blank=True, null=True)

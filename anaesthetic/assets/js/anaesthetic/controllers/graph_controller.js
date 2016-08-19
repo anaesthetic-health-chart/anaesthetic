@@ -6,21 +6,21 @@ angular.module('opal.controllers').controller(
             $cookieStore, DrugLoader, patientLoader
           ){
 
-        setInterval(function(){
-          patientLoader().then(function(patient){
-                $scope.patient = patient;
-                $scope.observation_chart.data.raw = $scope.patient.episodes[0].observation.reverse().map(function(a){
-                    a.date_terminated = $scope.observation_chart.date_to_proper_string(a.datetime._d);
-                    return a;
-                });
-                $scope.observation_chart.redraw(
-                    [$scope.observation_chart.data.raw[0].datetime._d,
-                    $scope.observation_chart.data.raw[$scope.observation_chart.data.raw.length-1].datetime._d]
-                )
-                // $scope.observation_chart.draw();
-
-          });
-        }, 10000);
+        // setInterval(function(){
+        //   patientLoader().then(function(patient){
+        //         $scope.patient = patient;
+        //         $scope.observation_chart.data.raw = $scope.patient.episodes[0].observation.reverse().map(function(a){
+        //             a.date_terminated = $scope.observation_chart.date_to_proper_string(a.datetime._d);
+        //             return a;
+        //         });
+        //         $scope.observation_chart.redraw(
+        //             [$scope.observation_chart.data.raw[0].datetime._d,
+        //             $scope.observation_chart.data.raw[$scope.observation_chart.data.raw.length-1].datetime._d]
+        //         )
+        //         // $scope.observation_chart.draw();
+        //
+        //   });
+        // }, 10000);
 
         $scope.observation_chart = new window.NH.NHGraphLib('#observations');
         // var events_chart = new window.NH.NHGraphLib('#events');
