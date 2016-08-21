@@ -2,6 +2,8 @@ This is anaesthetic - an [OPAL](https://github.com/openhealthcare/opal) project.
 
 ## Setting up the applicaiton in development
 
+also need postgrel
+
 ```bash
 pip install -r requirements.txt
 python manage.py migrate
