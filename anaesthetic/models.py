@@ -24,9 +24,6 @@ class GivenDrug(models.PatientSubrecord):
     drug_name = db_models.CharField(max_length=255)
     drug_type = db_models.CharField(max_length=255)
     rates = db_models.CharField(max_length=255)
-    # started = db_models.DateTimeField(blank=True, null=True)
-    # stopped = db_models.DateTimeField(blank=True, null=True)
-    # one_off = db_models.DateTimeField(blank=True, null=True)
     datetime = db_models.DateTimeField(blank=True, null=True)
 
 
@@ -83,14 +80,15 @@ class Gases(RemoteAdded):
     expired_carbon_dioxide = db_models.FloatField(blank=True, null=True)
     inspired_oxygen = db_models.FloatField(blank=True, null=True)
     expired_oxygen = db_models.FloatField(blank=True, null=True)
-    anaesthetic_agent = db_models.CharField(max_length=255)
+    expired_aa = db_models.FloatField(blank=True, null=True)
     datetime = db_models.DateTimeField()
 
 
 class Ventilators(RemoteAdded):
-    _title = "Ventilators"
+    _title = "Ventilation"
     mode = db_models.CharField(max_length=255)
     peak_airway_pressure = db_models.FloatField(blank=True, null=True)
     peep_airway_pressure = db_models.FloatField(blank=True, null=True)
+    tidal_volume = db_models.FloatField(blank=True, null=True)
     rate = db_models.IntegerField(blank=True, null=True)
     datetime = db_models.DateTimeField()
