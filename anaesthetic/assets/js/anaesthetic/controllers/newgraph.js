@@ -153,17 +153,6 @@ angular.module('opal.controllers').controller(
           line :{
             show: false,
           },
-
-
-          zoom: {
-        		enabled: true,
-            onzoomend: function(d){
-            		chart2.zoom(d);
-            }
-          },
-
-
-
         }),
 
         chart2 = c3.generate({
@@ -235,7 +224,9 @@ angular.module('opal.controllers').controller(
           subchart: {
             show: true,
             onbrush: function (d) {
-              chart2.brush(d);
+              chart.zoom(d);
+              chart3.zoom(d);
+              drugchart.zoom(d);
             },
             size: {
               height: 20,
