@@ -83,12 +83,15 @@ angular.module('opal.controllers').controller(
           newvents = ventsettings(patient.episodes[0].ventilators);
 
 
-
-         chart = c3.generate({
+          chart_padding = 75;
+        chart = c3.generate({
 
           bindto: '#chart',
           legend: {
             show: false
+          },
+          padding:{
+            left: chart_padding,
           },
 
           data : {
@@ -109,7 +112,7 @@ angular.module('opal.controllers').controller(
 
           },
 
-        grid: {
+          grid: {
             x: {
               lines: [
                 {value: "22/08/2016 12:50:00", text: 'Induction' },
@@ -123,7 +126,7 @@ angular.module('opal.controllers').controller(
             x: {
               type: 'timeseries',
               tick: {
-                fit: true,
+                fit: false,
                 format: '%d/%m %H:%M'
               },
             },
@@ -168,6 +171,9 @@ angular.module('opal.controllers').controller(
           legend: {
             show: false
           },
+          padding:{
+            left: chart_padding
+          },
 
           data: {
             x: 'datetime',
@@ -177,6 +183,12 @@ angular.module('opal.controllers').controller(
               expired_aa: 'y2',
               expired_carbon_dioxide: 'y2',
             },
+            colors: {
+              expired_oxygen: "#B2BEB5" ,
+              inspired_oxygen: "#B2BEB5" ,
+              expired_aa: '#C46210' ,
+              expired_carbon_dioxide: '#1B1B1B' ,
+            },
           },
           size: {
             height: 150,
@@ -185,19 +197,22 @@ angular.module('opal.controllers').controller(
           axis: {
             x: {
               type: 'timeseries',
-              tick: { format: '%d/%m %H:%M' },
+              tick: {
+                format: '%d/%m %H:%M',
+                fit: false,
+              },
               show: true,
             },
 
             y: { //oxygen, air, n20
-              min: 0,
+              //min: 0,
               max: 100,
               tick: {
                 values: [25, 50, 75, 100]
               },
               padding: {
                 top: 0,
-                bottom: 0,
+                //bottom: 0,
               },
               },
 
@@ -206,12 +221,12 @@ angular.module('opal.controllers').controller(
             y2: { //etaa, C02
               show: true,
               min: 0,
-              max: 10.0,
+              //max: 10.0,
               tick: {
                 values: [2,4,6,8,10]
               },
               padding: {
-                top: 0,
+                //top: 0,
                 bottom: 0,
               },
             },
@@ -235,6 +250,9 @@ angular.module('opal.controllers').controller(
           legend: {
             show: false
           },
+          padding:{
+            left: chart_padding
+          },
 
           data: {
             x: 'datetime',
@@ -243,6 +261,17 @@ angular.module('opal.controllers').controller(
             axes: {
               tidal_volume: 'y2',
             },
+            colors: {
+              rate: '#007FFF' ,
+              tidal_volume: '#66FF00' ,
+              peak_airway_pressure: '#FF007F' ,
+              peep_airway_pressure: '#FF007F' ,
+            },
+            types: {
+            peak_airway_pressure: 'area-spline',
+            //peep_airway_pressure: 'area-spline',
+            },
+            //groups:[['peak_airway_pressure', 'peep_airway_pressure']],
           },
           size: {
             height: 100,
@@ -251,7 +280,10 @@ angular.module('opal.controllers').controller(
           axis: {
             x: {
               type: 'timeseries',
-              tick: { format: '%d/%m %H:%M' },
+              tick: {
+                fit: false,
+                format: '%d/%m %H:%M'
+              },
               show: false,
             },
 
@@ -279,6 +311,98 @@ angular.module('opal.controllers').controller(
           },
 
         });
+
+        drugchart = c3.generate({
+          bindto: '#drugchart',
+          legend: {show: false},
+          padding:{
+            left: chart_padding
+          },
+          opacity: 1,
+          point: {
+            r: 5,
+            opacity: 1,
+          },
+          data: {
+            //x: 'datetime',
+            xFormat: '%d/%m/%Y %H:%M:%S',
+            xs: { //use x value to sort order
+              fentanyl: 'fentanyl_x',
+              propofol: 'propofol_x',
+              atracurium: 'atracurium_x',
+            },
+            columns: [
+              ["fentanyl_x", '22/08/2016 12:50:00', '22/08/2016 13:15:00', '22/08/2016 14:05:00',],
+              ["atracurium_x", '22/08/2016 12:55:00', '22/08/2016 13:25:00', ],
+              ["propofol_x", '22/08/2016 12:53:00',],
+              ["fentanyl", 1, 1, 1,],
+              ["atracurium", 3, 3],
+              ["propofol", 2],
+              // ["fentanyl", 'fentanyl','fentanyl','fentanyl',],
+              // ["atracurium", 'propofol','propofol',],
+              // ["propofol", 'atracurium',],
+            ],
+            type: 'scatter',
+            colors: {
+              fentanyl: '#71C5E8',
+              propofol: '#FEDD00',
+              atracurium: '#ff6666',
+            },
+          },
+          axis: {
+            x: {
+              type: 'timeseries',
+              tick: {
+                format: '%d/%m %H:%M',
+                fit: false,
+              },
+
+
+            },
+            y: {
+              inverted: true,
+
+              tick: {
+                format: function(d){
+                  //needs to be replaced by something dymanic and not hard coded!
+                  //case x: return $scope.something[x-1]??
+                  switch(d){
+                    case 1:
+                      return "fentanyl"
+                    case 2:
+                      return "propofol"
+                    case 3:
+                      return "atracurium"
+
+                  }
+                },
+                values: [1,2,3], //this needs to come from a function in the future
+              },
+              padding: {
+                top: 5,
+                bottom: 5,
+              },
+            },
+            y2: {
+              //we'll use y2 to display total dose
+              default: [0,4],
+              tick: {
+                values: [0.5,1.5,2.5,3.5], //this needs to come from a function in the future
+              },
+              show: true,
+            },
+          },
+          size: {
+            //height to be function of number of drugs (coloums/2 ?)
+            height: 80,
+          },
+          grid: {
+            y2: {
+              show: true,
+            },
+          },
+        });
+
       });
 
         setInterval(function () {
@@ -287,6 +411,11 @@ angular.module('opal.controllers').controller(
             newgasses = creategasses(patient.episodes[0].gases);
             newvents = ventsettings(patient.episodes[0].ventilators);
 
+            //set first and last time for x axis
+            $scope.firstobs = newColumns[4][1];
+            $scope.lastobs = newColumns[4][newColumns[4].length-1];
+
+            drugchart.axis.range({max: {x: $scope.lastobs}, min: {x: $scope.firstobs}, });
 
                 chart.load({
                     columns: newColumns,
@@ -296,6 +425,9 @@ angular.module('opal.controllers').controller(
                 });
                 chart3.load({
                     columns: newvents,
+                });
+                drugchart.load({
+                  //load min max times
                 });
 
           });
