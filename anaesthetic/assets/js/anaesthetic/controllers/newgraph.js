@@ -67,13 +67,38 @@ angular.module('opal.controllers').controller(
             return columns;
         }
 
-        columns = [
-            ["bp_systolic", 120, 123, 125],
-            ["bp_diastolic", 60, 65, 59],
-            ["pulse", 82, 69, 90],
-            ["Sp02", 98, 99, 98],
-            ["datetime", '18/08/2016 11:10:00', '18/08/2016 11:15:00', '18/08/2016 11:20:00',]
-          ];
+        var gridlines = function(events){
+
+          events = _.map(events, function(a){
+            a.datetime =  a.datetime.format("DD/MM/YYYY HH:mm:ss");
+            //lines = "{value: '" + a.datetime + "', text:'" + a.Title + "'},";
+            lines = '{value: ' + '"' + a.datetime + '", text: ' + "'" + a.Title + "'"  + '},' ;
+            function newline(time, title){
+              this.value = time;
+              this.text = title;
+            }
+            var lines2 = new newline(a.datetime, a.Title);
+            return lines2;
+          });
+
+          var line = {
+            x:{
+              lines: events,
+            },
+          };
+
+          return line;
+
+        }
+          oldgridlines = {
+            x: {
+              lines: [
+                {value: "22/08/2016 12:50:00", text: 'Induction' },
+                {value: "22/08/2016 12:55:00", text: 'Block' },
+                {value: "22/08/2016 13:15:00", text: 'KTS' },
+              ],
+            },
+          };
 
           var chart;
 
@@ -81,7 +106,7 @@ angular.module('opal.controllers').controller(
           newColumns = createColumns(patient.episodes[0].observation);
           newgasses = creategasses(patient.episodes[0].gases);
           newvents = ventsettings(patient.episodes[0].ventilators);
-
+          newlines = gridlines(patient.episodes[0].anaesthetic_technique);
 
           chart_padding = 75;
         chart = c3.generate({
@@ -112,15 +137,7 @@ angular.module('opal.controllers').controller(
 
           },
 
-          grid: {
-            x: {
-              lines: [
-                {value: "22/08/2016 12:50:00", text: 'Induction' },
-                {value: "22/08/2016 12:55:00", text: 'Block' },
-                {value: "22/08/2016 13:15:00", text: 'KTS' },
-              ],
-            },
-          },
+          grid: newlines,
 
           axis: {
             x: {
@@ -401,6 +418,8 @@ angular.module('opal.controllers').controller(
             newColumns = createColumns(patient.episodes[0].observation);
             newgasses = creategasses(patient.episodes[0].gases);
             newvents = ventsettings(patient.episodes[0].ventilators);
+            newlines = gridlines(patient.episodes[0].anaesthetic_technique);
+
 
             //set first and last time for x axis
             $scope.firstobs = newColumns[4][1];
