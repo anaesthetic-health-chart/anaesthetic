@@ -1,7 +1,5 @@
- <span ng-show="item.route"><b>Route</b> [[ item.route ]]<br /></span>
- <span ng-show="item.drug_name"><b>Drug name</b> [[ item.drug_name ]] <br /></span>
- <span ng-show="item.drug_type"><b>Drug type</b> [[ item.drug_type ]] <br /></span>
- <span ng-show="item.rates"><b>Dose</b> [[ item.rates ]] <br /></span>
- <span ng-show="item.started"><b>started</b> [[ item.started | shortDateTime ]] <br /></span>
- <span ng-show="item.stopped"><b>stopped</b> [[ item.stopped | shortDateTime ]] <br /></span>
- <span ng-show="item.one_off"><b>given</b> [[ item.one_off | shortDateTime ]] <br /></span>
+<div class=[[item.drug_type]]>
+  <span ng-show="item.datetime"><b>[[ item.datetime | shortDateTime]]</b> </span>
+  <span ng-show="item.drug_name"> [[ item.drug_name ]] </span>
+  <span ng-show="item.rates">[[ item.rates ]] <br /></span>
+</div>

@@ -46,7 +46,7 @@
     <div class="row">
       {% block content %}
 
-      <div class="col-md-9 content-offset menu-bar-offset">
+      <div class="col-md-9 druglist">
         <div class="col-md-12">
           {% for episode_category in episode_categories %}
           {% if episode_category.detail_template %}
@@ -64,7 +64,7 @@
         </div>
       </div>
 
-      <div class="col-md-3 content-offset menu-bar-offset"> <!-- Episode Switcher -->
+      <div class="col-md-3 druglist"> <!-- Episode Switcher -->
         {% record_panel models.AnaestheticTechnique %}
         {% record_panel models.GivenDrug %}
       </div> <!-- End episode switcher -->

@@ -71,8 +71,6 @@ angular.module('opal.controllers').controller(
 
           events = _.map(events, function(a){
             a.datetime =  a.datetime.format("DD/MM/YYYY HH:mm:ss");
-            //lines = "{value: '" + a.datetime + "', text:'" + a.Title + "'},";
-            lines = '{value: ' + '"' + a.datetime + '", text: ' + "'" + a.Title + "'"  + '},' ;
             function newline(time, title){
               this.value = time;
               this.text = title;
@@ -90,15 +88,80 @@ angular.module('opal.controllers').controller(
           return line;
 
         }
-          oldgridlines = {
-            x: {
-              lines: [
-                {value: "22/08/2016 12:50:00", text: 'Induction' },
-                {value: "22/08/2016 12:55:00", text: 'Block' },
-                {value: "22/08/2016 13:15:00", text: 'KTS' },
-              ],
-            },
-          };
+
+        var drugs = function(drug){
+          // stuff this has to do
+          // created columns (drug (order), drug_x (datetime))
+          // colours
+          // y ticks
+          // create data object
+
+          var drugdata = {
+            //x: 'datetime',
+            xFormat: '%d/%m/%Y %H:%M:%S',
+            xs: drugxs,
+            columns: [
+              ["fentanyl_x", '22/08/2016 12:50:00', '22/08/2016 13:15:00', '22/08/2016 14:05:00',],
+              ["atracurium_x", '22/08/2016 12:55:00', '22/08/2016 13:25:00', ],
+              ["propofol_x", '22/08/2016 12:53:00',],
+              ["fentanyl", 1, 1, 1,],
+              ["atracurium", 3, 3],
+              ["propofol", 2],
+            ],
+            type: 'scatter',
+            colors: drugcolors,
+          }
+          //if new drug create xs and column, if old push to existing.
+          var druglist;
+          var drugcolumns;
+
+          _.each(drug, function(a){
+            drugname = a.drugname
+            drugtime = a.datetime
+            drugdose = a.rates
+
+            var inlist = _.find (druglist, drugname
+
+            function drugorder (drugnm){
+              a = _.findidex(druglist, drugnm);
+              b = a + 1;
+              return b;
+            }
+
+            if (inlist == false){
+              // drug not given before
+              druglist.push(drugname);
+              var drugorder = new drugorder(drugname);
+              drugnamex = drugname + "_x";
+
+              //push to coloumns ot create arrays
+              drugcolumns.push(drugname);
+              drugcolumns.push(drugnamex);
+
+              //push data
+              drugcolumns.drugname.push(drugorder);
+              drugcolumns.drugnamex.push(drugtime);
+
+            } else {
+              // drug already given add to the array
+              var drugorder = new drugorder(drugname);
+
+              drugnamex = drugname + "_x";
+
+              //push data
+              drugcolumns.drugname.push(drugorder);
+              drugcolumns.drugnamex.push(drugtime);
+
+            };
+
+          });
+
+          narcos = _.map(drug, function(b){
+
+          });
+
+
+        }
 
           var chart;
 
@@ -426,9 +489,11 @@ angular.module('opal.controllers').controller(
             $scope.lastobs = newColumns[4][newColumns[4].length-1];
 
             drugchart.axis.range({max: {x: $scope.lastobs}, min: {x: $scope.firstobs}, });
+            //chart.grid(newlines);
 
                 chart.load({
                     columns: newColumns,
+                    grid: newlines
                 });
                 chart2.load({
                     columns: newgasses,
