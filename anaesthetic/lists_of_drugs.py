@@ -14,16 +14,16 @@ all_drugs = dict(
     other_drug_agents=["cefuroxime", "metronidazole", "gentamicin", "co-amoxiclav"],
 )
 # list of drugs in css
-# .antiemetic_drug
-# .induction_agent_drug
-# .hypnotic_drug
-# .hypnotic_antagonist_drug
-# .neuromuscular_blocking_drug
-# .neuromuscular_blocking_drug_antagonist
-# .depolarizing_neuromuscular_blocking_drug
-# .opioid_drug
-# .opioid_antagonist
-# .vasopressor_drug
-# .local_anaesthetics_drug
-# .anticholinergic_drug
-# .other_drug_agents
+# antiemetic_drug
+# induction_agent_drug
+# hypnotic_drug
+# hypnotic_antagonist_drug
+# neuromuscular_blocking_drug
+# neuromuscular_blocking_drug_antagonist
+# depolarizing_neuromuscular_blocking_drug
+# opioid_drug
+# opioid_antagonist
+# vasopressor_drug
+# local_anaesthetics_drug
+# anticholinergic_drug
+# other_drug_agents

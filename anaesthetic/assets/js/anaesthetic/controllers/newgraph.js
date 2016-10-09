@@ -109,21 +109,25 @@ angular.module('opal.controllers').controller(
               ["propofol", 2],
             ],
             type: 'scatter',
-            colors: drugcolors,
+            colors: drugcolours,
           }
           //if new drug create xs and column, if old push to existing.
           var druglist;
           var drugcolumns;
+          var drugcolours;
+          var drugxs;
 
           _.each(drug, function(a){
-            drugname = a.drugname
-            drugtime = a.datetime
-            drugdose = a.rates
+            var drugname = a.drug_name
+            var drugtime = a.datetime
+            var drugdose = a.rates
 
-            var inlist = _.find (druglist, drugname
+            var inlist = _.find (druglist, drugname);
+
+            debugger;
 
             function drugorder (drugnm){
-              a = _.findidex(druglist, drugnm);
+              a = _.findindex(druglist, drugnm);
               b = a + 1;
               return b;
             }
@@ -141,6 +145,30 @@ angular.module('opal.controllers').controller(
               //push data
               drugcolumns.drugname.push(drugorder);
               drugcolumns.drugnamex.push(drugtime);
+
+              //push to colours
+              //
+              var colours = {
+                antiemetic_drug: '#EFBE7D',
+                induction_agent_drug: '#ffe800',
+                hypnotic_drug: '#FF8200',
+                hypnotic_antagonist_drug: '#FF8200',
+                neuromuscular_blocking_drug: '#ff7477',
+                neuromuscular_blocking_drug_antagonist: '#ff7477',
+                depolarizing_neuromuscular_blocking_drug: '#ff7477',
+                opioid_drug: '#71C5E8',
+                opioid_antagonist: '#71C5E8',
+                vasopressor_drug: '#D6BFDD',
+                local_anaesthetics_drug: '#AFA9A0',
+                anticholinergic_drug: '#A4D65E',
+                other_drug_agents: '#ffffff',
+              };
+
+              var nextcolour = _.where(colours, drugname);
+              drugcolours.push(nextcolour);
+
+              //push to xs so it plots
+              drugxs.push(drugnamex);
 
             } else {
               // drug already given add to the array
@@ -170,6 +198,8 @@ angular.module('opal.controllers').controller(
           newgasses = creategasses(patient.episodes[0].gases);
           newvents = ventsettings(patient.episodes[0].ventilators);
           newlines = gridlines(patient.episodes[0].anaesthetic_technique);
+          newdrugs = drugs(patient.episodes[0].given_drug);
+          debugger;
 
           chart_padding = 75;
         chart = c3.generate({
@@ -493,7 +523,7 @@ angular.module('opal.controllers').controller(
 
                 chart.load({
                     columns: newColumns,
-                    grid: newlines
+                    grid: newlines,
                 });
                 chart2.load({
                     columns: newgasses,
