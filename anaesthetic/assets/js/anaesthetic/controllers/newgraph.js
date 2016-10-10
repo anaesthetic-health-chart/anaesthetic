@@ -112,42 +112,46 @@ angular.module('opal.controllers').controller(
             colors: drugcolours,
           }
           //if new drug create xs and column, if old push to existing.
-          var druglist;
-          var drugcolumns;
+
+
           var drugcolours;
           var drugxs;
+          $scope.druglist = new Array();
+          $scope.drugcolumns = new Array();
+          $scope.drugcolours = new Array();
+          $scope.drugxs = new Array();
 
           _.each(drug, function(a){
-            var drugname = a.drug_name
-            var drugtime = a.datetime
-            var drugdose = a.rates
+            var drugname = a.drug_name ;
+            var drugtime = a.datetime ;
+            var drugdose = a.rates ;
+            var drugclass = a.drug_type ;
 
-            var inlist = _.find (druglist, drugname);
+            var inlist = _.find ($scope.druglist, drugclass);
 
-            debugger;
-
-            function drugorder (drugnm){
-              a = _.findindex(druglist, drugnm);
+            function drugord (drugnm){
+              a = _.findIndex(druglist, drugnm);
               b = a + 1;
               return b;
             }
 
-            if (inlist == false){
+            if (inlist == null){  //null because ._find returns undefined
               // drug not given before
-              druglist.push(drugname);
-              var drugorder = new drugorder(drugname);
+              $scope.druglist.push(drugname);
               drugnamex = drugname + "_x";
+              drugorder = $scope.druglist.length;
+              var i = (drugorder * 2) - 2;
+              var j = (drugorder * 2) - 1;
 
               //push to coloumns ot create arrays
-              drugcolumns.push(drugname);
-              drugcolumns.push(drugnamex);
+              $scope.drugcolumns.push([drugname]);
+              $scope.drugcolumns.push([drugnamex]);
 
               //push data
-              drugcolumns.drugname.push(drugorder);
-              drugcolumns.drugnamex.push(drugtime);
+              $scope.drugcolumns[i].push(drugorder);
+              $scope.drugcolumns[j].push(drugtime);
 
               //push to colours
-              //
               var colours = {
                 antiemetic_drug: '#EFBE7D',
                 induction_agent_drug: '#ffe800',
@@ -164,27 +168,33 @@ angular.module('opal.controllers').controller(
                 other_drug_agents: '#ffffff',
               };
 
-              var nextcolour = _.where(colours, drugname);
-              drugcolours.push(nextcolour);
+              //var nextcolour = _.where(colours, drugclass);
+              var nextcolour = _.findWhere(colours, drugclass);
+              // returns first in the list *flip table*
 
+              $scope.drugcolours.push(nextcolour);
               //push to xs so it plots
-              drugxs.push(drugnamex);
+              $scope.drugxs.push(drugnamex);
+              debugger;
+
 
             } else {
               // drug already given add to the array
               var drugorder = new drugorder(drugname);
+              var i = (drugorder * 2) - 2;
+              var j = (drugorder * 2) - 1;
 
               drugnamex = drugname + "_x";
 
               //push data
-              drugcolumns.drugname.push(drugorder);
-              drugcolumns.drugnamex.push(drugtime);
+              $scope.drugcolumns[i].push(drugorder);
+              $scope.drugcolumns[j].push(drugtime);
 
             };
 
           });
-
-          narcos = _.map(drug, function(b){
+          debugger;
+          narco = _.map(drug, function(b){
 
           });
 
