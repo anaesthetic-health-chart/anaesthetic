@@ -90,52 +90,25 @@ angular.module('opal.controllers').controller(
         }
 
         var drugs = function(drug){
-          // stuff this has to do
-          // created columns (drug (order), drug_x (datetime))
-          // colours
-          // y ticks
-          // create data object
+          // stuff this still has to do
+          //customise labels
 
-          var drugdata = {
-            //x: 'datetime',
-            xFormat: '%d/%m/%Y %H:%M:%S',
-            xs: drugxs,
-            columns: [
-              ["fentanyl_x", '22/08/2016 12:50:00', '22/08/2016 13:15:00', '22/08/2016 14:05:00',],
-              ["atracurium_x", '22/08/2016 12:55:00', '22/08/2016 13:25:00', ],
-              ["propofol_x", '22/08/2016 12:53:00',],
-              ["fentanyl", 1, 1, 1,],
-              ["atracurium", 3, 3],
-              ["propofol", 2],
-            ],
-            type: 'scatter',
-            colors: drugcolours,
-          }
           //if new drug create xs and column, if old push to existing.
 
-
-          var drugcolours;
-          var drugxs;
           $scope.druglist = new Array();
           $scope.drugcolumns = new Array();
-          $scope.drugcolours = new Array();
-          $scope.drugxs = new Array();
+          $scope.drugcolours = {};
+          $scope.drugxs = {} ;
+
 
           _.each(drug, function(a){
             var drugname = a.drug_name ;
-            var drugtime = a.datetime ;
+            var drugtime = a.datetime.format("DD/MM/YYYY HH:mm:ss");
             var drugdose = a.rates ;
             var drugclass = a.drug_type ;
 
-            var inlist = _.find ($scope.druglist, drugclass);
-
-            function drugord (drugnm){
-              a = _.findIndex(druglist, drugnm);
-              b = a + 1;
-              return b;
-            }
-
-            if (inlist == null){  //null because ._find returns undefined
+            var inlist = _.indexOf($scope.druglist, drugname);
+            if (inlist == '-1'){
               // drug not given before
               $scope.druglist.push(drugname);
               drugnamex = drugname + "_x";
@@ -152,51 +125,56 @@ angular.module('opal.controllers').controller(
               $scope.drugcolumns[j].push(drugtime);
 
               //push to colours
-              var colours = {
-                antiemetic_drug: '#EFBE7D',
-                induction_agent_drug: '#ffe800',
-                hypnotic_drug: '#FF8200',
-                hypnotic_antagonist_drug: '#FF8200',
-                neuromuscular_blocking_drug: '#ff7477',
-                neuromuscular_blocking_drug_antagonist: '#ff7477',
-                depolarizing_neuromuscular_blocking_drug: '#ff7477',
-                opioid_drug: '#71C5E8',
-                opioid_antagonist: '#71C5E8',
-                vasopressor_drug: '#D6BFDD',
-                local_anaesthetics_drug: '#AFA9A0',
-                anticholinergic_drug: '#A4D65E',
-                other_drug_agents: '#ffffff',
-              };
-
+              var colours = [
+                {class: "antiemetic_drug", colour: "#EFBE7D"},
+                {class: "induction_agent_drug", colour: '#ffe800'},
+                {class: "hypnotic_drug", colour: '#FF8200'},
+                {class: "hypnotic_antagonist_drug", colour: '#FF8200'},
+                {class: "neuromuscular_blocking_drug", colour: '#ff7477'},
+                {class: "neuromuscular_blocking_drug_antagonist", colour: '#ff7477'},
+                {class: "depolarizing_neuromuscular_blocking_drug", colour: '#ff7477'},
+                {class: "opioid_drug", colour: '#71C5E8'},
+                {class: "opioid_antagonist", colour: '#71C5E8'},
+                {class: "vasopressor_drug", colour: '#D6BFDD'},
+                {class: "local_anaesthetics_drug", colour: '#AFA9A0'},
+                {class: "anticholinergic_drug", colour: '#A4D65E'},
+                {class: "other_drug_agents", colour: '#ffffff'},
+              ];
               //var nextcolour = _.where(colours, drugclass);
-              var nextcolour = _.findWhere(colours, drugclass);
-              // returns first in the list *flip table*
+              var something = {class: drugclass};
+              var nextcolour = _.findWhere(colours, something);
+              $scope.drugcolours[drugname] = nextcolour.colour;
 
-              $scope.drugcolours.push(nextcolour);
               //push to xs so it plots
-              $scope.drugxs.push(drugnamex);
-              debugger;
+              $scope.drugxs[drugname] = drugnamex;
 
 
             } else {
               // drug already given add to the array
-              var drugorder = new drugorder(drugname);
+              var drugord = _.indexOf($scope.druglist, drugname);
+              var drugorder = drugord + 1;
+
               var i = (drugorder * 2) - 2;
               var j = (drugorder * 2) - 1;
 
               drugnamex = drugname + "_x";
-
               //push data
               $scope.drugcolumns[i].push(drugorder);
               $scope.drugcolumns[j].push(drugtime);
-
             };
 
           });
-          debugger;
-          narco = _.map(drug, function(b){
 
-          });
+          var drugdata = {
+            xFormat: '%d/%m/%Y %H:%M:%S',
+            xs: $scope.drugxs,
+            columns: $scope.drugcolumns,
+            type: 'scatter',
+            colors: $scope.drugcolours,
+          }
+          $scope.dheight = $scope.druglist.length * 15;
+          debugger;
+          return drugdata;
 
 
         }
@@ -209,7 +187,6 @@ angular.module('opal.controllers').controller(
           newvents = ventsettings(patient.episodes[0].ventilators);
           newlines = gridlines(patient.episodes[0].anaesthetic_technique);
           newdrugs = drugs(patient.episodes[0].given_drug);
-          debugger;
 
           chart_padding = 75;
         chart = c3.generate({
@@ -376,11 +353,11 @@ angular.module('opal.controllers').controller(
               rate: '#007FFF' ,
               tidal_volume: '#66FF00' ,
               peak_airway_pressure: '#FF007F' ,
-              peep_airway_pressure: '#FF007F' ,
+              peep_airway_pressure: '#ffffff' ,
             },
             types: {
             peak_airway_pressure: 'area-spline',
-            //peep_airway_pressure: 'area-spline',
+            peep_airway_pressure: 'area-spline',
             },
             //groups:[['peak_airway_pressure', 'peep_airway_pressure']],
           },
@@ -435,30 +412,11 @@ angular.module('opal.controllers').controller(
             opacity: 1,
           },
           data: {
-            //x: 'datetime',
             xFormat: '%d/%m/%Y %H:%M:%S',
-            xs: { //use x value to sort order
-              fentanyl: 'fentanyl_x',
-              propofol: 'propofol_x',
-              atracurium: 'atracurium_x',
-            },
-            columns: [
-              ["fentanyl_x", '22/08/2016 12:50:00', '22/08/2016 13:15:00', '22/08/2016 14:05:00',],
-              ["atracurium_x", '22/08/2016 12:55:00', '22/08/2016 13:25:00', ],
-              ["propofol_x", '22/08/2016 12:53:00',],
-              ["fentanyl", 1, 1, 1,],
-              ["atracurium", 3, 3],
-              ["propofol", 2],
-              // ["fentanyl", 'fentanyl','fentanyl','fentanyl',],
-              // ["atracurium", 'propofol','propofol',],
-              // ["propofol", 'atracurium',],
-            ],
+            xs: newdrugs.xs,
+            columns : newdrugs.columns,
             type: 'scatter',
-            colors: {
-              fentanyl: '#71C5E8',
-              propofol: '#FEDD00',
-              atracurium: '#ff6666',
-            },
+            colors: newdrugs.colors,
           },
           axis: {
             x: {
@@ -467,33 +425,23 @@ angular.module('opal.controllers').controller(
                 format: '%d/%m %H:%M',
                 fit: false,
               },
-
-
             },
+
             y: {
               inverted: true,
-
               tick: {
                 format: function(d){
-                  //needs to be replaced by something dymanic and not hard coded!
-                  //case x: return $scope.something[x-1]??
-                  switch(d){
-                    case 1:
-                      return "fentanyl"
-                    case 2:
-                      return "propofol"
-                    case 3:
-                      return "atracurium"
-
-                  }
+                  var label = $scope.druglist[d-1];
+                  return label;
                 },
-                values: [1,2,3], //this needs to come from a function in the future
+                //values: [1,2,3,4], //this needs to come from a function in the future
               },
               padding: {
                 top: 5,
                 bottom: 5,
               },
             },
+
             y2: {
               //we'll use y2 to display total dose
               default: [0,4],
@@ -504,8 +452,7 @@ angular.module('opal.controllers').controller(
             },
           },
           size: {
-            //height to be function of number of drugs (coloums/2 ?)
-            height: 80,
+            height: $scope.dheight,
           },
           grid: {
             y2: {
@@ -522,6 +469,7 @@ angular.module('opal.controllers').controller(
             newgasses = creategasses(patient.episodes[0].gases);
             newvents = ventsettings(patient.episodes[0].ventilators);
             newlines = gridlines(patient.episodes[0].anaesthetic_technique);
+            newdrugs = drugs(patient.episodes[0].given_drug);
 
 
             //set first and last time for x axis
@@ -542,7 +490,9 @@ angular.module('opal.controllers').controller(
                     columns: newvents,
                 });
                 drugchart.load({
-                  //load min max times
+                    columns : newdrugs.columns,
+                    xs: newdrugs.xs,
+                    colors: newdrugs.colors,
                 });
 
           });
