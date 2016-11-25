@@ -42,10 +42,11 @@ h3 {
 .page-header {
   border-bottom: 1px solid #FFF;
   background-color: #E4EDF6;
-  margin: 0;
+  margin-top: 50;
   min-height: 60px;
   overflow: hidden;
-  padding: 0; }
+  padding: 0;
+}
 
 ul#patient-meta-data {
   list-style-type: none;
@@ -62,7 +63,9 @@ ul#patient-meta-data {
   overflow: hidden;
   padding: 16px 24px 15px; }
 
-.page-header .logo, .page-header .more-button {
+
+
+.navbar-brand.dac-logo, .page-header .more-button {
   background: #0054B5;
   color: #fff;
   font-size: 12px;
@@ -117,12 +120,6 @@ ul#patient-meta-data {
 
 body {
   height: 100%; }
-
-.navbar-collapse {
-  display: none !important; }
-
-.navbar {
-  display: none !important; }
 
 /* ngProgress overrides */
 .ngProgressLiteBar {

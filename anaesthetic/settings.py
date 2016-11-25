@@ -253,7 +253,7 @@ DEFAULT_DOMAIN = 'http://anaesthetic.com/'
 
 # Begins OPAL Settings you should edit !
 
-OPAL_BRAND_NAME = 'anaesthetic'
+OPAL_BRAND_NAME = 'DAC'
 VERSION_NUMBER  = '<0.0.1'
 
 try:
