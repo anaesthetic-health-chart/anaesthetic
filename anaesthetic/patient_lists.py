@@ -20,8 +20,20 @@ class AllPatientsList(core.patient_lists.PatientList):
 
 class Theatre1(TaggedPatientList):
     display_name = "Theatre 1"
-    tag = "Theatre_1"
+    tag = "theatre_1"
+
+    schema = [
+        models.Demographics,
+        models.Diagnosis,
+        models.Treatment
+    ]
 
 class Theatre2(TaggedPatientList):
     display_name = "Theatre 2"
-    tag = "Theatre_2"
+    tag = "theatre_2"
+
+    schema = [
+        models.Demographics,
+        models.Diagnosis,
+        models.Treatment
+    ]
