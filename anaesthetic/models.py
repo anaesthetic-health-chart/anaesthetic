@@ -24,9 +24,6 @@ class GivenDrug(models.PatientSubrecord):
     drug_name = db_models.CharField(max_length=255)
     drug_type = db_models.CharField(max_length=255)
     rates = db_models.CharField(max_length=255)
-    # started = db_models.DateTimeField(blank=True, null=True)
-    # stopped = db_models.DateTimeField(blank=True, null=True)
-    # one_off = db_models.DateTimeField(blank=True, null=True)
     datetime = db_models.DateTimeField(blank=True, null=True)
 
 
@@ -36,7 +33,9 @@ class RemoteAdded(models.PatientSubrecord):
 
     def update_from_dict(self, data, user, force=False):
         data["patient_id"] = 1
-        data["datetime"] = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+
+        if "datetime" not in data:
+            data["datetime"] = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
         return super(RemoteAdded, self).update_from_dict(data, user, force=True)
 
     def set_created_by_id(self, incoming_value, user, *args, **kwargs):
@@ -55,6 +54,7 @@ class Observation(RemoteAdded):
     _sort           = 'datetime'
     _icon           = 'fa fa-line-chart'
     _list_limit     = 1
+    _angular_service = 'ObservationRecord'
 
     bp_systolic  = db_models.FloatField(blank=True, null=True)
     bp_diastolic = db_models.FloatField(blank=True, null=True)
@@ -80,14 +80,15 @@ class Gases(RemoteAdded):
     expired_carbon_dioxide = db_models.FloatField(blank=True, null=True)
     inspired_oxygen = db_models.FloatField(blank=True, null=True)
     expired_oxygen = db_models.FloatField(blank=True, null=True)
-    anaesthetic_agent = db_models.CharField(max_length=255)
+    expired_aa = db_models.FloatField(blank=True, null=True)
     datetime = db_models.DateTimeField()
 
 
 class Ventilators(RemoteAdded):
-    _title = "Ventilators"
+    _title = "Ventilation"
     mode = db_models.CharField(max_length=255)
     peak_airway_pressure = db_models.FloatField(blank=True, null=True)
     peep_airway_pressure = db_models.FloatField(blank=True, null=True)
+    tidal_volume = db_models.FloatField(blank=True, null=True)
     rate = db_models.IntegerField(blank=True, null=True)
     datetime = db_models.DateTimeField()
