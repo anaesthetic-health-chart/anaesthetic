@@ -8,7 +8,8 @@ angular.module('opal.controllers').controller(
 
 
 
-        dateformat = "DD/MM/YYYY HH:mm:ss"
+        var dateformat = "DD/MM/YYYY HH:mm:ss";
+        var interval;
 
         var createColumns = function(anaesthetics){
             var columns = [
@@ -462,7 +463,7 @@ angular.module('opal.controllers').controller(
 
       });
 
-        setInterval(function () {
+        interval = setInterval(function () {
           patientLoader().then(function(patient){
             newColumns = createColumns(patient.episodes[0].observation);
             newgasses = creategasses(patient.episodes[0].gases);
@@ -497,6 +498,12 @@ angular.module('opal.controllers').controller(
           });
 
         }, 10000);
+
+        $scope.$on("$routeChangeStart", function(){
+          if(interval){
+            clearInterval(interval);
+          }
+        });
 
 
 });
