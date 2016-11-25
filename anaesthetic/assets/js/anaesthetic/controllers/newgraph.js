@@ -173,7 +173,6 @@ angular.module('opal.controllers').controller(
             colors: $scope.drugcolours,
           }
           $scope.dheight = $scope.druglist.length * 15;
-          debugger;
           return drugdata;
 
 
@@ -341,7 +340,7 @@ angular.module('opal.controllers').controller(
           padding:{
             left: chart_padding
           },
-
+          opacity: 1,
           data: {
             x: 'datetime',
             xFormat: '%d/%m/%Y %H:%M:%S',
@@ -353,13 +352,13 @@ angular.module('opal.controllers').controller(
               rate: '#007FFF' ,
               tidal_volume: '#66FF00' ,
               peak_airway_pressure: '#FF007F' ,
-              peep_airway_pressure: '#ffffff' ,
+              peep_airway_pressure: '#E4EDF6' ,
             },
             types: {
             peak_airway_pressure: 'area-spline',
             peep_airway_pressure: 'area-spline',
             },
-            //groups:[['peak_airway_pressure', 'peep_airway_pressure']],
+            groups:[['peak_airway_pressure', 'peep_airway_pressure']],
           },
           size: {
             height: 100,

@@ -14,6 +14,6 @@ class Application(application.OpalApplication):
         'js/anaesthetic/services/drug_loader.js',
     ]
     styles = [
-        "css/anaesthetic.css"
-        #"css/anaesthetic_drug_colours.css"
+        "css/anaesthetic.css",
+        "css/anaesthetic_drug_colours.css"
     ]
