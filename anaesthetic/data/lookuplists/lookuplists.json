@@ -7832,5 +7832,55 @@
       "name": "Treated by nurse",
       "synonyms": []
     }
+  ],
+  "MaskVent": [
+    {
+      "name": "Easy",
+      "synonyms": []
+    },
+    {
+      "name": "Manageable",
+      "synonyms": []
+    },
+    {
+      "name": "Difficult",
+      "synonyms": []
+    }
+  ],
+  "CormackLehane": [
+    {
+      "name": "Grade 1",
+      "synonyms": []
+    },
+    {
+      "name": "Grade 2a",
+      "synonyms": []
+    },
+    {
+      "name": "Grade 2b",
+      "synonyms": []
+    },
+    {
+      "name": "Grade 3",
+      "synonyms": []
+    }
+  ],
+  "airway": [
+    {
+      "name": "facemask",
+      "synonyms": []
+    },
+    {
+      "name": "Endotracheal tube",
+      "synonyms": []
+    },
+    {
+      "name": "Laryngeal mask",
+      "synonyms": []
+    },
+    {
+      "name": "flexi lma",
+      "synonyms": []
+    }
   ]
 }
