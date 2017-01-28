@@ -7833,7 +7833,7 @@
       "synonyms": []
     }
   ],
-  "MaskVent": [
+  "maskvent": [
     {
       "name": "Easy",
       "synonyms": []
@@ -7847,7 +7847,7 @@
       "synonyms": []
     }
   ],
-  "CormackLehane": [
+  "cormacklehane": [
     {
       "name": "Grade 1",
       "synonyms": []
@@ -7883,7 +7883,7 @@
       "synonyms": []
     }
   ],
-  "Position": [
+  "position": [
     {
       "name": "Supine",
       "synonyms": []
@@ -7901,7 +7901,7 @@
       "synonyms": []
     }
   ],
-  "Induction_type": [
+  "induction_type": [
     {
       "name": "IV",
       "synonyms": []
