@@ -162,6 +162,7 @@ INSTALLED_APPS = (
     'compressor',
     'opal',
     'opal.core.search',
+    'pathway',
     'anaesthetic',
     'django.contrib.admin',
 )

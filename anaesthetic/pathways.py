@@ -1,6 +1,7 @@
-from pathway.pathways import PagePathway
+from pathway.pathways import PagePathway, Step
 
-class DrugPathway (PagePathway)
+
+class DrugPathway(PagePathway):
     display_name = "Induction Drugs"
     slug = "induction_drugs"
     Step(
