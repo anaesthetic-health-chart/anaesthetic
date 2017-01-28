@@ -156,6 +156,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework.authtoken',
     'axes',
     'reversion',
     'rest_framework',
@@ -166,6 +167,13 @@ INSTALLED_APPS = (
     'anaesthetic',
     'django.contrib.admin',
 )
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    )
+}
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
