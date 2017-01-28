@@ -7882,5 +7882,37 @@
       "name": "flexi lma",
       "synonyms": []
     }
+  ],
+  "Position": [
+    {
+      "name": "Supine",
+      "synonyms": []
+    },
+    {
+      "name": "Lithotomy",
+      "synonyms": []
+    },
+    {
+      "name": "Prone",
+      "synonyms": []
+    },
+    {
+      "name": "left lateral",
+      "synonyms": []
+    }
+  ],
+  "Induction_type": [
+    {
+      "name": "IV",
+      "synonyms": []
+    },
+    {
+      "name": "RSI",
+      "synonyms": []
+    },
+    {
+      "name": "Gas",
+      "synonyms": []
+    }
   ]
 }

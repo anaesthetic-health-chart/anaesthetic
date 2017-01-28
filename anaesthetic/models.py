@@ -64,23 +64,26 @@ class Observation(RemoteAdded):
     temperature  = db_models.FloatField(blank=True, null=True)
     datetime     = db_models.DateTimeField()
 
-class MaskVent(lookuplists.LookupList):
-    pass
-class airway(lookuplists.LookupList):
-    pass
-class CormackLehane(lookuplists.LookupList):
-    pass
+class MaskVent(lookuplists.LookupList): pass
+class airway(lookuplists.LookupList): pass
+class CormackLehane(lookuplists.LookupList): pass
+class Position(lookuplists.LookupList): pass
+class Induction_type(lookuplists.LookupList): pass
 
 class Induction(models.EpisodeSubrecord):
     _title = "Induction"
     _is_singleton = True
 
-    MaskVent    = fields.ForeignKeyOrFreeText(MaskVent)
-    Airway      = fields.ForeignKeyOrFreeText(airway)
-    CLview     = fields.ForeignKeyOrFreeText(CormackLehane)
-    Size        = db_models.FloatField(blank=True, null=True)
-    Description = db_models.TextField(blank=True, null=True)
-
+    MaskVent        = fields.ForeignKeyOrFreeText(MaskVent)
+    Airway          = fields.ForeignKeyOrFreeText(airway)
+    CormackLehane   = fields.ForeignKeyOrFreeText(CormackLehane)
+    Size            = db_models.FloatField(blank=True, null=True)
+    Description     = db_models.TextField(blank=True, null=True)
+    Propofol_dose   = db_models.FloatField(blank=True, null=True, default="200")
+    Atracurium_dose = db_models.FloatField(blank=True, null=True,)
+    Fentanyl_dose   = db_models.FloatField(blank=True, null=True, default="100")
+    Induction_type  = fields.ForeignKeyOrFreeText(Induction_type)
+    Position        = fields.ForeignKeyOrFreeText(Position)
 
 class AnaestheticTechnique(models.PatientSubrecord):
     _title          = "Event"
