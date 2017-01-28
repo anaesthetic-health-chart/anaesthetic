@@ -1,0 +1,20 @@
+{% load forms %}
+<h3>Description</h3>
+<div class="form-horizontal">
+  {% select field="Induction.Induction_type" %}
+  {% textarea  field="Induction.Description"  %}
+  {% select field="Induction.Position" %}
+</div>
+<h3>Airway</h3>
+<div class="form-horizontal">
+  {% select label="Mask Ventilation" field="Induction.MaskVent"  %}
+  {% select  field="Induction.Airway"  %}
+  {% input  field="Induction.Size"   %}
+  {% select  field="Induction.CormackLehane"   %}
+</div>
+<h3>Drugs used</h3>
+<div class="form-horizontal">
+<div ng-repeat="drug in editing.given_drug">
+  {% input model="drug.rates" field="GivenDrug.rates" unit="mg" label="[[ drug.drug_name ]]" %}
+</div>
+</div>
