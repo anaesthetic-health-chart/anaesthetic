@@ -3,7 +3,7 @@ angular.module('opal.controllers').controller(
     function(
         $rootScope, $scope, $window,
             recordLoader, ngProgressLite, $q,
-            $cookieStore, DrugLoader, patientLoader
+            $cookieStore, patientLoader
           ){
 
 
