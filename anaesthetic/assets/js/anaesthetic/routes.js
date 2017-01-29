@@ -8,7 +8,6 @@ app.config(
 
          $routeProvider.when('/',  {
              controller: 'WelcomeCtrl',
-             templateUrl: '/templates/welcome.html'}
-                            )
-
+             templateUrl: '/templates/welcome.html'
+           })
      }]);

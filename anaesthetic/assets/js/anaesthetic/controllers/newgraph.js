@@ -100,13 +100,17 @@ angular.module('opal.controllers').controller(
           $scope.drugcolumns = new Array();
           $scope.drugcolours = {};
           $scope.drugxs = {} ;
+          $scope.labels = new Array(); //array for labels
 
 
           _.each(drug, function(a){
             var drugname = a.drug_name ;
             var drugtime = a.datetime.format("DD/MM/YYYY HH:mm:ss");
-            var drugdose = a.rates ;
             var drugclass = a.drug_type ;
+            var drugdose = a.rates ;
+
+            //push dose to array for labels
+            $scope.labels.push(drugdose);
 
             var inlist = _.indexOf($scope.druglist, drugname);
             if (inlist == '-1'){
@@ -494,6 +498,29 @@ angular.module('opal.controllers').controller(
                     xs: newdrugs.xs,
                     colors: newdrugs.colors,
                 });
+
+            //make the custom labels
+            // series
+            var series = chart.internal.main
+                            .selectAll('.' + c3.drugchart.internal.fn.CLASS.circles)[0];
+            debugger;
+            // text layers
+            var texts = chart.internal.main
+                            .selectAll('.' + c3.drugchart.internal.fn.CLASS.chartTexts)
+                            .selectAll('.' + c3.drugchart.internal.fn.CLASS.chartText)[0]
+            series.forEach(function (series, i) {
+                var points = d3.select(series).selectAll('.' + c3.drugchart.internal.fn.CLASS.circle)[0]
+                points.forEach(function (point, j) {
+                    d3.select(texts[i])
+                        .append('text')
+                        .attr('text-anchor', 'middle')
+                        .attr('dy', '0.3em')
+                        .attr('x', d3.select(point).attr('cx'))
+                        .attr('y', d3.select(point).attr('cy'))
+                        .text($scope.labels[i][j])
+                        debugger;
+                })
+            });
 
           });
 
