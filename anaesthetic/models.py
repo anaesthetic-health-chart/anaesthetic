@@ -25,7 +25,7 @@ class GivenDrug(models.PatientSubrecord):
     drug_type   = db_models.CharField(max_length=255)
     rates       = db_models.CharField(max_length=255)
     datetime    = db_models.DateTimeField(blank=True, null=True)
-
+    endtime     = db_models.DateTimeField(blank=True, null=True)
 
 class RemoteAdded(models.PatientSubrecord):
     class Meta:
