@@ -10,13 +10,10 @@ h3 {
 
 .menu-bar-offset {
   padding-left: 10px; }
+
 .druglist {
-  padding: 0px;
-}
-.row {
-  padding: 5px;
-  margin: 0px;
-}
+  padding: 0px; }
+
 .bg-primary {
   background-color: #0054B5; }
 
@@ -45,8 +42,7 @@ h3 {
   margin-top: 50;
   min-height: 60px;
   overflow: hidden;
-  padding: 0;
-}
+  padding: 0; }
 
 ul#patient-meta-data {
   list-style-type: none;
@@ -62,8 +58,6 @@ ul#patient-meta-data {
   min-height: 39px;
   overflow: hidden;
   padding: 16px 24px 15px; }
-
-
 
 .navbar-brand.dac-logo, .page-header .more-button {
   background: #0054B5;
@@ -130,6 +124,10 @@ body {
 
 .ngProgressLite .ngProgressLiteBarShadow {
   display: none; }
+
+.default-drug {
+  overflow: auto;
+  width: 100%; }
 
 text.title {
   font-weight: bold;
@@ -211,7 +209,5 @@ svg .data path {
   .panel-default .list-group-item {
     background-color: #EEE; }
 
-.default-drug {
-  overflow: auto;
-  width: 100%;
-}
+.panel.form-panel {
+  border-color: #ddd; }

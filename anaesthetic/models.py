@@ -29,10 +29,9 @@ class GivenDrug(models.PatientSubrecord):
     _title = "Given Drug"
     _sort           = 'datetime'
 
-    route       = db_models.CharField(max_length=255)
     drug_name   = fields.ForeignKeyOrFreeText(AnaestheticDrug)
     drug_type   = fields.ForeignKeyOrFreeText(AnaestheticDrugType)
-    rates       = db_models.CharField(max_length=255)
+    dose       = db_models.CharField(max_length=255)
     datetime    = db_models.DateTimeField(blank=True, null=True)
     endtime     = db_models.DateTimeField(blank=True, null=True)
 
