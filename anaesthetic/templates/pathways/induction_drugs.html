@@ -1,20 +1,64 @@
 {% load forms %}
-<h3>Description</h3>
-<div class="form-horizontal">
-  {% select field="Induction.Induction_type" %}
-  {% textarea  field="Induction.Description"  %}
-  {% select field="Induction.Position" %}
+
+
+<div class="row">
+  <div class="col-md-10 col-md-push-1">
+    <div class="panel panel-default form-panel">
+      <div class="panel-heading">
+        <h3>
+          <i class="fa fa-list-alt"></i>
+          Description
+        </h3>
+      </div>
+      <div class="panel-body">
+        <div class="form-horizontal">
+          {% select field="Induction.Induction_type" %}
+          {% textarea  field="Induction.Description"  %}
+          {% select field="Induction.Position" %}
+        </div>
+      </div >
+    </div>
+  </div>
 </div>
-<h3>Airway</h3>
-<div class="form-horizontal">
-  {% select label="Mask Ventilation" field="Induction.MaskVent"  %}
-  {% select  field="Induction.Airway"  %}
-  {% input  field="Induction.Size"   %}
-  {% select  field="Induction.CormackLehane"   %}
+
+
+<div class="row">
+  <div class="col-md-10 col-md-push-1">
+    <div class="panel panel-default form-panel">
+      <div class="panel-heading">
+        <h3>
+          <i class="fa fa-spinner"></i>
+          Airway
+        </h3>
+      </div>
+      <div class="panel-body">
+        <div class="form-horizontal">
+          {% select label="Mask Ventilation" field="Induction.MaskVent"  %}
+          {% select  field="Induction.Airway"  %}
+          {% input  field="Induction.Size"   %}
+          {% select  field="Induction.CormackLehane"   %}
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-<h3>Drugs used</h3>
-<div class="form-horizontal">
-<div ng-repeat="drug in editing.given_drug">
-  {% input model="drug.rates" field="GivenDrug.rates" unit="mg" label="[[ drug.drug_name ]]" %}
-</div>
+
+<div class="row">
+  <div class="col-md-10 col-md-push-1">
+    <div class="panel panel-default form-panel">
+      <div class="panel-heading">
+        <h3>
+          <i class="fa fa-eyedropper"></i>
+          Drugs used
+        </h3>
+      </div>
+      <div class="panel-body">
+        <div class="form-horizontal">
+          <div ng-repeat="drug in editing.given_drug">
+            {% input model="drug.dose" field="GivenDrug.dose" unit="mg" label="[[ drug.drug_name ]]" %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

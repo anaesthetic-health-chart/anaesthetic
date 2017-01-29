@@ -3,7 +3,7 @@ angular.module('opal.controllers').controller(
     function(
         $rootScope, $scope, $window,
             recordLoader, ngProgressLite, $q,
-            $cookieStore, DrugLoader, patientLoader
+            $cookieStore, patientLoader
           ){
 
 
@@ -445,6 +445,7 @@ angular.module('opal.controllers').controller(
             columns : newdrugs.columns,
             type: 'scatter',
             colors: newdrugs.colors,
+            //should probably get rid of this
             labels: {
               show: false,
               // format : function(d){

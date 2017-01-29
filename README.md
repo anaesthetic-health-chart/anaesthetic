@@ -18,14 +18,10 @@ To access the application, visit http://127.0.0.1:8000 in a browser, select list
 To view the live chart go to: http://127.0.0.1:8000/#/patient/1/anaesthetic_readings
 
 ## I want to feed data
-first you need to add in session authentication, create a token header in a shell
+You need a token to go in http header "Authorization: Token <token goes here>" you can get a token for a user by running:
 
-
-```python
-  from rest_framework.authtoken.models import Token
-
-  token = Token.objects.create(user=YourUser)
+```bash
+python manage.py gettoken <username>
 ```
 
-for more information
-http://www.django-rest-framework.org/api-guide/authentication/
+This can be used with the 'anaesthetic-adaptor-vscapture' project and jakadapt.py to load data from a .csv
