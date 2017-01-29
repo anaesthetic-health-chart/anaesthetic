@@ -13,6 +13,7 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
+AUTOCOMPLETE_SEARCH = True
 
 try:
     import dj_database_url
