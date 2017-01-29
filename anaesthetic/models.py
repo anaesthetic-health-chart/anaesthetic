@@ -17,7 +17,7 @@ class Treatment(models.Treatment): pass
 class Investigation(models.Investigation): pass
 
 class GivenDrug(models.PatientSubrecord):
-
+    _title = "Given Drug"
     _sort           = 'datetime'
 
     route       = db_models.CharField(max_length=255)

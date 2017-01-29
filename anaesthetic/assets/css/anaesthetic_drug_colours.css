@@ -1,96 +1,126 @@
 /*  Based on the AABGI/RCoA/FICM/ICS/CEM 2014 review guidance on syringe colours in critical care areas */
 /*  http://www.aagbi.org/sites/default/files/SYRINGE%20LABELLING%202014.pdf */
+svg.antiemetic_drug {
+  width: 20px;
+  height: 16px; }
+  svg.antiemetic_drug rect {
+    width: 20px;
+    height: 16px;
+    fill: #EFBE7D; }
 
-/* Anti-emetic: Pantone 156 (salmon) */
-.antiemetic_drug {
-    background-color: #EFBE7D;
-}
+svg.induction_agent_drug {
+  width: 20px;
+  height: 16px; }
+  svg.induction_agent_drug rect {
+    width: 20px;
+    height: 16px;
+    fill: #ffe800; }
+
+svg.hypnotic_drug {
+  width: 20px;
+  height: 16px; }
+  svg.hypnotic_drug rect {
+    width: 20px;
+    height: 16px;
+    fill: #FF8200; }
+
+svg.neuromuscular_blocking_drug {
+  width: 20px;
+  height: 16px; }
+  svg.neuromuscular_blocking_drug rect {
+    width: 20px;
+    height: 16px;
+    fill: #ff7477; }
+
+svg.opioid_drug {
+  width: 20px;
+  height: 16px; }
+  svg.opioid_drug rect {
+    width: 20px;
+    height: 16px;
+    fill: #71C5E8; }
+
+svg.vasopressor_drug {
+  width: 20px;
+  height: 16px; }
+  svg.vasopressor_drug rect {
+    width: 20px;
+    height: 16px;
+    fill: #D6BFDD; }
+
+svg.local_anaesthetics_drug {
+  width: 20px;
+  height: 16px; }
+  svg.local_anaesthetics_drug rect {
+    width: 20px;
+    height: 16px;
+    fill: #AFA9A0; }
+
+svg.anticholinergic_drug {
+  width: 20px;
+  height: 16px; }
+  svg.anticholinergic_drug rect {
+    width: 20px;
+    height: 16px;
+    fill: #A4D65E; }
+
+svg.other_drug_agents {
+  width: 20px;
+  height: 16px; }
+  svg.other_drug_agents rect {
+    width: 20px;
+    height: 16px;
+    fill: #ffffff; }
 
 /* Induction agent: Pantone process yellow */
 .induction_agent_drug {
-    background-color: #ffe800;
-}
+  background-color: #ffe800; }
 
 /* Hypnotic: Pantone 151 (orange) */
 .hypnotic_drug {
-    background-color: #FF8200;
-}
+  background-color: #FF8200; }
 
 /* Hypnotic antagonist: Panton 151 (orange), white diagonal stripes */
 .hypnotic_antagonist_drug {
-    background: repeating-linear-gradient(
-      -45deg,
-      #ff7477,
-      #ff7477 7px,
-      #ffffff 7px,
-      #ffffff 20px
-    );
-}
+  background: repeating-linear-gradient(-45deg, #ff7477, #ff7477 7px, #ffffff 7px, #ffffff 20px); }
 
 /* Neuromuscular blocking drug: Pantone 805 */
 .neuromuscular_blocking_drug {
-    background-color: #ff7477;
-}
+  background-color: #ff7477; }
 
 /* Neuromuscular blocking drug antagonist: Pantone 805, white diagonal stripes */
 .neuromuscular_blocking_drug_antagonist {
-    background: repeating-linear-gradient(
-      -45deg,
-      #ff7477,
-      #ff7477 7px,
-      #ffffff 7px,
-      #ffffff 20px
-    );
-}
+  background: repeating-linear-gradient(-45deg, #ff7477, #ff7477 7px, #ffffff 7px, #ffffff 20px); }
 
 /* Neuromuscular blocking drug: Pantone 805, black stripe and inverted text through title */
 .depolarizing_neuromuscular_blocking_drug {
-    background-color: #ff7477;
-    background: linear-gradient(
-        #000000 50%,
-        #ff7477 50%
-    );
-}
+  background-color: #ff7477;
+  background: linear-gradient(#000000 50%, #ff7477 50%); }
 
-.depolarizing_neuromuscular_blocking_drug .top{
-    color: #ff7477;
-}
-
+.depolarizing_neuromuscular_blocking_drug .top {
+  color: #ff7477; }
 
 /* Opioid drug: Pantone 297 (blue) */
 .opioid_drug {
-    background-color: #71C5E8;
-}
+  background-color: #71C5E8; }
 
 /* Opioid antagonist drug: Pantone 297 (blue), white diagonal stripes */
 .opioid_antagonist {
-    background: repeating-linear-gradient(
-        45deg,
-        #71C5E8,
-        #71C5E8 5px,
-        #ffffff 5px,
-        #ffffff 10px
-    );
-}
+  background: repeating-linear-gradient(45deg, #71C5E8, #71C5E8 5px, #ffffff 5px, #ffffff 10px); }
 
 /* Vasopressor: Pantone 256 (violet) */
 .vasopressor_drug {
-   background-color: #D6BFDD;
-}
+  background-color: #D6BFDD; }
 
 /* placeholder for hypotensive_agent_drug */
-
 /* Local Anaesthetics: Pantone 401 (grey) */
 .local_anaesthetics_drug {
-    background-color: #AFA9A0;
-}
+  background-color: #AFA9A0; }
 
 /* Anticholinergic: Pantone 367 (green) */
 .anticholinergic_drug {
-    background-color: #A4D65E;
-}
+  background-color: #A4D65E; }
 
 /* use for drugs which are not listed elsewhere, including antibiotics, oxytocin, heparin, protamine */
 .other_drug_agents {
-    background-color: #ffffff;
-}
+  background-color: #ffffff; }
