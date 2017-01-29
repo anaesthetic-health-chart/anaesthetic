@@ -16,3 +16,16 @@ To access the application, visit http://127.0.0.1:8000 in a browser, select list
 
 
 To view the live chart go to: http://127.0.0.1:8000/#/patient/1/anaesthetic_readings
+
+## I want to feed data
+first you need to add in session authentication, create a token header in a shell
+
+
+```python
+  from rest_framework.authtoken.models import Token
+
+  token = Token.objects.create(user=YourUser)
+```
+
+for more information
+http://www.django-rest-framework.org/api-guide/authentication/
