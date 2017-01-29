@@ -46,12 +46,22 @@ svg.anaesthetic-drug.neuromuscular-blocking-drug {
     height: 16px;
     fill: #ff7477; }
 
-svg.anaesthetic-drug.opioid-drug {
+svg.anaesthetic-drug.depolarizing_neuromuscular_blocking_drug {
   visibility: visible;
   width: 20px;
   height: 16px;
   margin-bottom: -2px; }
-  svg.anaesthetic-drug.opioid-drug rect {
+  svg.anaesthetic-drug.depolarizing_neuromuscular_blocking_drug rect {
+    width: 20px;
+    height: 16px;
+    fill: #ff7477; }
+
+svg.anaesthetic-drug.opioid_drug {
+  visibility: visible;
+  width: 20px;
+  height: 16px;
+  margin-bottom: -2px; }
+  svg.anaesthetic-drug.opioid_drug rect {
     width: 20px;
     height: 16px;
     fill: #71C5E8; }
