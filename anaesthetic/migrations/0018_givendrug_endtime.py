@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.db import models, migrations
+from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('anaesthetic', '0016_auto_20170127_1457'),
+        ('anaesthetic', '0017_auto_20170129_1224'),
     ]
 
     operations = [
