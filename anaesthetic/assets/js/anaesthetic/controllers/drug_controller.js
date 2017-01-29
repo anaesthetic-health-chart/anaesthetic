@@ -5,6 +5,10 @@ angular.module('opal.controllers').controller('DrugController', function($scope)
         $scope.editing.given_drug.drug_type = k;
       }
     });
+  };
+
+  if(!$scope.editing.given_drug.id){
+    $scope.editing.given_drug.datetime = new Date();
   }
   $scope.$watch('editing.given_drug.drug_name', setDrug);
 });

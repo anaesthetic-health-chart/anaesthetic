@@ -4,5 +4,6 @@
   {% input field="GivenDrug.drug_name" %}
   {% input field="GivenDrug.drug_type" %}
   {% input field="GivenDrug.rates"  label="Dose" %}
-  {% datetimepicker field="GivenDrug.datetime"%}
+  {% datetimepicker field="GivenDrug.datetime" date_label="Start date" time_label="Start time" %}
+  {% datetimepicker field="GivenDrug.endtime" date_label="End date" time_label="End time" %}
 </div>
