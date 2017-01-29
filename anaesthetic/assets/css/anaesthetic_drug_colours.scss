@@ -4,6 +4,7 @@ $antiemetic_drug: #EFBE7D;
 $induction_agent_drug: #ffe800;
 $hypnotic_drug: #FF8200;
 $neuromuscular_blocking_drug: #ff7477;
+$depolarizing_neuromuscular_blocking_drug: #ff7477;
 $opioid_drug: #71C5E8;
 $vasopressor_drug: #D6BFDD;
 $local_anaesthetics_drug: #AFA9A0;
@@ -46,7 +47,11 @@ svg.anaesthetic-drug.neuromuscular-blocking-drug{
   @include drug-bar($neuromuscular_blocking_drug);
 }
 
-svg.anaesthetic-drug.opioid-drug{
+svg.anaesthetic-drug.depolarizing_neuromuscular_blocking_drug{
+  @include drug-bar($depolarizing_neuromuscular_blocking_drug);
+}
+
+svg.anaesthetic-drug.opioid_drug{
   @include drug-bar($opioid_drug);
 }
 

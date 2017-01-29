@@ -102,6 +102,8 @@ angular.module('opal.controllers').controller(
           $scope.drugxs = {} ;
           $scope.labels = new Array(); //array for labels
 
+          //set up stuff for infusions
+
 
           _.each(drug, function(a){
             var drugname = a.drug_name ;
@@ -421,6 +423,19 @@ angular.module('opal.controllers').controller(
             columns : newdrugs.columns,
             type: 'scatter',
             colors: newdrugs.colors,
+            labels: {
+              show: false,
+              // format : function(d){
+              //   var label = $scope.labels[d-1];
+              //   return label
+              // }
+              format: function (v, id, i, j) {
+                var label = $scope.labels[i-1];
+                return label;
+              }
+
+            }
+
           },
           axis: {
             x: {
@@ -434,8 +449,8 @@ angular.module('opal.controllers').controller(
             y: {
               inverted: true,
               tick: {
-                format: function(d){
-                  var label = $scope.druglist[d-1];
+                format: function(e){
+                  var label = $scope.druglist[e-1];
                   return label;
                 },
                 //values: [1,2,3,4], //this needs to come from a function in the future
@@ -464,7 +479,6 @@ angular.module('opal.controllers').controller(
             },
           },
         });
-
       });
 
         interval = setInterval(function () {
@@ -499,28 +513,51 @@ angular.module('opal.controllers').controller(
                     colors: newdrugs.colors,
                 });
 
-            //make the custom labels
-            // series
-            var series = chart.internal.main
-                            .selectAll('.' + c3.drugchart.internal.fn.CLASS.circles)[0];
-            debugger;
-            // text layers
-            var texts = chart.internal.main
-                            .selectAll('.' + c3.drugchart.internal.fn.CLASS.chartTexts)
-                            .selectAll('.' + c3.drugchart.internal.fn.CLASS.chartText)[0]
-            series.forEach(function (series, i) {
-                var points = d3.select(series).selectAll('.' + c3.drugchart.internal.fn.CLASS.circle)[0]
-                points.forEach(function (point, j) {
-                    d3.select(texts[i])
-                        .append('text')
-                        .attr('text-anchor', 'middle')
-                        .attr('dy', '0.3em')
-                        .attr('x', d3.select(point).attr('cx'))
-                        .attr('y', d3.select(point).attr('cy'))
-                        .text($scope.labels[i][j])
-                        debugger;
-                })
-            });
+                //  var textLayer = drugchart.internal.main.select('.' + c3.chart.internal.fn.CLASS.chartTexts);
+                //  setTimeout(_.each(drugchart.internal.mainCircle, function(point){
+                //   var i = _.indexOf(point);
+                //   d3.select(point)
+                //   textLayer.remove();
+                // }), 100);
+                //debugger;
+                // select each of the scatter points
+                // for(var i=0;i<5;i++)
+                // drugchart.internal.mainCircle[i].forEach(function (point, index) {
+                //     d3.select(point)
+                //     textLayer.remove();
+                // })
+                function drawlabels(chartInternal){
+                  var textLayer = drugchart.internal.main.select('.' + c3.chart.internal.fn.CLASS.chartTexts);
+                  textLayer.remove();
+                  for(var i=0;i<5;i++)
+                  drugchart.internal.mainCircle[i].forEach(function (point, index) {
+
+                      var d3point = d3.select(point);
+                      textLayer
+                          .append('text')
+                          // center horizontally and vertically
+                          .style('text-anchor', 'middle').attr('dy', '.2em')
+                          .text($scope.labels[i])
+                          // same as at the point
+                          .attr('x', d3point.attr('cx')).attr('y', d3point.attr('cy'));
+                  })
+                }
+
+                setTimeout(
+                  drawlabels(drugchart.interal), 100
+                )
+
+                // _.each(drugchart.internal.mainCircle, function(point){
+                //   d3.select(point)
+                //  var i = $scope.labels[point] ///????
+                //   textLayer
+                //     .append('text')
+                //     // center horizontally and vertically
+                //     .style('text-anchor', 'middle').attr('dy', '.2em')
+                //     .text($scope.labels[i])
+                //     // same as at the point
+                //     .attr('x', d3point.attr('cx')).attr('y', d3point.attr('cy'))
+                // })
 
           });
 
