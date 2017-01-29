@@ -12,6 +12,7 @@ $anticholinergic_drug: #A4D65E;
 $other_drug_agents: #ffffff;
 
 @mixin drug-bar($some_drug){
+  visibility: visible;
   width: 20px;
   height: 16px;
   margin-bottom: -2px;
@@ -23,43 +24,50 @@ $other_drug_agents: #ffffff;
   }
 }
 
-svg.antiemetic_drug{
+svg.anaesthetic-drug{
+  visibility: hidden;
+  width: 20px;
+  height: 16px;
+  margin-bottom: -2px;
+}
+
+svg.anaesthetic-drug.antiemetic-drug{
   @include drug-bar($antiemetic_drug);
 }
 
-svg.induction_agent_drug{
+svg.anaesthetic-drug.induction-agent-drug{
   @include drug-bar($induction_agent_drug);
 }
 
-svg.hypnotic_drug{
+svg.anaesthetic-drug.hypnotic-rug{
   @include drug-bar($hypnotic_drug);
 }
 
-svg.neuromuscular_blocking_drug{
+svg.anaesthetic-drug.neuromuscular-blocking-drug{
   @include drug-bar($neuromuscular_blocking_drug);
 }
 
-svg.depolarizing_neuromuscular_blocking_drug{
+svg.anaesthetic-drug.depolarizing_neuromuscular_blocking_drug{
   @include drug-bar($depolarizing_neuromuscular_blocking_drug);
 }
 
-svg.opioid_drug{
+svg.anaesthetic-drug.opioid_drug{
   @include drug-bar($opioid_drug);
 }
 
-svg.vasopressor_drug{
+svg.anaesthetic-drug.vasopressor-drug{
   @include drug-bar($vasopressor_drug);
 }
 
-svg.local_anaesthetics_drug{
+svg.anaesthetic-drug.local-anaesthetics-drug{
   @include drug-bar($local_anaesthetics_drug);
 }
 
-svg.anticholinergic_drug{
+svg.anaesthetic-drug.anticholinergic-drug{
   @include drug-bar($anticholinergic_drug);
 }
 
-svg.other_drug_agents{
+svg.anaesthetic-drug.other-drug-agents{
   @include drug-bar($other_drug_agents);
 }
 

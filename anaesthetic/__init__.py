@@ -8,10 +8,10 @@ class Application(application.OpalApplication):
     flow_module   = 'anaesthetic.flow'
     javascripts   = [
         'js/anaesthetic/routes.js',
+        'js/anaesthetic/filters.js',
         'js/anaesthetic/controllers/drug_controller.js',
         'js/anaesthetic/services/records/observation_record.js',
         'js/anaesthetic/controllers/newgraph.js',
-        'js/anaesthetic/services/drug_loader.js',
         'js/anaesthetic/controllers/induction_drug_controller.js',
     ]
     styles = [
