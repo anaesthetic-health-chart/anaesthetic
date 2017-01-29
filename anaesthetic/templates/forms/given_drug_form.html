@@ -1,20 +1,8 @@
 {% load forms %}
-<div ng-controller="DrugController as drug_controller">
+<div ng-controller="DrugController as drug_controller" class=[[item.drug_type]]>
   {% input field="GivenDrug.route" %}
   {% input field="GivenDrug.drug_name" lookuplist="drug_controller.drugs_list" %}
   {% input field="GivenDrug.drug_type" lookuplist="drug_controller.drug_types" %}
   {% input field="GivenDrug.rates"  label="Dose" %}
-</div>
-
-<div class="form-group">
-  <label class="control-label col-sm-3"><i class="fa fa-calendar"></i> Date & Time</label>
-  <div class="col-sm-5">
-    <input type="text" size="10" class="form-control" ng-model="editing.given_drug.datetime"
-           data-date-type="date given"
-           data-autoclose="1" placeholder="Date" bs-datepicker>
-  </div>
-  <div class="col-sm-3">
-    <input type="text" size="8" class="form-control" ng-model="editing.given_drug.datetime"
-           data-autoclose="1" placeholder="Time given" bs-timepicker>
-  </div>
+  {% datetimepicker field="GivenDrug.datetime"%}
 </div>

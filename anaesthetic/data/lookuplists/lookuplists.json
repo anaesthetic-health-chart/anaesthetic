@@ -7832,5 +7832,87 @@
       "name": "Treated by nurse",
       "synonyms": []
     }
+  ],
+  "maskvent": [
+    {
+      "name": "Easy",
+      "synonyms": []
+    },
+    {
+      "name": "Manageable",
+      "synonyms": []
+    },
+    {
+      "name": "Difficult",
+      "synonyms": []
+    }
+  ],
+  "cormacklehane": [
+    {
+      "name": "Grade 1",
+      "synonyms": []
+    },
+    {
+      "name": "Grade 2a",
+      "synonyms": []
+    },
+    {
+      "name": "Grade 2b",
+      "synonyms": []
+    },
+    {
+      "name": "Grade 3",
+      "synonyms": []
+    }
+  ],
+  "airway": [
+    {
+      "name": "facemask",
+      "synonyms": []
+    },
+    {
+      "name": "Endotracheal tube",
+      "synonyms": []
+    },
+    {
+      "name": "Laryngeal mask",
+      "synonyms": []
+    },
+    {
+      "name": "flexi lma",
+      "synonyms": []
+    }
+  ],
+  "position": [
+    {
+      "name": "Supine",
+      "synonyms": []
+    },
+    {
+      "name": "Lithotomy",
+      "synonyms": []
+    },
+    {
+      "name": "Prone",
+      "synonyms": []
+    },
+    {
+      "name": "left lateral",
+      "synonyms": []
+    }
+  ],
+  "induction_type": [
+    {
+      "name": "IV",
+      "synonyms": []
+    },
+    {
+      "name": "RSI",
+      "synonyms": []
+    },
+    {
+      "name": "Gas",
+      "synonyms": []
+    }
   ]
 }

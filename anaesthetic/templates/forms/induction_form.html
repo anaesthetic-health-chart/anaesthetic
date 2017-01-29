@@ -1,0 +1,23 @@
+{% load forms %}
+
+<h3>Description</h3>
+{% select field="Induction.Induction_type" %}
+{% textarea  field="Induction.Description"  %}
+{% select field="Induction.Position" %}
+
+<h3>Airway</h3>
+{% select label="Mask Ventilation" field="Induction.MaskVent"  %}
+{% select  field="Induction.Airway"  %}
+{% input  field="Induction.Size"   %}
+{% select  field="Induction.CormackLehane"   %}
+
+<h3>Drugs used</h3>
+<div class="induction_agent_drug">
+  {% input  field="Induction.Propofol_dose" unit="mg" label="Propofol"  %}
+</div>
+<div class="neuromuscular_blocking_drug">
+  {% input  field="Induction.Atracurium_dose" unit="mg" label="Atracurium"  %}
+</div>
+<div class="opioid_drug">
+  {% input  field="Induction.Fentanyl_dose" unit="mcg" label="Fentanyl"  %}
+</div>

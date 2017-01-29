@@ -210,3 +210,8 @@ svg .data path {
     border-bottom: 2px solid #0054B5; }
   .panel-default .list-group-item {
     background-color: #EEE; }
+
+.default-drug {
+  overflow: auto;
+  width: 100%;
+}
