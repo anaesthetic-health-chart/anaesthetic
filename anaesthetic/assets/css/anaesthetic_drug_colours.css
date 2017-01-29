@@ -1,73 +1,107 @@
 /*  Based on the AABGI/RCoA/FICM/ICS/CEM 2014 review guidance on syringe colours in critical care areas */
 /*  http://www.aagbi.org/sites/default/files/SYRINGE%20LABELLING%202014.pdf */
-svg.antiemetic_drug {
+svg.anaesthetic-drug {
+  visibility: hidden;
   width: 20px;
-  height: 16px; }
-  svg.antiemetic_drug rect {
+  height: 16px;
+  margin-bottom: -2px; }
+
+svg.anaesthetic-drug.antiemetic-drug {
+  visibility: visible;
+  width: 20px;
+  height: 16px;
+  margin-bottom: -2px; }
+  svg.anaesthetic-drug.antiemetic-drug rect {
     width: 20px;
     height: 16px;
     fill: #EFBE7D; }
 
-svg.induction_agent_drug {
+svg.anaesthetic-drug.induction-agent-drug {
+  visibility: visible;
   width: 20px;
-  height: 16px; }
-  svg.induction_agent_drug rect {
+  height: 16px;
+  margin-bottom: -2px; }
+  svg.anaesthetic-drug.induction-agent-drug rect {
     width: 20px;
     height: 16px;
     fill: #ffe800; }
 
-svg.hypnotic_drug {
+svg.anaesthetic-drug.hypnotic-rug {
+  visibility: visible;
   width: 20px;
-  height: 16px; }
-  svg.hypnotic_drug rect {
+  height: 16px;
+  margin-bottom: -2px; }
+  svg.anaesthetic-drug.hypnotic-rug rect {
     width: 20px;
     height: 16px;
     fill: #FF8200; }
 
-svg.neuromuscular_blocking_drug {
+svg.anaesthetic-drug.neuromuscular-blocking-drug {
+  visibility: visible;
   width: 20px;
-  height: 16px; }
-  svg.neuromuscular_blocking_drug rect {
+  height: 16px;
+  margin-bottom: -2px; }
+  svg.anaesthetic-drug.neuromuscular-blocking-drug rect {
     width: 20px;
     height: 16px;
     fill: #ff7477; }
 
-svg.opioid_drug {
+svg.anaesthetic-drug.depolarizing_neuromuscular_blocking_drug {
+  visibility: visible;
   width: 20px;
-  height: 16px; }
-  svg.opioid_drug rect {
+  height: 16px;
+  margin-bottom: -2px; }
+  svg.anaesthetic-drug.depolarizing_neuromuscular_blocking_drug rect {
+    width: 20px;
+    height: 16px;
+    fill: #ff7477; }
+
+svg.anaesthetic-drug.opioid_drug {
+  visibility: visible;
+  width: 20px;
+  height: 16px;
+  margin-bottom: -2px; }
+  svg.anaesthetic-drug.opioid_drug rect {
     width: 20px;
     height: 16px;
     fill: #71C5E8; }
 
-svg.vasopressor_drug {
+svg.anaesthetic-drug.vasopressor-drug {
+  visibility: visible;
   width: 20px;
-  height: 16px; }
-  svg.vasopressor_drug rect {
+  height: 16px;
+  margin-bottom: -2px; }
+  svg.anaesthetic-drug.vasopressor-drug rect {
     width: 20px;
     height: 16px;
     fill: #D6BFDD; }
 
-svg.local_anaesthetics_drug {
+svg.anaesthetic-drug.local-anaesthetics-drug {
+  visibility: visible;
   width: 20px;
-  height: 16px; }
-  svg.local_anaesthetics_drug rect {
+  height: 16px;
+  margin-bottom: -2px; }
+  svg.anaesthetic-drug.local-anaesthetics-drug rect {
     width: 20px;
     height: 16px;
     fill: #AFA9A0; }
 
-svg.anticholinergic_drug {
+svg.anaesthetic-drug.anticholinergic-drug {
+  visibility: visible;
   width: 20px;
-  height: 16px; }
-  svg.anticholinergic_drug rect {
+  height: 16px;
+  margin-bottom: -2px; }
+  svg.anaesthetic-drug.anticholinergic-drug rect {
     width: 20px;
     height: 16px;
     fill: #A4D65E; }
 
-svg.other_drug_agents {
+svg.anaesthetic-drug.other-drug-agents {
+  visibility: visible;
   width: 20px;
-  height: 16px; }
-  svg.other_drug_agents rect {
+  height: 16px;
+  margin-bottom: -2px; }
+  svg.anaesthetic-drug.other-drug-agents rect {
     width: 20px;
     height: 16px;
     fill: #ffffff; }
