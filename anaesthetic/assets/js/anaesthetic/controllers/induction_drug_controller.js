@@ -1,8 +1,6 @@
 angular.module('opal.controllers').controller(
     'InductionDrugController',
-    function(
-        step, scope, episode, DrugLoader
-      ){
+    function(step, scope, episode){
     "use strict";
 
     var DRUGS = {
@@ -21,7 +19,7 @@ angular.module('opal.controllers').controller(
 
 
     if(!scope.editing.given_drug.length){
-      scope.editing.given_drug = _.map(DRUGS, function(rates, drugName){
+      scope.editing.given_drug = _.map(DRUGS, function(dose, drugName){
         var drugType = _.findKey(scope.metadata.drug_type, function(drugNames){
             return _.contains(drugNames, drugName);
         })
@@ -29,7 +27,7 @@ angular.module('opal.controllers').controller(
           route: 'IV',
           drug_name: drugName,
           drug_type: drugType,
-          rates: rates,
+          dose: dose,
           datetime: new Date()
           //datetime: new Date(August 22 2016, 13:10:00)
         }
@@ -37,7 +35,7 @@ angular.module('opal.controllers').controller(
     }
     scope.preSave = function(editing){
       editing.given_drug = _.filter(editing.given_drug, function(drug){
-        return parseInt(drug.rates) != 0;
+        return parseInt(drug.dose) != 0;
 
       })
     }
