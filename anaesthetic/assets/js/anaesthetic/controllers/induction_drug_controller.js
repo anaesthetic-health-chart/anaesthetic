@@ -24,12 +24,10 @@ angular.module('opal.controllers').controller(
             return _.contains(drugNames, drugName);
         })
         return {
-          route: 'IV',
           drug_name: drugName,
           drug_type: drugType,
           dose: dose,
           datetime: new Date()
-          //datetime: new Date(August 22 2016, 13:10:00)
         }
       });
     }
