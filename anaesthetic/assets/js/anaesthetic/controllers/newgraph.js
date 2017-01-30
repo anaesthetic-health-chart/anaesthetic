@@ -109,7 +109,7 @@ angular.module('opal.controllers').controller(
             var drugname = a.drug_name ;
             var drugtime = a.datetime.format("DD/MM/YYYY HH:mm:ss");
             var drugclass = a.drug_type ;
-            var drugdose = a.rates ;
+            var drugdose = a.dose ;
 
             //push dose to array for labels
             $scope.labels.push(drugdose);
@@ -132,24 +132,45 @@ angular.module('opal.controllers').controller(
               $scope.drugcolumns[j].push(drugtime);
 
               //push to colours
+              // var colours = [
+              //   {class: "antiemetic_drug", colour: "#EFBE7D"},
+              //   {class: "induction_agent_drug", colour: '#ffe800'},
+              //   {class: "hypnotic_drug", colour: '#FF8200'},
+              //   {class: "hypnotic_antagonist_drug", colour: '#FF8200'},
+              //   {class: "neuromuscular_blocking_drug", colour: '#ff7477'},
+              //   {class: "neuromuscular_blocking_drug_antagonist", colour: '#ff7477'},
+              //   {class: "depolarizing_neuromuscular_blocking_drug", colour: '#ff7477'},
+              //   {class: "opioid_drug", colour: '#71C5E8'},
+              //   {class: "opioid_antagonist", colour: '#71C5E8'},
+              //   {class: "vasopressor_drug", colour: '#D6BFDD'},
+              //   {class: "local_anaesthetics_drug", colour: '#AFA9A0'},
+              //   {class: "anticholinergic_drug", colour: '#A4D65E'},
+              //   {class: "other_drug_agents", colour: '#ffffff'},
+              // ];
+
+              //stuff to do
+              // 1 find a better way of doing this
+              //have some reminder to change this if we change class names
+
               var colours = [
-                {class: "antiemetic_drug", colour: "#EFBE7D"},
-                {class: "induction_agent_drug", colour: '#ffe800'},
-                {class: "hypnotic_drug", colour: '#FF8200'},
-                {class: "hypnotic_antagonist_drug", colour: '#FF8200'},
-                {class: "neuromuscular_blocking_drug", colour: '#ff7477'},
-                {class: "neuromuscular_blocking_drug_antagonist", colour: '#ff7477'},
-                {class: "depolarizing_neuromuscular_blocking_drug", colour: '#ff7477'},
-                {class: "opioid_drug", colour: '#71C5E8'},
-                {class: "opioid_antagonist", colour: '#71C5E8'},
-                {class: "vasopressor_drug", colour: '#D6BFDD'},
-                {class: "local_anaesthetics_drug", colour: '#AFA9A0'},
-                {class: "anticholinergic_drug", colour: '#A4D65E'},
-                {class: "other_drug_agents", colour: '#ffffff'},
+                {class: "Antiemetic Drug", colour: "#EFBE7D"},
+                {class: "Induction Agent Drug", colour: '#ffe800'},
+                {class: "Hypnotic Drug", colour: '#FF8200'},
+                {class: "Hypnotic Antagonist Drug", colour: '#FF8200'},
+                {class: "Neuromuscular Blocking Drug", colour: '#ff7477'},
+                {class: "Neuromuscular Blocking Drug Antagonist", colour: '#ff7477'},
+                {class: "Depolarizing Neuromuscular Blocking Drug", colour: '#ff7477'},
+                {class: "Opioid Drug", colour: '#71C5E8'},
+                {class: "Opioid Antagonist", colour: '#71C5E8'},
+                {class: "Vasopressor Drug", colour: '#D6BFDD'},
+                {class: "Local Anaesthetics Drug", colour: '#AFA9A0'},
+                {class: "Anticholinergic Drug", colour: '#A4D65E'},
+                {class: "Other Drug Agents", colour: '#ffffff'},
               ];
               //var nextcolour = _.where(colours, drugclass);
               var something = {class: drugclass};
               var nextcolour = _.findWhere(colours, something);
+              //debugger;
               $scope.drugcolours[drugname] = nextcolour.colour;
 
               //push to xs so it plots
@@ -502,7 +523,8 @@ angular.module('opal.controllers').controller(
             },
           },
         });
-        drawlabels(drugchart.interal);
+      //  drawlabels(drugchart.interal);
+      debugger;
       });
 
         interval = setInterval(function () {
@@ -538,8 +560,8 @@ angular.module('opal.controllers').controller(
                 });
 
           });
-          drawlabels(drugchart.interal);
-        }, 1000);
+          //drawlabels(drugchart.interal);
+        }, 10000);
 
         $scope.$on("$routeChangeStart", function(){
           if(interval){

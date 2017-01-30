@@ -11,11 +11,15 @@ class DrugTypes(metadata.Metadata):
                     "Antiemetic drug": [
                         "Dexametasone", "Ondansetron", "Granisetron", "Cyclizine", "Metoclopramide"
                     ],
-                    "Inductiont agent drug": [
+                    "Induction agent drug": [
                         "Propofol", "Thiopentone", "Etomidate", "Ketamine"
                     ],
-                    "Hypnotic drug": ["Midazolam, Diazepam, Lorazepam"],
-                    "Hypnotic antagonist drug": ["Flumazenil"],
+                    "Hypnotic drug": [
+                        "Midazolam", "Diazepam", "Lorazepam"
+                        ],
+                    "Hypnotic antagonist drug": [
+                        "Flumazenil"
+                        ],
                     "Neuromuscular blocking drug": [
                         "Atracurium", "Mivacurium", "Cisatracurium", "Rocuronium", "Vecuronium"
                     ],
