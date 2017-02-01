@@ -92,7 +92,7 @@ angular.module('opal.controllers').controller(
 
         var drugs = function(drug){
           // stuff this still has to do
-          //customise labels
+          // calculate total doses for each drug
 
           //if new drug create xs and column, if old push to existing.
 
@@ -497,7 +497,6 @@ angular.module('opal.controllers').controller(
                   var label = $scope.druglist[e-1];
                   return label;
                 },
-                //values: [1,2,3,4], //this needs to come from a function in the future
               },
               padding: {
                 top: 5,
@@ -523,8 +522,8 @@ angular.module('opal.controllers').controller(
             },
           },
         });
-      //  drawlabels(drugchart.interal);
-      debugger;
+      drawlabels(drugchart.interal);
+
       });
 
         interval = setInterval(function () {
@@ -560,7 +559,7 @@ angular.module('opal.controllers').controller(
                 });
 
           });
-          //drawlabels(drugchart.interal);
+          drawlabels(drugchart.interal);
         }, 10000);
 
         $scope.$on("$routeChangeStart", function(){

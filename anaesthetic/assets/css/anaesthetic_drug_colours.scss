@@ -39,7 +39,7 @@ svg.anaesthetic-drug.induction-agent-drug{
   @include drug-bar($induction_agent_drug);
 }
 
-svg.anaesthetic-drug.hypnotic-rug{
+svg.anaesthetic-drug.hypnotic-drug{
   @include drug-bar($hypnotic_drug);
 }
 
@@ -47,11 +47,11 @@ svg.anaesthetic-drug.neuromuscular-blocking-drug{
   @include drug-bar($neuromuscular_blocking_drug);
 }
 
-svg.anaesthetic-drug.depolarizing_neuromuscular_blocking_drug{
+svg.anaesthetic-drug.depolarizing-neuromuscular-blocking_drug{
   @include drug-bar($depolarizing_neuromuscular_blocking_drug);
 }
 
-svg.anaesthetic-drug.opioid_drug{
+svg.anaesthetic-drug.opioid-drug{
   @include drug-bar($opioid_drug);
 }
 

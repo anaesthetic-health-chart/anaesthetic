@@ -107,54 +107,54 @@ svg.anaesthetic-drug.other-drug-agents {
     fill: #ffffff; }
 
 /* Induction agent: Pantone process yellow */
-.induction_agent_drug {
+.induction-agent-drug {
   background-color: #ffe800; }
 
 /* Hypnotic: Pantone 151 (orange) */
-.hypnotic_drug {
+.hypnotic-drug {
   background-color: #FF8200; }
 
 /* Hypnotic antagonist: Panton 151 (orange), white diagonal stripes */
-.hypnotic_antagonist_drug {
+.hypnotic-antagonist-drug {
   background: repeating-linear-gradient(-45deg, #ff7477, #ff7477 7px, #ffffff 7px, #ffffff 20px); }
 
 /* Neuromuscular blocking drug: Pantone 805 */
-.neuromuscular_blocking_drug {
+.neuromuscular-blocking-drug {
   background-color: #ff7477; }
 
 /* Neuromuscular blocking drug antagonist: Pantone 805, white diagonal stripes */
-.neuromuscular_blocking_drug_antagonist {
+.neuromuscular-blocking-drug-antagonist {
   background: repeating-linear-gradient(-45deg, #ff7477, #ff7477 7px, #ffffff 7px, #ffffff 20px); }
 
 /* Neuromuscular blocking drug: Pantone 805, black stripe and inverted text through title */
-.depolarizing_neuromuscular_blocking_drug {
+.depolarizing-neuromuscular-blocking-drug {
   background-color: #ff7477;
   background: linear-gradient(#000000 50%, #ff7477 50%); }
 
-.depolarizing_neuromuscular_blocking_drug .top {
+.depolarizing-neuromuscular-blocking-drug .top {
   color: #ff7477; }
 
 /* Opioid drug: Pantone 297 (blue) */
-.opioid_drug {
+.opioid-drug {
   background-color: #71C5E8; }
 
 /* Opioid antagonist drug: Pantone 297 (blue), white diagonal stripes */
-.opioid_antagonist {
+.opioid-antagonist {
   background: repeating-linear-gradient(45deg, #71C5E8, #71C5E8 5px, #ffffff 5px, #ffffff 10px); }
 
 /* Vasopressor: Pantone 256 (violet) */
-.vasopressor_drug {
+.vasopressor-drug {
   background-color: #D6BFDD; }
 
 /* placeholder for hypotensive_agent_drug */
 /* Local Anaesthetics: Pantone 401 (grey) */
-.local_anaesthetics_drug {
+.local-anaesthetics-drug {
   background-color: #AFA9A0; }
 
 /* Anticholinergic: Pantone 367 (green) */
-.anticholinergic_drug {
+.anticholinergic-drug {
   background-color: #A4D65E; }
 
 /* use for drugs which are not listed elsewhere, including antibiotics, oxytocin, heparin, protamine */
-.other_drug_agents {
+.other-drug-agents {
   background-color: #ffffff; }

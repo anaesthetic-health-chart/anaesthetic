@@ -1,8 +1,7 @@
 {% load forms %}
-<div ng-controller="DrugController as drug_controller" class=[[item.drug_type]]>
+<div ng-controller="DrugController as drug_controller" ng-class="anaesthetic_drug_colours">
   {% input field="GivenDrug.drug_name" %}
   {% input field="GivenDrug.drug_type" %}
   {% input field="GivenDrug.dose" %}
   {% datetimepicker field="GivenDrug.datetime" date_label="Start date" time_label="Start time" %}
-  {% datetimepicker field="GivenDrug.endtime" date_label="End date" time_label="End time" %}
 </div>

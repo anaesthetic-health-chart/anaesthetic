@@ -1,4 +1,13 @@
-<svg class="[[ item.drug_type ]]"><rect></rect></svg>
-<span ng-show="item.datetime"><b>[[ item.datetime | shortDateTime]]</b> </span>
+<!-- <svg class="[[item.drug_type | slugify]]"><rect></rect></svg>
+<span ng-show="item.datetime"><b>[[ item.datetime | shortDateTime]]</b><br /> </span>
 <span ng-show="item.drug_name"> [[ item.drug_name ]] </span>
-<span ng-show="item.rates">[[ item.rates ]] <br /></span>
+<span ng-show="item.dose">[[ item.dose ]] <br /></span>
+<svg class="anaesthetic-drug.opioid-drug">test</div>
+<div class="opioid-drug">test</div> -->
+
+<svg class="[[item.drug_type | slugify]] col-md-1" style="height:16"><rect></rect></svg>
+<div class="col-md-9">
+<span ng-show="item.datetime"><b>[[ item.datetime | shortDateTime]]</b><br /> </span>
+<span ng-show="item.drug_name" > [[ item.drug_name ]] </span>
+<span ng-show="item.dose">[[ item.dose ]] <br /></span>
+</div>
