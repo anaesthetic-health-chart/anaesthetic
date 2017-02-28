@@ -7,3 +7,8 @@ static/*
 htmlcov
 libpeerconnection.log
 venv
+bin
+include
+lib
+pip-selfcheck.json
+djcelery
