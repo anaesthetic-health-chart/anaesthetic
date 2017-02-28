@@ -4,14 +4,14 @@ This is anaesthetic - an [OPAL](https://github.com/openhealthcare/opal) project.
 Python and pip should already be installed however you will need to install some extra development tools to make sure everything installs without errors
 
 On Debian/Ubuntu systems and on bash for windows type
-'''bash
+```bash
 sudo apt-get install libpq-dev
-'''
+```
 
 On RHEL/fedora use
-'''bash
+```bash
 sudo dnf install postgresql-devel python-dev rpm-build
-'''
+```
 
 ```bash
 pip install -r requirements.txt
