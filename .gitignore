@@ -12,3 +12,4 @@ include
 lib
 pip-selfcheck.json
 djcelery
+lib64
