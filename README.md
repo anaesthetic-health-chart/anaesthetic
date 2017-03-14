@@ -31,5 +31,15 @@ You need a token to go in http header "Authorization: Token <token goes here>" y
 ```bash
 python manage.py gettoken <username>
 ```
+You can then use this to feed in data to the application with the default dummy data
+(make sure the three arguments have quotation marks around them)
 
-This can be used with the 'anaesthetic-adaptor-vscapture' project and jakadapt.py to load data from a .csv
+```bash
+./manage.py insertdata <file location> <address of the install> <api token>
+```
+if you are feeding to a local install you will have to run this in another tab while the server is running
+
+finally to load some of the fixture data run
+```bash
+./manage.py load_lookup_lists
+```
