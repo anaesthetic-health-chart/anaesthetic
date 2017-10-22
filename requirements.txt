@@ -12,5 +12,5 @@ letter==0.4.1
 requests==2.7.0
 djangorestframework==3.2.2
 django-compressor==1.5
--e git+https://github.com/openhealthcare/opal.git@v0.8.0#egg=opal
--e git+https://github.com/openhealthcare/opal-pathway.git@v0.3#egg=opal_pathway
+-e git+https://github.com/openhealthcare/opal.git@v0.9.0#egg=opal
+-e git+https://github.com/openhealthcare/opal-pathway.git@v0.4#egg=opal_pathway
