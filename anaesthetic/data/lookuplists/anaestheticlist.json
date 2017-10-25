@@ -1,0 +1,169 @@
+{
+  "Malampati": [
+    {
+      "synonyms": [],
+      "name": "1"
+    },
+    {
+      "synonyms": [],
+      "name": "2"
+    },
+    {
+      "synonyms": [],
+      "name": "3"
+    },
+    {
+      "synonyms": [],
+      "name": "4"
+    }
+  ],
+  "Dentition": [
+    {
+      "name": "Fuly Intact",
+      "synonyms": [
+        "Own",
+        "Complete",
+        "Nil missing"
+      ]
+    },
+    {
+      "name": "Bottom Denture",
+      "synonyms": [
+        "Bottom Set",
+        "Lower Set",
+        "lower denture"
+      ]
+    },
+    {
+      "name": "Top Denture",
+      "synonyms": [
+        "Top Set",
+        "Upper Set",
+        "Upper denture"
+      ]
+    },
+    {
+      "name": "Full Denture",
+      "synonyms": [
+        "full set",
+        "top and bottom"
+      ]
+    },
+    {
+      "name": "Poor Condition",
+      "synonyms": [
+        "Minging"
+      ]
+    }
+  ],
+  "FrailtyScale": [
+    {
+      "name": "Very Fit",
+      "synonyms": [
+        "1"
+      ]
+    },
+    {
+      "name": "Well",
+      "synonyms": [
+        "2"
+      ]
+    },
+    {
+      "name": "Managing Well",
+      "synonyms": [
+        "3"
+      ]
+    },
+    {
+      "name": "Vulnerable",
+      "synonyms": [
+        "4"
+      ]
+    },
+    {
+      "name": "Mildly Frail",
+      "synonyms": [
+        "5"
+      ]
+    },
+    {
+      "name": "Moderately Frail",
+      "synonyms": [
+        "6"
+      ]
+    },
+    {
+      "name": "Severely Frail",
+      "synonyms": [
+        "7",
+        "Totally Dependant",
+        "Housebound",
+        "House bound"
+      ]
+    },
+    {
+      "name": "Very Severely Frail",
+      "synonyms": [
+        "8",
+        "Bed Bound",
+        "bedbound"
+      ]
+    },
+    {
+      "name": "Terminally Ill",
+      "synonyms": [
+        "9",
+        "end of life"
+      ]
+    }
+  ],
+  "ASA": [
+    {
+      "synonyms": [],
+      "name": "1"
+    },
+    {
+      "synonyms": [],
+      "name": "2"
+    },
+    {
+      "synonyms": [],
+      "name": "3"
+    },
+    {
+      "synonyms": [],
+      "name": "4"
+    },
+    {
+      "synonyms": [],
+      "name": "5"
+    },
+    {
+      "synonyms": [],
+      "name": "6"
+    }
+  ],
+  "PreviousAnaesthetics": [
+    {
+      "name": "Uneventful",
+      "synonyms": [
+        "Fine",
+        "No Issues",
+        "Nil problems"
+      ]
+    },
+    {
+      "name": "PONV",
+      "synonyms": [
+        "sickness",
+        "vomiting",
+        "nausea"
+      ]
+    },
+    {
+      "synonyms": [],
+      "name": "Proper Horror Show"
+    }
+  ]
+}

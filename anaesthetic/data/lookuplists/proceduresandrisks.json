@@ -1,0 +1,140 @@
+{
+  "Risks": [
+    {
+      "name": "Death",
+      "synonyms": [
+        "dying"
+      ]
+    },
+    {
+      "name": "Blindness",
+      "synonyms": [
+        "Loss of vision",
+        "Loss of eyesight"
+      ]
+    },
+    {
+      "name": "Bleeding",
+      "synonyms": [
+        "Blood loss",
+        "haemorrage"
+      ]
+    },
+    {
+      "name": "Post Operative Nausea and Vomiting",
+      "synonyms": [
+        "PONV",
+        "sickness",
+        "vomiting",
+        "nausea",
+        "feeling sick"
+      ]
+    },
+    {
+      "name": "Perioperative Anaphylaxis",
+      "synonyms": [
+        "Allegies",
+        "Anaphylaxis",
+        "Drug reactions"
+      ]
+    },
+    {
+      "name": "Unplanned admission to higher level care",
+      "synonyms": [
+        "ICU",
+        "HDU",
+        "Intensive Care",
+        "High dependancy"
+      ]
+    },
+    {
+      "name": "Pneumothorax",
+      "synonyms": [
+        "PTX",
+        "punctured lung"
+      ]
+    },
+    {
+      "name": "Nerve Injury",
+      "synonyms": [
+        "Nerve Damage",
+        "Damage to Nerve"
+      ]
+    },
+    {
+      "name": "Perioperative Cardiac event",
+      "synonyms": [
+        "Heart attack",
+        "MI",
+        "Infarction"
+      ]
+    },
+    {
+      "name": "Awareness",
+      "synonyms": [
+        "Awake",
+        "Waking up"
+      ]
+    },
+    {
+      "name": "Infection",
+      "synonyms": []
+    }
+  ],
+  "ProposedProcedure": [
+    {
+      "name": "General Anaesthesia",
+      "synonyms": [
+        "GA",
+        "General"
+      ]
+    },
+    {
+      "name": "Regional Anaesthesia",
+      "synonyms": [
+        "Block",
+        "RA"
+      ]
+    },
+    {
+      "name": "Sedation",
+      "synonyms": []
+    },
+    {
+      "name": "Local Anaesthesia",
+      "synonyms": [
+        "LA",
+        "local"
+      ]
+    },
+    {
+      "name": "Central Venous Catheter",
+      "synonyms": [
+        "CVC",
+        "Central line",
+        "vascath"
+      ]
+    },
+    {
+      "name": "Arterial Line",
+      "synonyms": [
+        "Art line"
+      ]
+    },
+    {
+      "name": "Spinal",
+      "synonyms": [
+        "sub-arachnoid block",
+        "SAB"
+      ]
+    },
+    {
+      "name": "Lumbar Epidural",
+      "synonyms": []
+    },
+    {
+      "name": "Thoracic Epidural",
+      "synonyms": []
+    }
+  ]
+}

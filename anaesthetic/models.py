@@ -119,3 +119,49 @@ class Ventilators(RemoteAdded):
     tidal_volume = db_models.FloatField(blank=True, null=True)
     rate = db_models.IntegerField(blank=True, null=True)
     datetime = db_models.DateTimeField()
+
+class PreOPbloods(models.EpisodeSubrecord):
+    _title = "bloods"
+    _is_singleton = True
+
+    Hb = db_models.FloatField(blank=True, null=True)
+    Plt = db_models.FloatField(blank=True, null=True)
+    WBC = db_models.FloatField(blank=True, null=True)
+    INR = db_models.FloatField(blank=True, null=True)
+    CRP = db_models.FloatField(blank=True, null=True)
+
+    Urea = db_models.FloatField(blank=True, null=True)
+    Creat = db_models.FloatField(blank=True, null=True)
+    Na = db_models.FloatField(blank=True, null=True)
+    K = db_models.FloatField(blank=True, null=True)
+
+
+class Malampati(lookuplists.LookupList): pass
+class Dentition(lookuplists.LookupList): pass
+class FrailtyScale(lookuplists.LookupList): pass
+class ASA(lookuplists.LookupList): pass
+class PreviousAnaesthetics(lookuplists.LookupList): pass
+
+class ProposedProcedure(lookuplists.LookupList): pass
+class Risks(lookuplists.LookupList): pass
+
+class AnaestheticPlan(models.EpisodeSubrecord):
+    _title = "Anaesthetic Plan"
+    Proposed_Procedure  = fields.ForeignKeyOrFreeText(ProposedProcedure)
+    Procedure_Risks     = db_models.TextField(blank=True, null=True)
+
+
+class PreOPvisit(models.EpisodeSubrecord):
+    _title = "Anaesthetic Assesment"
+    _is_singleton = True
+
+    Malampati   = fields.ForeignKeyOrFreeText(Malampati)
+    Dentition   = fields.ForeignKeyOrFreeText(Dentition)
+    ASA         = fields.ForeignKeyOrFreeText(ASA)
+    Frailty     = fields.ForeignKeyOrFreeText(FrailtyScale)
+    previous_anaesthetics = fields.ForeignKeyOrFreeText(PreviousAnaesthetics)
+
+    Assessment  = db_models.TextField(blank=True, null=True)
+    General_Risks       = db_models.TextField(blank=True, null=True,)
+    AdditionalRisks = db_models.TextField(blank=True, null=True)
+    TimeSeen    = db_models.DateTimeField(blank=True, null=True,)
