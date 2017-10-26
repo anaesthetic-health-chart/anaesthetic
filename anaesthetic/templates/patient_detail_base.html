@@ -41,7 +41,6 @@
     <div class="row">
       {% block content %}
 
-      <div class="col-md-9 druglist">
         <div class="col-md-12">
           {% for episode_category in episode_categories %}
           {% if episode_category.detail_template %}
@@ -57,13 +56,8 @@
           {% endfor %}
           {% block viewtemplates %}{% endblock %}
         </div>
-      </div>
 
-      <div class="col-md-3 druglist"> <!-- Episode Switcher -->
-        <button open-pathway="induction_drugs" class="btn btn-primary">Induction</button>
-        {% record_panel models.AnaestheticTechnique %}
-        {% record_panel models.GivenDrug %}
-      </div> <!-- End episode switcher -->
+
 
 
     </div> <!-- Ends Main Panel -->

@@ -117,7 +117,7 @@ angular.module('opal.controllers').controller(
                 });
             }
 
-            //drugclass = capitalizeEachWord(drugclass);
+            drugclass = capitalizeEachWord(drugclass);
 
             //push dose to array for labels
             $scope.labels.push(drugdose);
@@ -159,7 +159,7 @@ angular.module('opal.controllers').controller(
               //stuff to do
               // 1 find a better way of doing this
               //have some reminder to change this if we change class names
-              debugger;
+
               var colours = [
                 {class: "Antiemetic Drug", colour: "#EFBE7D"},
                 {class: "Induction Agent Drug", colour: '#ffe800'},
@@ -178,7 +178,7 @@ angular.module('opal.controllers').controller(
               //var nextcolour = _.where(colours, drugclass);
               var something = {class: drugclass};
               var nextcolour = _.findWhere(colours, something);
-              debugger;
+              //debugger;
               if (nextcolour == null){
                 $scope.drugcolours[drugname] = '#736969';
               } else {

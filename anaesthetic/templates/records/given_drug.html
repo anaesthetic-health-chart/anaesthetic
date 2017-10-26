@@ -6,8 +6,8 @@
 <div class="opioid-drug">test</div> -->
 
 <svg class="[[item.drug_type | slugify]] col-md-1" style="height:16"><rect></rect></svg>
-<div class="col-md-9">
-<span ng-show="item.datetime"><b>[[ item.datetime | shortDateTime]]</b><br /> </span>
-<span ng-show="item.drug_name" > [[ item.drug_name ]] </span>
-<span ng-show="item.dose">[[ item.dose ]] <br /></span>
-</div>
+<!-- <div class="[[item.drug_type | slugify]]" style="padding:2px"> -->
+  <span ng-show="item.datetime"><b>[[ item.datetime | shortDateTime]]</b><br /> </span>
+  <span ng-show="item.drug_name" > [[ item.drug_name ]] </span>
+  <span ng-show="item.dose">[[ item.dose ]] <br /></span>
+<!-- </div> -->

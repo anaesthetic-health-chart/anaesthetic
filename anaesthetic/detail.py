@@ -9,3 +9,9 @@ class AnaestheticReadings(detail.PatientDetailView):
     name = 'anaesthetic_reading'
     display_name = 'Anaesthetic Readings'
     template   = 'anaesthetic/detail/reading_detail.html'
+
+class PreopAssessment(detail.PatientDetailView):
+    order   = 2
+    name    = 'Pre_Op_assessment'
+    display_name    = 'Pre Op Assessment'
+    template        = 'anaesthetic/detail/preopassessment.html'

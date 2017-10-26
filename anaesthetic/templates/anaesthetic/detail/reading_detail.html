@@ -1,11 +1,17 @@
 {% load panels %}
 
-
-
-
-<div ng-controller="newgraph">
+<div ng-controller="newgraph" class="col-md-9">
     <div id="drugchart" ></div>
     <div id="chart" ></div>
     <div id="ventchart" ></div>
     <div id="gaschart" ></div>
+</div>
+
+<div class="col-md-3">
+  <button open-pathway="induction_drugs" class="btn btn-primary">Induction</button>
+  <button class="btn btn-secondary">Start Data</button>
+  {% record_panel models.Induction %}
+  [[ episode.Induction.size ]]
+  {% record_panel models.AnaestheticTechnique %}
+  {% record_panel models.GivenDrug %}
 </div>

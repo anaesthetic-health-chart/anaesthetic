@@ -1,5 +1,5 @@
 {
-  "Risks": [
+  "risks": [
     {
       "name": "Death",
       "synonyms": [
@@ -81,7 +81,7 @@
       "synonyms": []
     }
   ],
-  "ProposedProcedure": [
+  "proposedprocedure": [
     {
       "name": "General Anaesthesia",
       "synonyms": [
