@@ -1,0 +1,14 @@
+{% load panels %}
+
+<!-- things we need. Nav bar, physical attributes, pre op bloods, pre op visit, anaesthetic plan, previous episodes -->
+
+<div class="cold-md-8">
+  {% record_panel model.AnaestheticPlan %}
+  {% record_panel model.PreOpVisit %}
+</div>
+
+<div class="col-md-4>">
+  {% record_panel model.PatientPhysicalAttributes title="Height and Weight" %}
+  {% record_panel model.PreOpBloods%}
+
+</div>

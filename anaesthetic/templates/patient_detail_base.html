@@ -5,8 +5,8 @@
 
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:400,700" rel="stylesheet" type="text/css">
 
-{{ block.super }}
-{% endblock %}
+<!-- {{ block.super }}
+{% endblock %} -->
 
 <div class="container-fluid">
     <!-- Header -->
@@ -30,6 +30,26 @@
         </li>
 
       </ul>
+      {% block content %}
+      <div class="col-md-4">
+      <ul>
+        {% block views_switcher %}
+        {% if detail_views|length > 0 %}
+        {% for detail in detail_views %}
+        <li><a class="list-group-item episodelist pointer"
+           ng-class="{'bg-active': view == '{{ detail.get_slug}}'}"
+           ng-click="switch_to_episode(0, $event) && switch_to_view('{{ detail.get_slug }}')"
+           href="[[ '/#/patient/' + patient.id + '/{{ detail.get_slug }}' ]]"
+           >
+          {{ detail.display_name }}
+        </a>
+      </li>
+        {% endfor %}
+        {% block viewnavigation %}{% endblock %}
+        {% endif %}
+      {% endblock views_switcher %}
+      </ul>
+    </div>
 
       <a href="#" class="more-button">
         More
@@ -39,7 +59,8 @@
 
 
     <div class="row">
-      {% block content %}
+
+        </div>
 
         <div class="col-md-12">
           {% for episode_category in episode_categories %}
@@ -55,7 +76,9 @@
           </div>
           {% endfor %}
           {% block viewtemplates %}{% endblock %}
+
         </div>
+
 
 
 
