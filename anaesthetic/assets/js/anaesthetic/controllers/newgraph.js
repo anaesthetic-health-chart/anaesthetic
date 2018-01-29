@@ -111,6 +111,14 @@ angular.module('opal.controllers').controller(
             var drugclass = a.drug_type ;
             var drugdose = a.dose ;
 
+            function capitalizeEachWord(str) {
+                return str.replace(/\w\S*/g, function(txt) {
+                    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+                });
+            }
+
+            drugclass = capitalizeEachWord(drugclass);
+
             //push dose to array for labels
             $scope.labels.push(drugdose);
 
@@ -171,7 +179,11 @@ angular.module('opal.controllers').controller(
               var something = {class: drugclass};
               var nextcolour = _.findWhere(colours, something);
               //debugger;
-              $scope.drugcolours[drugname] = nextcolour.colour;
+              if (nextcolour == null){
+                $scope.drugcolours[drugname] = '#736969';
+              } else {
+                $scope.drugcolours[drugname] = nextcolour.colour;
+              }
 
               //push to xs so it plots
               $scope.drugxs[drugname] = drugnamex;
@@ -254,10 +266,10 @@ angular.module('opal.controllers').controller(
             columns: newColumns,
 
             colors: {
-              bp_systolic: "red" ,
-              bp_diastolic: "red" ,
-              pulse: "green" ,
-              Sp02: '#ffff00' ,
+              bp_systolic: '#DA291C' ,
+              bp_diastolic: '#DA291C' ,
+              pulse: '#78BE20' ,
+              Sp02: '#FAE100' ,
             },
 
             axes: {
@@ -319,10 +331,10 @@ angular.module('opal.controllers').controller(
               expired_carbon_dioxide: 'y2',
             },
             colors: {
-              expired_oxygen: "#B2BEB5" ,
-              inspired_oxygen: "#B2BEB5" ,
-              expired_aa: '#C46210' ,
-              expired_carbon_dioxide: '#1B1B1B' ,
+              expired_oxygen: "#768692" ,
+              inspired_oxygen: "#768692" ,
+              expired_aa: '#ED8B00' ,
+              expired_carbon_dioxide: '#231f20' ,
             },
           },
           size: {
@@ -399,15 +411,15 @@ angular.module('opal.controllers').controller(
               tidal_volume: 'y2',
             },
             colors: {
-              rate: '#007FFF' ,
-              tidal_volume: '#66FF00' ,
-              peak_airway_pressure: '#FF007F' ,
-              peep_airway_pressure: '#E4EDF6' ,
+              rate: '#330072' ,
+              tidal_volume: '#ED8B00' ,
+              peak_airway_pressure: '#AE2573' ,
+              peep_airway_pressure: '#AE2573' ,
             },
-            types: {
-            peak_airway_pressure: 'area-spline',
-            peep_airway_pressure: 'area-spline',
-            },
+            // types: {
+            // peak_airway_pressure: 'area-spline',
+            // peep_airway_pressure: 'area-spline',
+            // },
             groups:[['peak_airway_pressure', 'peep_airway_pressure']],
           },
           size: {

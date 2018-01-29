@@ -120,7 +120,7 @@ class Ventilators(RemoteAdded):
     rate = db_models.IntegerField(blank=True, null=True)
     datetime = db_models.DateTimeField()
 
-class PreOPbloods(models.EpisodeSubrecord):
+class PreOpBloods(models.EpisodeSubrecord):
     _title = "bloods"
     _is_singleton = True
 
@@ -149,9 +149,10 @@ class AnaestheticPlan(models.EpisodeSubrecord):
     _title = "Anaesthetic Plan"
     Proposed_Procedure  = fields.ForeignKeyOrFreeText(ProposedProcedure)
     Procedure_Risks     = db_models.TextField(blank=True, null=True)
+    Risks               = fields.ForeignKeyOrFreeText(Risks)
 
 
-class PreOPvisit(models.EpisodeSubrecord):
+class PreOpVisit(models.EpisodeSubrecord):
     _title = "Anaesthetic Assesment"
     _is_singleton = True
 

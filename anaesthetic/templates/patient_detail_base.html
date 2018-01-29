@@ -5,8 +5,8 @@
 
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:400,700" rel="stylesheet" type="text/css">
 
-{{ block.super }}
-{% endblock %}
+<!-- {{ block.super }}
+{% endblock %} -->
 
 <div class="container-fluid">
     <!-- Header -->
@@ -30,6 +30,27 @@
         </li>
 
       </ul>
+      {% block content %}
+      <div class="col-md-5" >
+        <ul >
+        {% block views_switcher %}
+        {% if detail_views|length > 0 %}
+        {% for detail in detail_views %}
+        <li style="display:inline-block">
+        <a class="list-group-item episodelist pointer"
+           ng-class="{'bg-active': view == '{{ detail.get_slug}}'}"
+           ng-click="switch_to_episode(0, $event) && switch_to_view('{{ detail.get_slug }}')"
+           href="[[ '/#/patient/' + patient.id + '/{{ detail.get_slug }}' ]]"
+           >
+          {{ detail.display_name }}
+        </a>
+      </li>
+        {% endfor %}
+        {% block viewnavigation %}{% endblock %}
+        {% endif %}
+      {% endblock views_switcher %}
+    </ul>
+    </div>
 
       <a href="#" class="more-button">
         More
@@ -39,9 +60,9 @@
 
 
     <div class="row">
-      {% block content %}
 
-      <div class="col-md-9 druglist">
+        </div>
+
         <div class="col-md-12">
           {% for episode_category in episode_categories %}
           {% if episode_category.detail_template %}
@@ -56,14 +77,11 @@
           </div>
           {% endfor %}
           {% block viewtemplates %}{% endblock %}
-        </div>
-      </div>
 
-      <div class="col-md-3 druglist"> <!-- Episode Switcher -->
-        <button open-pathway="induction_drugs" class="btn btn-primary">Induction</button>
-        {% record_panel models.AnaestheticTechnique %}
-        {% record_panel models.GivenDrug %}
-      </div> <!-- End episode switcher -->
+        </div>
+
+
+
 
 
     </div> <!-- Ends Main Panel -->

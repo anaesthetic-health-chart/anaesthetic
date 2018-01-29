@@ -9,8 +9,6 @@ from django.conf import settings
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('opal', '0032_auto_20171022_1651'),
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('anaesthetic', '0021_auto_20171022_1651'),
     ]
 

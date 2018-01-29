@@ -1,5 +1,5 @@
 {
-  "Malampati": [
+  "malampati": [
     {
       "synonyms": [],
       "name": "1"
@@ -17,7 +17,7 @@
       "name": "4"
     }
   ],
-  "Dentition": [
+  "dentition": [
     {
       "name": "Fuly Intact",
       "synonyms": [
@@ -56,7 +56,7 @@
       ]
     }
   ],
-  "FrailtyScale": [
+  "frailtyscale": [
     {
       "name": "Very Fit",
       "synonyms": [
@@ -118,7 +118,7 @@
       ]
     }
   ],
-  "ASA": [
+  "asa": [
     {
       "synonyms": [],
       "name": "1"
@@ -144,7 +144,7 @@
       "name": "6"
     }
   ],
-  "PreviousAnaesthetics": [
+  "previousanaesthetics": [
     {
       "name": "Uneventful",
       "synonyms": [
